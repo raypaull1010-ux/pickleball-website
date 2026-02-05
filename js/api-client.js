@@ -178,6 +178,33 @@ const FormHelpers = {
     }
   },
 
+  // Alias for setLoading (used by membership.html)
+  setButtonLoading: function(button, isLoading) {
+    this.setLoading(button, isLoading);
+  },
+
+  // Show form message (error or success)
+  showFormMessage: function(form, message, type = 'error') {
+    // Remove existing messages
+    const existing = form.querySelector('.form-message');
+    if (existing) existing.remove();
+
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `form-message ${type}`;
+    if (type === 'error') {
+      msgDiv.style.cssText = 'background: #fef2f2; color: #dc2626; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; text-align: center;';
+    } else {
+      msgDiv.style.cssText = 'background: #f0fdf4; color: #16a34a; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; text-align: center;';
+    }
+    msgDiv.textContent = message;
+    form.insertBefore(msgDiv, form.firstChild);
+
+    // Auto-remove after 10 seconds for errors
+    if (type === 'error') {
+      setTimeout(() => msgDiv.remove(), 10000);
+    }
+  },
+
   // Show error message
   showError: function(container, message) {
     // Remove existing error
