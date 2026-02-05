@@ -1079,16 +1079,22 @@
                             membershipId = response.membership.id;
                         }
                     } catch (apiError) {
-                        console.log('API not available, continuing with Stripe checkout');
+                        console.log('API not available, continuing with Stripe checkout:', apiError);
                     }
                 } else {
                     // Store in localStorage as fallback
-                    const storedRequest = EmailService.storePendingMembershipRequest(membershipData);
-                    membershipId = storedRequest.id;
+                    if (typeof EmailService !== 'undefined' && EmailService.storePendingMembershipRequest) {
+                        const storedRequest = EmailService.storePendingMembershipRequest(membershipData);
+                        membershipId = storedRequest.id;
+                    } else {
+                        membershipId = 'temp_' + Date.now();
+                    }
                 }
 
                 // Create Stripe checkout session
+                console.log('Checking Stripe config:', typeof API !== 'undefined', CONFIG.isStripeConfigured());
                 if (typeof API !== 'undefined' && CONFIG.isStripeConfigured()) {
+                    console.log('Creating checkout with:', { productType: plan, itemId: membershipId, customerEmail: email });
                     const checkoutResponse = await API.createCheckout({
                         productType: plan,
                         itemId: membershipId,
@@ -1100,6 +1106,7 @@
                         }
                     });
 
+                    console.log('Checkout response:', checkoutResponse);
                     if (checkoutResponse.success && checkoutResponse.url) {
                         // Redirect to Stripe Checkout
                         window.location.href = checkoutResponse.url;
@@ -1109,6 +1116,7 @@
                     }
                 } else {
                     // Stripe not configured - show message to use Venmo
+                    console.log('Stripe not configured. API:', typeof API, 'isStripeConfigured:', CONFIG.isStripeConfigured());
                     FormHelpers.showFormMessage(this,
                         'Card payments are being set up. Please use Venmo for now, or check back later.',
                         'error'
