@@ -16,12 +16,13 @@ const { withSecurity, isValidEmail } = require('./lib/security');
 const ALLOWED_ORIGINS = [
   'https://rayspickleball.com',
   'https://www.rayspickleball.com',
+  'https://glowing-biscotti-cf7938.netlify.app',
   'http://localhost:8888', // Netlify dev
   'http://localhost:3000', // Local dev
   'http://127.0.0.1:8888'
 ];
 
-const DEFAULT_ORIGIN = 'https://rayspickleball.com';
+const DEFAULT_ORIGIN = 'https://glowing-biscotti-cf7938.netlify.app';
 
 // Validate and sanitize origin
 function getSafeOrigin(requestOrigin) {
