@@ -7,7 +7,7 @@
 // - Skill evaluation ($35)
 // - Instructor fee ($40)
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET);
 const { getServiceClient, jsonResponse, handleCors } = require('./lib/supabase');
 const { withSecurity, isValidEmail } = require('./lib/security');
 

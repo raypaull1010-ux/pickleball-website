@@ -7,7 +7,7 @@
 // - customer.subscription.deleted - Subscription cancelled
 // - invoice.payment_failed - Payment failed
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET);
 const { getServiceClient } = require('./lib/supabase');
 
 exports.handler = async (event, context) => {
