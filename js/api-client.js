@@ -72,7 +72,7 @@ const API = {
   // VIDEO SUBMISSION
   // ============================================
   submitVideo: async function(formData) {
-    return this.request('/api/video-submission', {
+    return this.request('/api-video-submission', {
       method: 'POST',
       body: formData
     });
@@ -82,14 +82,14 @@ const API = {
   // MEMBERSHIP
   // ============================================
   submitMembership: async function(formData) {
-    return this.request('/api/membership', {
+    return this.request('/api-membership', {
       method: 'POST',
       body: formData
     });
   },
 
   getMembership: async function() {
-    return this.request('/api/membership', {
+    return this.request('/api-membership', {
       method: 'GET',
       requireAuth: true
     });
@@ -99,14 +99,14 @@ const API = {
   // INSTRUCTOR
   // ============================================
   submitInstructor: async function(formData) {
-    return this.request('/api/instructor', {
+    return this.request('/api-instructor', {
       method: 'POST',
       body: formData
     });
   },
 
   getInstructors: async function() {
-    return this.request('/api/instructor', {
+    return this.request('/api-instructor', {
       method: 'GET'
     });
   },

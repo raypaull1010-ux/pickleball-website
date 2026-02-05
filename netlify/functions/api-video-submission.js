@@ -3,8 +3,8 @@
 // GET /api/video-submission - Get user's submissions (requires auth)
 // GET /api/video-submission?admin=true - Get all submissions (admin only)
 
-const { getServiceClient, verifyUser, isAdmin, jsonResponse, handleCors } = require('../lib/supabase');
-const { withSecurity, isValidEmail, isValidUrl, validateRequired } = require('../lib/security');
+const { getServiceClient, verifyUser, isAdmin, jsonResponse, handleCors } = require('./lib/supabase');
+const { withSecurity, isValidEmail, isValidUrl, validateRequired } = require('./lib/security');
 
 const handler = async (event, context) => {
   // Handle CORS

@@ -2,8 +2,8 @@
 // POST /api/membership - Create new membership request
 // GET /api/membership - Get user's membership (requires auth)
 
-const { getServiceClient, verifyUser, isAdmin, jsonResponse, handleCors } = require('../lib/supabase');
-const { withSecurity, isValidEmail, validateRequired } = require('../lib/security');
+const { getServiceClient, verifyUser, isAdmin, jsonResponse, handleCors } = require('./lib/supabase');
+const { withSecurity, isValidEmail, validateRequired } = require('./lib/security');
 
 // Pricing
 const PRICES = {

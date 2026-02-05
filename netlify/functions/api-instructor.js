@@ -4,8 +4,8 @@
 // GET /api/instructor?id=xxx - Get specific instructor
 // PUT /api/instructor - Update own profile (requires auth)
 
-const { getServiceClient, verifyUser, isAdmin, jsonResponse, handleCors } = require('../lib/supabase');
-const { withSecurity, isValidEmail, validateRequired } = require('../lib/security');
+const { getServiceClient, verifyUser, isAdmin, jsonResponse, handleCors } = require('./lib/supabase');
+const { withSecurity, isValidEmail, validateRequired } = require('./lib/security');
 
 // Grace period configuration
 const GRACE_PERIOD_DAYS = 90;
