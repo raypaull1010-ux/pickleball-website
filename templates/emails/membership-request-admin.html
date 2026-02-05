@@ -1,0 +1,108 @@
+<!--
+  EMAIL TEMPLATE: Membership Request Admin Notification
+  RECIPIENT: Ray (admin)
+  TRIGGER: Immediately after activation form submission (Stage 1)
+
+  EMAILJS VARIABLES:
+  {{customer_name}} - Customer's full name
+  {{customer_email}} - Customer's email
+  {{plan_type}} - "Monthly" or "Annual"
+  {{price}} - "$19.99/month" or "$199/year"
+  {{submitted_at}} - Formatted submission date/time
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Membership Request</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #f3f4f6;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f3f4f6;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color: #8b5cf6; padding: 25px; text-align: center;">
+                            <h1 style="color: #ffffff; margin: 0; font-size: 20px;">New Membership Request!</h1>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 30px;">
+
+                            <!-- Customer Info -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f9fafb; border-radius: 8px; margin-bottom: 20px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <h3 style="color: #1f2937; margin: 0 0 15px 0; font-size: 16px; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px;">Customer Info</h3>
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="color: #6b7280; font-size: 14px; padding: 5px 0; width: 100px;">Name:</td>
+                                                <td style="color: #1f2937; font-size: 14px; padding: 5px 0; font-weight: 600;">{{customer_name}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #6b7280; font-size: 14px; padding: 5px 0;">Email:</td>
+                                                <td style="padding: 5px 0;"><a href="mailto:{{customer_email}}" style="color: #2563eb; text-decoration: none; font-size: 14px;">{{customer_email}}</a></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Membership Details -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f5f3ff; border-radius: 8px; margin-bottom: 20px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <h3 style="color: #1f2937; margin: 0 0 15px 0; font-size: 16px; border-bottom: 1px solid #ddd6fe; padding-bottom: 10px;">Membership Details</h3>
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="color: #6b7280; font-size: 14px; padding: 5px 0; width: 100px;">Plan:</td>
+                                                <td style="color: #1f2937; font-size: 14px; padding: 5px 0; font-weight: 600;">{{plan_type}} Membership</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #6b7280; font-size: 14px; padding: 5px 0;">Price:</td>
+                                                <td style="color: #8b5cf6; font-size: 16px; padding: 5px 0; font-weight: 700;">{{price}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #6b7280; font-size: 14px; padding: 5px 0;">Requested:</td>
+                                                <td style="color: #1f2937; font-size: 14px; padding: 5px 0;">{{submitted_at}}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Venmo Check Reminder -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #fef3c7; border-radius: 8px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <h3 style="color: #92400e; margin: 0 0 10px 0; font-size: 16px;">Check Venmo for Payment</h3>
+                                        <p style="color: #92400e; font-size: 14px; margin: 0; line-height: 1.6;">
+                                            Look for a payment of <strong>{{price}}</strong> with memo containing "{{plan_type}} Membership" from {{customer_email}}
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </td>
+                    </tr>
+
+                    <!-- Action Reminder -->
+                    <tr>
+                        <td style="background-color: #fef3c7; padding: 20px 30px; border-top: 1px solid #fcd34d;">
+                            <p style="color: #92400e; font-size: 14px; margin: 0; text-align: center;">
+                                <strong>Reminder:</strong> After verifying Venmo payment, activate the membership from the admin panel.
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

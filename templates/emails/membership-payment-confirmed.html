@@ -1,0 +1,182 @@
+<!--
+  EMAIL TEMPLATE: Membership Payment Confirmed / Welcome
+  RECIPIENT: Customer
+  TRIGGER: Admin clicks "Activate Membership" in admin panel (Stage 2)
+
+  EMAILJS VARIABLES:
+  {{customer_name}} - Customer's full name
+  {{customer_email}} - Customer's email
+  {{plan_type}} - "Monthly" or "Annual"
+  {{price}} - "$19.99/month" or "$199/year"
+  {{benefits}} - Comma-separated list of benefits
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the Community! - Ray's Pickleball</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #f3f4f6;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f3f4f6;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #8b5cf6 0%, #2563eb 100%); padding: 40px; text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 15px;">&#127881;</div>
+                            <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Welcome to the Community!</h1>
+                            <p style="color: #e0e7ff; margin: 10px 0 0 0; font-size: 16px;">Your membership is now active</p>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                                Hey {{customer_name}}!
+                            </p>
+
+                            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                                Awesome - your {{plan_type}} membership is officially active! You now have access to all the member perks. Let's get you up to speed on what you can do.
+                            </p>
+
+                            <!-- Membership Status -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #ecfdf5; border: 2px solid #10b981; border-radius: 8px; margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 25px; text-align: center;">
+                                        <p style="color: #059669; font-size: 14px; margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px;">Membership Status</p>
+                                        <p style="color: #047857; font-size: 24px; margin: 0; font-weight: 700;">Active</p>
+                                        <p style="color: #6b7280; font-size: 14px; margin: 10px 0 0 0;">{{plan_type}} Plan - {{price}}</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Your Benefits -->
+                            <h3 style="color: #1f2937; margin: 0 0 20px 0; font-size: 18px;">Your Member Benefits</h3>
+
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 15px; background-color: #f9fafb; border-radius: 8px; margin-bottom: 10px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="width: 40px; vertical-align: top;">
+                                                    <span style="font-size: 24px;">&#129302;</span>
+                                                </td>
+                                                <td>
+                                                    <p style="color: #1f2937; font-size: 15px; margin: 0; font-weight: 600;">Unlimited AI Drill Coach</p>
+                                                    <p style="color: #6b7280; font-size: 13px; margin: 5px 0 0 0;">Upload unlimited drill videos for instant AI feedback</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr><td style="height: 10px;"></td></tr>
+                                <tr>
+                                    <td style="padding: 15px; background-color: #f9fafb; border-radius: 8px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="width: 40px; vertical-align: top;">
+                                                    <span style="font-size: 24px;">&#128218;</span>
+                                                </td>
+                                                <td>
+                                                    <p style="color: #1f2937; font-size: 15px; margin: 0; font-weight: 600;">Free Drill Playbook PDF</p>
+                                                    <p style="color: #6b7280; font-size: 13px; margin: 5px 0 0 0;">50+ drills to level up your game - yours to keep forever</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr><td style="height: 10px;"></td></tr>
+                                <tr>
+                                    <td style="padding: 15px; background-color: #f9fafb; border-radius: 8px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="width: 40px; vertical-align: top;">
+                                                    <span style="font-size: 24px;">&#128184;</span>
+                                                </td>
+                                                <td>
+                                                    <p style="color: #1f2937; font-size: 15px; margin: 0; font-weight: 600;">20% Off Video Analysis</p>
+                                                    <p style="color: #6b7280; font-size: 13px; margin: 5px 0 0 0;">Pay $60 instead of $75 (30-min) or $95 instead of $120 (60-min)</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr><td style="height: 10px;"></td></tr>
+                                <tr>
+                                    <td style="padding: 15px; background-color: #f9fafb; border-radius: 8px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="width: 40px; vertical-align: top;">
+                                                    <span style="font-size: 24px;">&#127942;</span>
+                                                </td>
+                                                <td>
+                                                    <p style="color: #1f2937; font-size: 15px; margin: 0; font-weight: 600;">Weekly Community Contests</p>
+                                                    <p style="color: #6b7280; font-size: 13px; margin: 5px 0 0 0;">Submit videos, vote, and win prizes!</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr><td style="height: 10px;"></td></tr>
+                                <tr>
+                                    <td style="padding: 15px; background-color: #f9fafb; border-radius: 8px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="width: 40px; vertical-align: top;">
+                                                    <span style="font-size: 24px;">&#127873;</span>
+                                                </td>
+                                                <td>
+                                                    <p style="color: #1f2937; font-size: 15px; margin: 0; font-weight: 600;">Milestone Rewards</p>
+                                                    <p style="color: #6b7280; font-size: 13px; margin: 5px 0 0 0;">Win 5 contests = free 30-min analysis. Win 10 = free 60-min!</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Get Started CTA -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 25px;">
+                                <tr>
+                                    <td align="center">
+                                        <a href="https://rayspickleball.com/membership.html" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: 600;">Go to Member Portal</a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Login Instructions -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f9fafb; border-radius: 8px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <h4 style="color: #1f2937; margin: 0 0 10px 0; font-size: 14px;">How to Access Member Features</h4>
+                                        <p style="color: #6b7280; font-size: 14px; margin: 0; line-height: 1.6;">
+                                            Visit the membership page and log in with your email: <strong>{{customer_email}}</strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f9fafb; padding: 25px 30px; border-top: 1px solid #e5e7eb;">
+                            <p style="color: #6b7280; font-size: 14px; margin: 0 0 10px 0; text-align: center;">
+                                Questions? Reply to this email or text <a href="tel:+18012059124" style="color: #2563eb; text-decoration: none;">(801) 205-9124</a>
+                            </p>
+                            <p style="color: #9ca3af; font-size: 12px; margin: 0; text-align: center;">
+                                Ray Paull Pickleball Analysis
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

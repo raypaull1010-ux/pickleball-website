@@ -1,0 +1,93 @@
+<!--
+  EMAIL TEMPLATE: Referral Confirmed Notification
+  RECIPIENT: Referrer (existing member)
+  TRIGGER: When referred friend completes 30 days as member
+
+  EMAILJS VARIABLES:
+  {{referrer_name}} - Referrer's name
+  {{referrer_email}} - Referrer's email
+  {{referred_name}} - Friend's name
+  {{total_referrals}} - Total confirmed referrals
+  {{current_cycle}} - Current cycle count (for tier progress)
+  {{next_tier}} - Next tier reward name
+  {{referrals_to_next}} - Referrals needed for next tier
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referral Confirmed! - Ray's Pickleball</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #f3f4f6;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f3f4f6;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 30px; text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 10px;">✓</div>
+                            <h1 style="color: #ffffff; margin: 0; font-size: 24px;">Referral Confirmed!</h1>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+                                Hey {{referrer_name}}!
+                            </p>
+
+                            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                                Your referral of <strong>{{referred_name}}</strong> is now confirmed! They've been a member for 30 days. 🎉
+                            </p>
+
+                            <!-- Points Awarded Box -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #ecfdf5; border: 2px solid #10b981; border-radius: 8px; margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 25px; text-align: center;">
+                                        <p style="color: #059669; font-size: 14px; margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px;">You Earned</p>
+                                        <p style="color: #047857; font-size: 32px; margin: 0 0 10px 0; font-weight: 700;">+50 Points</p>
+                                        <p style="color: #065f46; font-size: 16px; margin: 0;">
+                                            Total Referrals: <strong>{{total_referrals}}</strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Progress Update -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f9fafb; border-radius: 8px; margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <h3 style="color: #1f2937; margin: 0 0 10px 0; font-size: 16px;">Your Progress</h3>
+                                        <p style="color: #4b5563; font-size: 14px; margin: 0; line-height: 1.6;">
+                                            You're at <strong>{{current_cycle}}</strong> referrals in your current cycle.<br>
+                                            <strong>{{referrals_to_next}}</strong> more to unlock: <strong>{{next_tier}}</strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0;">
+                                Keep sharing your code to unlock more rewards! Check your full progress in the Member Hub.
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f9fafb; padding: 25px 30px; border-top: 1px solid #e5e7eb;">
+                            <p style="color: #9ca3af; font-size: 12px; margin: 0; text-align: center;">
+                                Ray Paull Pickleball Analysis
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

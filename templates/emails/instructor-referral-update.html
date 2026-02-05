@@ -1,0 +1,118 @@
+<!--
+  EMAIL TEMPLATE: Instructor Monthly Referral Update
+  RECIPIENT: Instructor (monthly status update)
+  TRIGGER: Monthly or when they get a new referral
+
+  EMAILJS VARIABLES:
+  {{instructor_name}} - Instructor's name
+  {{instructor_email}} - Instructor's email
+  {{current_month_referrals}} - Referrals this month
+  {{referrals_needed}} - How many more needed to meet goal
+  {{total_referrals}} - All-time total
+  {{referral_code}} - Their unique code
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referral Update - Ray's Pickleball</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #f3f4f6;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f3f4f6;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 35px; text-align: center;">
+                            <div style="font-size: 36px; margin-bottom: 10px;">&#128200;</div>
+                            <h1 style="color: #ffffff; margin: 0; font-size: 24px;">Referral Update</h1>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 35px 30px;">
+                            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                                Hey {{instructor_name}}, here's your referral status:
+                            </p>
+
+                            <!-- Stats Grid -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 25px;">
+                                <tr>
+                                    <td width="50%" style="padding-right: 10px;">
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f9fafb; border-radius: 8px; text-align: center;">
+                                            <tr>
+                                                <td style="padding: 20px;">
+                                                    <p style="color: #2563eb; font-size: 36px; margin: 0; font-weight: 700;">{{current_month_referrals}}/2</p>
+                                                    <p style="color: #6b7280; font-size: 13px; margin: 5px 0 0 0;">This Month</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td width="50%" style="padding-left: 10px;">
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f9fafb; border-radius: 8px; text-align: center;">
+                                            <tr>
+                                                <td style="padding: 20px;">
+                                                    <p style="color: #1f2937; font-size: 36px; margin: 0; font-weight: 700;">{{total_referrals}}</p>
+                                                    <p style="color: #6b7280; font-size: 13px; margin: 5px 0 0 0;">All-Time Total</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Status Message -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 20px; background-color: #ecfdf5; border: 1px solid #10b981; border-radius: 8px; text-align: center;">
+                                        <p style="color: #059669; margin: 0; font-size: 16px; font-weight: 600;">
+                                            {{referrals_needed}} more referrals to stay listed free this month!
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Referral Code -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f9fafb; border-radius: 8px; margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 20px; text-align: center;">
+                                        <p style="color: #6b7280; font-size: 12px; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 1px;">Your Referral Code</p>
+                                        <p style="color: #2563eb; font-size: 24px; margin: 0; font-weight: 700; font-family: monospace; letter-spacing: 2px;">{{referral_code}}</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin: 0 0 25px 0; text-align: center;">
+                                Share your code with students! When they use it for video analysis, it counts toward your monthly goal.
+                            </p>
+
+                            <!-- Dashboard CTA -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td align="center">
+                                        <a href="https://rayspickleball.com/instructor-dashboard.html" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: 600;">View Dashboard</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f9fafb; padding: 20px 30px; border-top: 1px solid #e5e7eb;">
+                            <p style="color: #9ca3af; font-size: 12px; margin: 0; text-align: center;">
+                                Ray Paull Pickleball Analysis
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

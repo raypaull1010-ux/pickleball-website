@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Questionnaire & Waiver - Level Up Program | Ray Paull Pickleball</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">🏓 Ray's Pickleball</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="services.html" class="active">Services</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="services.html">Video Analysis</a></li>
+                        <li><a href="skill-evaluation.html">Skill Evaluation</a></li>
+                        <li><a href="doubles-analysis.html">Doubles Analysis</a></li>
+                        <li><a href="level-up.html" class="dropdown-highlight active">Level Up Program</a></li>
+                    </ul>
+                </li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="membership.html">Membership</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="btn btn-primary" style="padding: 8px 20px; color: white;">Submit Video</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white;">
+            <h1>Level Up Program Registration</h1>
+            <p>Health Questionnaire & Liability Waiver</p>
+        </section>
+
+        <section class="waiver-content">
+            <div class="container">
+                <div class="waiver-intro">
+                    <p>Since your selected package includes workout plans, we need to gather some health information to customize your program safely. Please complete the questionnaire below and sign the liability waiver.</p>
+                    <div class="selected-package" id="selectedPackage">
+                        <strong>Selected Package:</strong> <span id="packageName">Complete</span> — <span id="packagePrice">$199</span>
+                    </div>
+                </div>
+
+                <form id="healthWaiverForm" class="health-waiver-form">
+
+                    <!-- SECTION 1: PERSONAL INFO -->
+                    <div class="form-section">
+                        <h2>1. Personal Information</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName">Full Legal Name *</label>
+                                <input type="text" id="fullName" name="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="dob">Date of Birth *</label>
+                                <input type="date" id="dob" name="dob" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="emergencyContact">Emergency Contact Name *</label>
+                                <input type="text" id="emergencyContact" name="emergencyContact" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="emergencyPhone">Emergency Contact Phone *</label>
+                                <input type="tel" id="emergencyPhone" name="emergencyPhone" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2: HEALTH QUESTIONNAIRE (PAR-Q Based) -->
+                    <div class="form-section">
+                        <h2>2. Health Questionnaire</h2>
+                        <p class="section-note">Please answer the following questions honestly. This helps us provide safe and appropriate workout recommendations.</p>
+
+                        <div class="health-questions">
+                            <div class="health-question">
+                                <label>Has your doctor ever said that you have a heart condition and that you should only do physical activity recommended by a doctor? *</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="heartCondition" value="yes" required> Yes</label>
+                                    <label><input type="radio" name="heartCondition" value="no"> No</label>
+                                </div>
+                            </div>
+
+                            <div class="health-question">
+                                <label>Do you feel pain in your chest when you do physical activity? *</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="chestPain" value="yes" required> Yes</label>
+                                    <label><input type="radio" name="chestPain" value="no"> No</label>
+                                </div>
+                            </div>
+
+                            <div class="health-question">
+                                <label>In the past month, have you had chest pain when you were not doing physical activity? *</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="chestPainRest" value="yes" required> Yes</label>
+                                    <label><input type="radio" name="chestPainRest" value="no"> No</label>
+                                </div>
+                            </div>
+
+                            <div class="health-question">
+                                <label>Do you lose your balance because of dizziness or do you ever lose consciousness? *</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="dizziness" value="yes" required> Yes</label>
+                                    <label><input type="radio" name="dizziness" value="no"> No</label>
+                                </div>
+                            </div>
+
+                            <div class="health-question">
+                                <label>Do you have a bone or joint problem that could be made worse by a change in your physical activity? *</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="boneJoint" value="yes" required> Yes</label>
+                                    <label><input type="radio" name="boneJoint" value="no"> No</label>
+                                </div>
+                            </div>
+
+                            <div class="health-question">
+                                <label>Is your doctor currently prescribing drugs for your blood pressure or heart condition? *</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="medication" value="yes" required> Yes</label>
+                                    <label><input type="radio" name="medication" value="no"> No</label>
+                                </div>
+                            </div>
+
+                            <div class="health-question">
+                                <label>Do you know of any other reason why you should not do physical activity? *</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="otherReason" value="yes" required> Yes</label>
+                                    <label><input type="radio" name="otherReason" value="no"> No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="parq-note">
+                            <p><strong>Note:</strong> If you answered YES to any question above, please consult your physician before starting any exercise program. You may still participate, but we'll need clearance from your doctor and may modify exercises accordingly.</p>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 3: INJURY & LIMITATION DETAILS -->
+                    <div class="form-section">
+                        <h2>3. Current Injuries & Physical Limitations</h2>
+                        <p class="section-note">Tell us about any current or past injuries so we can modify exercises appropriately.</p>
+
+                        <div class="injury-checklist">
+                            <p><strong>Check all areas where you have current pain, injury, or limitations:</strong></p>
+                            <div class="injury-grid">
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="neck"> Neck
+                                </label>
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="shoulder-left"> Left Shoulder
+                                </label>
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="shoulder-right"> Right Shoulder
+                                </label>
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="elbow-left"> Left Elbow
+                                </label>
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="elbow-right"> Right Elbow
+                                </label>
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="wrist-left"> Left Wrist/Hand
+                                </label>
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="wrist-right"> Right Wrist/Hand
+                                </label>
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="upper-back"> Upper Back
+                                </label>
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="lower-back"> Lower Back
+                                </label>
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="hip-left"> Left Hip
+                                </label>
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="hip-right"> Right Hip
+                                </label>
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="knee-left"> Left Knee
+                                </label>
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="knee-right"> Right Knee
+                                </label>
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="ankle-left"> Left Ankle/Foot
+                                </label>
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="ankle-right"> Right Ankle/Foot
+                                </label>
+                                <label class="injury-checkbox">
+                                    <input type="checkbox" name="injuries" value="other"> Other
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="injuryDetails">Please describe any injuries, surgeries, or conditions in detail:</label>
+                            <textarea id="injuryDetails" name="injuryDetails" rows="4" placeholder="Example: Had ACL surgery on right knee 2 years ago. Occasional lower back pain after long periods of standing. Tennis elbow in right arm (treated, but flares up occasionally)."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mobilityLimitations">Any mobility limitations or movements you should avoid?</label>
+                            <textarea id="mobilityLimitations" name="mobilityLimitations" rows="3" placeholder="Example: Can't do deep squats due to knee. Should avoid overhead pressing due to shoulder impingement."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 4: FITNESS BACKGROUND -->
+                    <div class="form-section">
+                        <h2>4. Fitness Background</h2>
+
+                        <div class="form-group">
+                            <label for="currentActivity">How would you describe your current activity level? *</label>
+                            <select id="currentActivity" name="currentActivity" required>
+                                <option value="">Select...</option>
+                                <option value="sedentary">Sedentary (little to no exercise)</option>
+                                <option value="light">Lightly Active (1-2 days/week)</option>
+                                <option value="moderate">Moderately Active (3-4 days/week)</option>
+                                <option value="active">Very Active (5+ days/week)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ageRange">Age Range *</label>
+                            <select id="ageRange" name="ageRange" required>
+                                <option value="">Select...</option>
+                                <option value="under-30">Under 30</option>
+                                <option value="30-39">30-39</option>
+                                <option value="40-49">40-49</option>
+                                <option value="50-59">50-59</option>
+                                <option value="60-69">60-69</option>
+                                <option value="70+">70+</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fitnessGoals">What are your fitness goals beyond pickleball?</label>
+                            <textarea id="fitnessGoals" name="fitnessGoals" rows="3" placeholder="Example: Improve mobility, lose 10 pounds, build core strength, recover faster between games."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="equipmentAccess">What exercise equipment do you have access to?</label>
+                            <div class="equipment-grid">
+                                <label class="equipment-checkbox">
+                                    <input type="checkbox" name="equipment" value="none"> None / Bodyweight Only
+                                </label>
+                                <label class="equipment-checkbox">
+                                    <input type="checkbox" name="equipment" value="resistance-bands"> Resistance Bands
+                                </label>
+                                <label class="equipment-checkbox">
+                                    <input type="checkbox" name="equipment" value="dumbbells"> Dumbbells
+                                </label>
+                                <label class="equipment-checkbox">
+                                    <input type="checkbox" name="equipment" value="kettlebells"> Kettlebells
+                                </label>
+                                <label class="equipment-checkbox">
+                                    <input type="checkbox" name="equipment" value="medicine-ball"> Medicine Ball
+                                </label>
+                                <label class="equipment-checkbox">
+                                    <input type="checkbox" name="equipment" value="gym"> Full Gym Access
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 5: LIABILITY WAIVER -->
+                    <div class="form-section waiver-section">
+                        <h2>5. Assumption of Risk & Liability Waiver</h2>
+
+                        <div class="waiver-text">
+                            <h3>ASSUMPTION OF RISK</h3>
+                            <p>I understand that physical exercise, including but not limited to pickleball drills, strength training, cardiovascular exercise, and stretching activities, involves inherent risks. These risks include, but are not limited to:</p>
+                            <ul>
+                                <li>Muscle strains, sprains, tears, or other soft tissue injuries</li>
+                                <li>Bone fractures or joint injuries</li>
+                                <li>Cardiovascular incidents including heart attack or stroke</li>
+                                <li>Aggravation of pre-existing conditions</li>
+                                <li>Other injuries that may result from physical activity</li>
+                            </ul>
+                            <p>I voluntarily assume full responsibility for any risks of loss, property damage, or personal injury, including death, that may be sustained as a result of participating in any physical activities recommended as part of the Level Up Program.</p>
+
+                            <h3>RELEASE AND WAIVER OF LIABILITY</h3>
+                            <p>In consideration of being allowed to participate in the Level Up Program offered by Ray Paull Pickleball Analysis ("Provider"), I hereby:</p>
+                            <ol>
+                                <li><strong>Release and Discharge</strong> the Provider, Ray Paull, and any affiliates, employees, or representatives from any and all claims, demands, damages, rights of action, or causes of action, present or future, arising out of or connected with my participation in the Level Up Program, including any injuries which may result from participation.</li>
+                                <li><strong>Covenant Not to Sue</strong> the Provider or any person or entity mentioned above for any claims, damages, or injuries arising from my participation.</li>
+                                <li><strong>Agree to Indemnify</strong> and hold harmless the Provider from any claims, damages, injuries, or losses caused by my own negligence while participating in the program.</li>
+                            </ol>
+
+                            <h3>ACKNOWLEDGMENTS</h3>
+                            <p>By signing below, I acknowledge and agree that:</p>
+                            <ul>
+                                <li>I have read and understood this entire document.</li>
+                                <li>I am voluntarily giving up substantial legal rights, including my right to sue.</li>
+                                <li>I am at least 18 years of age and legally competent to sign this agreement.</li>
+                                <li>The workout recommendations provided are general in nature and not intended as medical advice.</li>
+                                <li>I should consult with a physician before beginning any exercise program, especially if I answered "Yes" to any health questions above.</li>
+                                <li>I am solely responsible for my own health and safety during any exercises.</li>
+                                <li>I will immediately stop any exercise that causes pain, discomfort, or other warning signs.</li>
+                                <li>I have disclosed all relevant health information truthfully and completely.</li>
+                                <li>The Provider may modify or substitute exercises based on my health information, but final responsibility for my safety remains with me.</li>
+                            </ul>
+
+                            <h3>MEDICAL CLEARANCE</h3>
+                            <p>If I answered "Yes" to any questions in Section 2 (Health Questionnaire), I understand that I should obtain medical clearance from a licensed physician before beginning the exercise program. I agree to provide documentation of such clearance if requested.</p>
+
+                            <h3>PHOTO/VIDEO RELEASE (Optional)</h3>
+                            <p>I grant permission for any photos or videos taken during my participation to be used for promotional purposes. (You may opt out below.)</p>
+                        </div>
+
+                        <div class="waiver-agreement">
+                            <label class="agreement-checkbox">
+                                <input type="checkbox" id="agreeWaiver" name="agreeWaiver" required>
+                                <span>I have read, understand, and voluntarily agree to the Assumption of Risk and Release and Waiver of Liability above. I acknowledge that I am giving up substantial legal rights by signing this agreement. *</span>
+                            </label>
+
+                            <label class="agreement-checkbox">
+                                <input type="checkbox" id="agreeHealthInfo" name="agreeHealthInfo" required>
+                                <span>I certify that the health information I have provided is true and complete to the best of my knowledge. I understand that providing false or incomplete information may result in injury. *</span>
+                            </label>
+
+                            <label class="agreement-checkbox">
+                                <input type="checkbox" id="agreeAge" name="agreeAge" required>
+                                <span>I am at least 18 years of age. *</span>
+                            </label>
+
+                            <label class="agreement-checkbox">
+                                <input type="checkbox" id="optOutMedia" name="optOutMedia">
+                                <span>I wish to OPT OUT of the photo/video release (check this box to opt out)</span>
+                            </label>
+                        </div>
+
+                        <div class="signature-section">
+                            <div class="form-group">
+                                <label for="signature">Electronic Signature (Type your full legal name) *</label>
+                                <input type="text" id="signature" name="signature" required placeholder="Type your full legal name exactly as it appears above">
+                            </div>
+                            <div class="form-group">
+                                <label for="signatureDate">Today's Date *</label>
+                                <input type="date" id="signatureDate" name="signatureDate" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 6: VIDEO SUBMISSION -->
+                    <div class="form-section">
+                        <h2>6. Video Submission</h2>
+                        <p class="section-note">Submit your first video to start the Level Up program.</p>
+
+                        <div class="form-group">
+                            <label for="videoLink">Video Link *</label>
+                            <input type="url" id="videoLink" name="videoLink" required placeholder="Google Drive, Dropbox, or WeTransfer link">
+                            <p class="field-hint">Upload 20-30 minutes of match play. <a href="contact.html" target="_blank">See upload instructions</a>.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="skillLevel">Your Current DUPR or Skill Level</label>
+                            <select id="skillLevel" name="skillLevel">
+                                <option value="">Select...</option>
+                                <option value="2.5-2.9">2.5 - 2.9</option>
+                                <option value="3.0-3.4">3.0 - 3.4</option>
+                                <option value="3.5-3.9">3.5 - 3.9</option>
+                                <option value="4.0-4.4">4.0 - 4.4</option>
+                                <option value="4.5+">4.5+</option>
+                                <option value="not-sure">Not sure</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="focusAreas">Any specific areas you want to focus on?</label>
+                            <textarea id="focusAreas" name="focusAreas" rows="3" placeholder="Example: My third shot drops, transitioning to the kitchen, handling fast hands at the net."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- SUBMIT -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-large">Complete Registration</button>
+                        <p class="form-note">After submitting, you'll be directed to complete payment via Venmo.</p>
+                    </div>
+                </form>
+
+                <!-- SUCCESS MESSAGE -->
+                <div id="successMessage" class="success-message" style="display: none;">
+                    <div class="success-header">
+                        <span class="success-icon">✅</span>
+                        <h2>Registration Complete!</h2>
+                    </div>
+                    <p>Thank you, <span id="successName"></span>! Your Level Up registration and liability waiver have been submitted.</p>
+
+                    <div class="payment-box">
+                        <h3>Complete Your Payment</h3>
+                        <p class="payment-amount" id="successAmount">$199</p>
+                        <p>Send payment via Venmo to complete your enrollment:</p>
+                        <div class="venmo-info">
+                            <strong>@Ray-Paull</strong>
+                            <p class="payment-memo">Memo: Level Up - [Your Name]</p>
+                        </div>
+                    </div>
+
+                    <div class="next-steps-box">
+                        <h3>What Happens Next</h3>
+                        <ol>
+                            <li>I'll confirm receipt of your video and payment within 24 hours</li>
+                            <li>Your first analysis + drill program will be delivered within 48-72 hours</li>
+                            <li>Workout plans (customized based on your health questionnaire) will be included</li>
+                            <li>Submit your second video in ~2 weeks for progress analysis</li>
+                        </ol>
+                    </div>
+
+                    <p class="questions-text">Questions? Email <a href="mailto:raypaull1010@gmail.com">raypaull1010@gmail.com</a></p>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <style>
+        /* Health Waiver Page Styles */
+        .waiver-content {
+            padding: 40px 20px 80px;
+        }
+
+        .waiver-intro {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            text-align: center;
+        }
+
+        .waiver-intro p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .selected-package {
+            background: #fef3c7;
+            padding: 15px 25px;
+            border-radius: 8px;
+            display: inline-block;
+            color: #92400e;
+        }
+
+        .health-waiver-form {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-section {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .form-section h2 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--background-alt);
+        }
+
+        .section-note {
+            color: var(--text-light);
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .field-hint {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        .field-hint a {
+            color: var(--primary-color);
+        }
+
+        /* Health Questions */
+        .health-questions {
+            display: grid;
+            gap: 20px;
+        }
+
+        .health-question {
+            background: var(--background-alt);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .health-question label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 25px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .radio-group input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .parq-note {
+            background: #fef3c7;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .parq-note p {
+            margin: 0;
+            color: #92400e;
+            font-size: 0.95rem;
+        }
+
+        /* Injury Checklist */
+        .injury-checklist {
+            margin-bottom: 25px;
+        }
+
+        .injury-checklist > p {
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .injury-grid,
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .injury-checkbox,
+        .equipment-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: var(--background-alt);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .injury-checkbox:hover,
+        .equipment-checkbox:hover {
+            background: #e5e7eb;
+        }
+
+        .injury-checkbox input,
+        .equipment-checkbox input {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Waiver Section */
+        .waiver-section {
+            border-color: #f59e0b;
+        }
+
+        .waiver-text {
+            background: var(--background-alt);
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .waiver-text h3 {
+            font-size: 1rem;
+            margin: 25px 0 10px;
+            color: var(--text-color);
+        }
+
+        .waiver-text h3:first-child {
+            margin-top: 0;
+        }
+
+        .waiver-text ul,
+        .waiver-text ol {
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+
+        .waiver-text li {
+            margin-bottom: 8px;
+        }
+
+        .waiver-agreement {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .agreement-checkbox {
+            display: flex;
+            gap: 12px;
+            padding: 15px;
+            background: var(--background-alt);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .agreement-checkbox input {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .agreement-checkbox span {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .signature-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 600px) {
+            .signature-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        #signature {
+            font-family: 'Brush Script MT', cursive, sans-serif;
+            font-size: 1.3rem;
+        }
+
+        /* Form Actions */
+        .form-actions {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .form-actions .btn {
+            padding: 15px 50px;
+            font-size: 1.1rem;
+        }
+
+        .form-note {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-top: 15px;
+        }
+
+        /* Success Message */
+        .success-message {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .success-header {
+            margin-bottom: 20px;
+        }
+
+        .success-header .success-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .success-header h2 {
+            color: var(--secondary-color);
+        }
+
+        .payment-box {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+
+        .payment-box h3 {
+            margin-bottom: 10px;
+        }
+
+        .payment-amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 15px 0;
+        }
+
+        .venmo-info {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .venmo-info strong {
+            font-size: 1.3rem;
+        }
+
+        .payment-memo {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .next-steps-box {
+            background: var(--background-alt);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: left;
+            margin-bottom: 25px;
+        }
+
+        .next-steps-box h3 {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .next-steps-box ol {
+            padding-left: 25px;
+        }
+
+        .next-steps-box li {
+            margin-bottom: 10px;
+        }
+
+        .questions-text {
+            color: var(--text-light);
+        }
+
+        .questions-text a {
+            color: var(--primary-color);
+        }
+    </style>
+
+    <script>
+        // Get package from URL params
+        function getPackageFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const service = urlParams.get('service');
+
+            const packages = {
+                'levelup-complete': { name: 'Complete', price: '$279' },
+                'levelup-elite': { name: 'Elite', price: '$349' }
+            };
+
+            if (service && packages[service]) {
+                document.getElementById('packageName').textContent = packages[service].name;
+                document.getElementById('packagePrice').textContent = packages[service].price;
+                return packages[service];
+            }
+
+            // Default to Complete
+            return packages['levelup-complete'];
+        }
+
+        // Set today's date as default for signature date
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('signatureDate').value = today;
+            getPackageFromURL();
+        });
+
+        // Form submission
+        document.getElementById('healthWaiverForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validate signature matches name
+            const fullName = document.getElementById('fullName').value.trim();
+            const signature = document.getElementById('signature').value.trim();
+
+            if (fullName.toLowerCase() !== signature.toLowerCase()) {
+                alert('Your electronic signature must match your full legal name exactly.');
+                document.getElementById('signature').focus();
+                return;
+            }
+
+            // Collect all form data
+            const formData = {
+                // Personal Info
+                fullName: fullName,
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                dob: document.getElementById('dob').value,
+                emergencyContact: document.getElementById('emergencyContact').value.trim(),
+                emergencyPhone: document.getElementById('emergencyPhone').value.trim(),
+
+                // Health Questionnaire (PAR-Q)
+                parqResponses: {
+                    heartCondition: document.querySelector('input[name="heartCondition"]:checked')?.value,
+                    chestPain: document.querySelector('input[name="chestPain"]:checked')?.value,
+                    chestPainRest: document.querySelector('input[name="chestPainRest"]:checked')?.value,
+                    dizziness: document.querySelector('input[name="dizziness"]:checked')?.value,
+                    boneJoint: document.querySelector('input[name="boneJoint"]:checked')?.value,
+                    medication: document.querySelector('input[name="medication"]:checked')?.value,
+                    otherReason: document.querySelector('input[name="otherReason"]:checked')?.value
+                },
+
+                // Injuries
+                injuries: Array.from(document.querySelectorAll('input[name="injuries"]:checked')).map(cb => cb.value),
+                injuryDetails: document.getElementById('injuryDetails').value.trim(),
+                mobilityLimitations: document.getElementById('mobilityLimitations').value.trim(),
+
+                // Fitness Background
+                currentActivity: document.getElementById('currentActivity').value,
+                ageRange: document.getElementById('ageRange').value,
+                fitnessGoals: document.getElementById('fitnessGoals').value.trim(),
+                equipment: Array.from(document.querySelectorAll('input[name="equipment"]:checked')).map(cb => cb.value),
+
+                // Waiver Acknowledgments
+                waiverAgreed: document.getElementById('agreeWaiver').checked,
+                healthInfoAgreed: document.getElementById('agreeHealthInfo').checked,
+                ageAgreed: document.getElementById('agreeAge').checked,
+                mediaOptOut: document.getElementById('optOutMedia').checked,
+
+                // Signature
+                signature: signature,
+                signatureDate: document.getElementById('signatureDate').value,
+
+                // Video Submission
+                videoLink: document.getElementById('videoLink').value.trim(),
+                skillLevel: document.getElementById('skillLevel').value,
+                focusAreas: document.getElementById('focusAreas').value.trim(),
+
+                // Package Info
+                package: getPackageFromURL(),
+
+                // Metadata
+                submittedAt: new Date().toISOString(),
+                hasParqYes: false // Will be set below
+            };
+
+            // Check if any PAR-Q questions were answered "yes"
+            formData.hasParqYes = Object.values(formData.parqResponses).some(v => v === 'yes');
+
+            // Store in localStorage for admin panel
+            const registrations = JSON.parse(localStorage.getItem('levelupRegistrations') || '[]');
+            formData.id = 'LU_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+            registrations.push(formData);
+            localStorage.setItem('levelupRegistrations', JSON.stringify(registrations));
+
+            // Hide form, show success
+            document.getElementById('healthWaiverForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('successName').textContent = fullName.split(' ')[0];
+            document.getElementById('successAmount').textContent = formData.package.price;
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            console.log('Level Up Registration submitted:', formData);
+        });
+    </script>
+</body>
+</html>

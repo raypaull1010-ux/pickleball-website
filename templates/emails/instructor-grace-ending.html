@@ -1,0 +1,112 @@
+<!--
+  EMAIL TEMPLATE: Instructor Grace Period Ending
+  RECIPIENT: Instructor whose grace period is ending soon
+  TRIGGER: ~14 days before grace period ends
+
+  EMAILJS VARIABLES:
+  {{instructor_name}} - Instructor's name
+  {{instructor_email}} - Instructor's email
+  {{days_remaining}} - Days left in grace period
+  {{grace_period_ends}} - Date when grace period ends
+  {{current_referrals}} - Current month's referrals
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grace Period Ending Soon - Ray's Pickleball</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #f3f4f6;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f3f4f6;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); padding: 40px; text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 15px;">&#9200;</div>
+                            <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Grace Period Ending Soon</h1>
+                            <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 16px;">{{days_remaining}} days remaining</p>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                                Hey {{instructor_name}},
+                            </p>
+
+                            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                                Your 3-month free trial is ending on <strong>{{grace_period_ends}}</strong>. To keep your profile active in our directory, you'll need to do one of the following:
+                            </p>
+
+                            <!-- Options -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 20px; background-color: #ecfdf5; border: 2px solid #10b981; border-radius: 8px; margin-bottom: 15px;">
+                                        <h4 style="color: #059669; margin: 0 0 10px 0;">Option 1: Refer 3 Students/Month (FREE)</h4>
+                                        <p style="color: #4b5563; margin: 0; font-size: 14px;">
+                                            Share your referral code with students. When 2 use it for video analysis each month, you stay listed for free!
+                                        </p>
+                                        <p style="color: #059669; margin: 10px 0 0 0; font-size: 14px; font-weight: 600;">
+                                            Your current referrals this month: {{current_referrals}} / 2
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 20px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px;">
+                                        <h4 style="color: #1f2937; margin: 0 0 10px 0;">Option 2: Pay $60/Month</h4>
+                                        <p style="color: #4b5563; margin: 0; font-size: 14px;">
+                                            Prefer not to track referrals? Pay $40/month to stay listed no matter what.
+                                        </p>
+                                        <p style="color: #6b7280; margin: 10px 0 0 0; font-size: 13px;">
+                                            Contact Ray at raypaull1010@gmail.com to set up payment.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- What happens if -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #fef2f2; border-radius: 8px; margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <h4 style="color: #991b1b; margin: 0 0 10px 0;">What happens if I don't?</h4>
+                                        <p style="color: #4b5563; margin: 0; font-size: 14px;">
+                                            Your profile will be paused (hidden from the directory). You can reactivate anytime by meeting the referral goal or paying.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Dashboard CTA -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td align="center">
+                                        <a href="https://rayspickleball.com/instructor-dashboard.html" style="display: inline-block; background-color: #f59e0b; color: #ffffff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: 600;">Check Your Dashboard</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f9fafb; padding: 25px 30px; border-top: 1px solid #e5e7eb;">
+                            <p style="color: #6b7280; font-size: 14px; margin: 0; text-align: center;">
+                                Questions? Reply to this email or text <a href="tel:+18012059124" style="color: #2563eb;">(801) 205-9124</a>
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

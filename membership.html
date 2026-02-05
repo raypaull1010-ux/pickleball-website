@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership - Ray Paull Pickleball</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <!-- Email Service Module -->
+    <script src="js/email-service.js"></script>
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <!-- Configuration -->
+    <script src="js/config.js"></script>
+    <!-- API Client -->
+    <script src="js/api-client.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">Ray's Pickleball</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="services.html">Services</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="services.html">Video Analysis</a></li>
+                        <li><a href="skill-evaluation.html">Skill Evaluation</a></li>
+                        <li><a href="doubles-analysis.html">Doubles Analysis</a></li>
+                        <li><a href="level-up.html" class="dropdown-highlight">Level Up Program</a></li>
+                    </ul>
+                </li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="membership.html" class="active">Membership</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="btn btn-primary" style="padding: 8px 20px; color: white;">Submit Video</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Join the Community</h1>
+            <p>Get instant access to AI tools, exclusive discounts, and weekly contests</p>
+        </section>
+
+        <section class="membership-content">
+            <div class="container">
+
+                <!-- FOUNDING MEMBER BANNER -->
+                <div class="founding-member-banner" id="foundingBanner">
+                    <div class="founding-icon">🚀</div>
+                    <div class="founding-content">
+                        <h3>Founding Member Pricing</h3>
+                        <p>Lock in $19.99/month forever — first 50 members only!</p>
+                        <div class="spots-counter">
+                            <span class="spots-number" id="spotsRemaining">50</span>
+                            <span class="spots-text">spots remaining</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEMBERSHIP PRICING -->
+                <div class="membership-pricing-grid">
+                    <div class="membership-card">
+                        <div class="founding-badge">Founding Rate</div>
+                        <h3>Monthly</h3>
+                        <div class="membership-price">
+                            <span class="amount">$19.99</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="membership-billing">Billed monthly. Cancel anytime.</p>
+                        <p class="future-price">After 50 members: $29.99/month</p>
+                        <a href="#join" class="btn btn-secondary btn-full">Get Started</a>
+                    </div>
+
+                    <div class="membership-card featured">
+                        <div class="save-badge">Best Value</div>
+                        <h3>Annual</h3>
+                        <div class="membership-price">
+                            <span class="amount">$199</span>
+                            <span class="period">/year</span>
+                        </div>
+                        <p class="membership-billing">That's just $16.58/month. Save $40!</p>
+                        <p class="future-price">After 50 members: $299/year</p>
+                        <a href="#join" class="btn btn-primary btn-full">Get Started</a>
+                    </div>
+                </div>
+
+                <!-- WHAT'S INCLUDED -->
+                <div class="membership-benefits">
+                    <h2>What's Included</h2>
+
+                    <div class="benefits-grid">
+                        <div class="benefit-card highlight">
+                            <div class="benefit-icon">🤖</div>
+                            <h3>AI Drill Coach Unlimited</h3>
+                            <p>Upload unlimited drill videos for instant AI feedback. Worth $19.99/month alone — your membership pays for itself.</p>
+                            <span class="benefit-value">$19.99/mo value</span>
+                        </div>
+
+                        <div class="benefit-card highlight">
+                            <div class="benefit-icon">📘</div>
+                            <h3>Free Drill Playbook</h3>
+                            <p>Get the complete 50+ drill playbook PDF instantly. Yours to keep forever, even if you cancel.</p>
+                            <span class="benefit-value">$19.99 value</span>
+                        </div>
+
+                        <div class="benefit-card">
+                            <div class="benefit-icon">📊</div>
+                            <h3>20% Off Video Analysis</h3>
+                            <p>Get professional gameplay analysis at member rates. Pay $60 instead of $75 for 30-minute, $95 instead of $120 for 60-minute.</p>
+                        </div>
+
+                        <div class="benefit-card">
+                            <div class="benefit-icon">🎯</div>
+                            <h3>20% Off Session Tracker</h3>
+                            <p>Track your full drill sessions at member pricing. Single sessions $9.99 (reg $12.99), 10-packs $79.99 (reg $99.99).</p>
+                        </div>
+
+                        <div class="benefit-card">
+                            <div class="benefit-icon">🏆</div>
+                            <h3>Weekly Community Contests</h3>
+                            <p>Submit your videos and vote in weekly challenges. Best trick shot, best dink rally, and more — with real prizes!</p>
+                        </div>
+
+                        <div class="benefit-card">
+                            <div class="benefit-icon">🎁</div>
+                            <h3>Milestone Rewards</h3>
+                            <p>Win 5 community contests = free 30-min analysis. Win 10 = free 60-min analysis. Your wins accumulate over time!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEMBER VS REGULAR PRICING -->
+                <div class="pricing-comparison">
+                    <h2>Member vs. Regular Pricing</h2>
+                    <div class="comparison-table-wrapper">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Regular Price</th>
+                                    <th>Member Price</th>
+                                    <th>You Save</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>AI Drill Coach (Unlimited)</td>
+                                    <td>$19.99/mo</td>
+                                    <td class="member-price">Included</td>
+                                    <td class="savings">$19.99/mo</td>
+                                </tr>
+                                <tr>
+                                    <td>Drill Playbook PDF</td>
+                                    <td>$19.99</td>
+                                    <td class="member-price">Free</td>
+                                    <td class="savings">$19.99</td>
+                                </tr>
+                                <tr>
+                                    <td>30-Minute Video Analysis</td>
+                                    <td>$75</td>
+                                    <td class="member-price">$60</td>
+                                    <td class="savings">$15</td>
+                                </tr>
+                                <tr>
+                                    <td>60-Minute Video Analysis</td>
+                                    <td>$120</td>
+                                    <td class="member-price">$95</td>
+                                    <td class="savings">$25</td>
+                                </tr>
+                                <tr>
+                                    <td>AI Drill Coach (30 Credits)</td>
+                                    <td>$29.99</td>
+                                    <td class="member-price">$24.99</td>
+                                    <td class="savings">$5</td>
+                                </tr>
+                                <tr>
+                                    <td>Session Tracker (Single)</td>
+                                    <td>$12.99</td>
+                                    <td class="member-price">$9.99</td>
+                                    <td class="savings">$3</td>
+                                </tr>
+                                <tr>
+                                    <td>Session Tracker (10-Pack)</td>
+                                    <td>$99.99</td>
+                                    <td class="member-price">$79.99</td>
+                                    <td class="savings">$20</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- HOW TO JOIN -->
+                <div id="join" class="join-section">
+                    <h2>How to Join</h2>
+
+                    <!-- PAYMENT METHOD SELECTION -->
+                    <div class="payment-method-selector">
+                        <h3>Choose Your Payment Method</h3>
+                        <div class="payment-options">
+                            <button type="button" class="payment-option active" data-method="stripe">
+                                <span class="payment-icon">💳</span>
+                                <span class="payment-label">Pay with Card</span>
+                                <span class="payment-desc">Instant activation</span>
+                            </button>
+                            <button type="button" class="payment-option" data-method="venmo">
+                                <span class="payment-icon">📱</span>
+                                <span class="payment-label">Pay with Venmo</span>
+                                <span class="payment-desc">Activation within 24 hours</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STRIPE PAYMENT SECTION -->
+                    <div id="stripePaymentSection" class="payment-section">
+                        <div class="stripe-checkout-box">
+                            <h3>Complete Your Membership</h3>
+                            <p>Fill in your details and click to pay securely with Stripe.</p>
+
+                            <form id="stripeCheckoutForm">
+                                <div class="form-row">
+                                    <input type="text" id="stripeName" placeholder="Your Name" required>
+                                </div>
+                                <div class="form-row">
+                                    <input type="email" id="stripeEmail" placeholder="Your Email" required>
+                                </div>
+                                <div class="form-row">
+                                    <select id="stripePlan" required>
+                                        <option value="">Select Your Plan</option>
+                                        <option value="membership_monthly">Monthly - $19.99/month (Founding Rate)</option>
+                                        <option value="membership_annual">Annual - $199/year (Founding Rate) — Best Value!</option>
+                                    </select>
+                                </div>
+                                <div class="form-row referral-row">
+                                    <input type="text" id="stripeReferralCode" placeholder="Referral Code (optional)" maxlength="8" style="text-transform: uppercase;">
+                                    <p class="form-help">Have a friend's code? Enter it for rewards!</p>
+                                </div>
+                                <button type="submit" id="stripeCheckoutBtn" class="btn btn-primary btn-large btn-full">
+                                    <span class="btn-text">Pay with Card</span>
+                                    <span class="btn-loading" style="display: none;">Processing...</span>
+                                </button>
+                            </form>
+
+                            <div class="stripe-security-note">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                    <path d="M7 11V7a5 5 0 0110 0v4"/>
+                                </svg>
+                                <span>Secure payment powered by Stripe</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VENMO PAYMENT SECTION (hidden by default) -->
+                    <div id="venmoPaymentSection" class="payment-section" style="display: none;">
+                        <div class="join-steps">
+                            <div class="join-step">
+                                <div class="step-number">1</div>
+                                <h3>Choose Your Plan</h3>
+                                <p>Monthly ($19.99/mo) or Annual ($199/year — save $40!)</p>
+                            </div>
+                            <div class="join-step">
+                                <div class="step-number">2</div>
+                                <h3>Send Payment via Venmo</h3>
+                                <p>@Ray-Paull — Include "Membership" and your email in the note</p>
+                            </div>
+                            <div class="join-step">
+                                <div class="step-number">3</div>
+                                <h3>Confirm Below</h3>
+                                <p>Enter your email to activate your membership</p>
+                            </div>
+                        </div>
+
+                        <!-- VENMO INFO -->
+                        <div class="payment-info-box">
+                            <div class="venmo-details">
+                                <span class="venmo-icon">📱</span>
+                                <div>
+                                    <strong>Venmo: @Ray-Paull</strong>
+                                    <p>Note: "Monthly Membership" or "Annual Membership" + your email</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ACTIVATION FORM -->
+                        <div class="activation-form">
+                            <h3>Activate Your Membership</h3>
+                            <p>After sending payment, enter your email below to request activation:</p>
+                        <form id="activationForm">
+                            <div class="form-row">
+                                <input type="text" id="memberName" placeholder="Your Name" required>
+                            </div>
+                            <div class="form-row">
+                                <input type="email" id="memberEmail" placeholder="Your Email" required>
+                            </div>
+                            <div class="form-row">
+                                <select id="planType" required>
+                                    <option value="">Select Your Plan</option>
+                                    <option value="monthly">Monthly - $19.99/month (Founding Rate)</option>
+                                    <option value="annual">Annual - $199/year (Founding Rate)</option>
+                                </select>
+                            </div>
+                            <div class="form-row referral-row">
+                                <input type="text" id="referralCode" placeholder="Referral Code (optional)" maxlength="8" style="text-transform: uppercase;">
+                                <p class="form-help" id="referralHelp">Have a friend's code? Enter it for rewards!</p>
+                                <p class="referral-validation" id="referralValidation" style="display: none;"></p>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-large btn-full">Request Activation</button>
+                        </form>
+                        <p class="activation-note">You'll receive a confirmation email within 24 hours once your payment is verified.</p>
+                        </div>
+                    </div>
+                    <!-- END VENMO PAYMENT SECTION -->
+                </div>
+
+                <!-- ALREADY A MEMBER -->
+                <div class="member-login-section">
+                    <h3>Already a Member?</h3>
+                    <p>Enter your email to access member features:</p>
+                    <form id="memberLoginForm">
+                        <div class="login-row">
+                            <input type="email" id="loginEmail" placeholder="Your Member Email">
+                            <button type="submit" class="btn btn-secondary">Log In</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- FAQ -->
+                <div class="membership-faq">
+                    <h2>Frequently Asked Questions</h2>
+                    <div class="faq-grid">
+                        <div class="faq-item">
+                            <h4>When does my membership start?</h4>
+                            <p>Your membership activates within 24 hours of payment verification. You'll receive a confirmation email with access instructions.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Can I cancel anytime?</h4>
+                            <p>Yes! Monthly members can cancel anytime. Just send me a message and your membership won't renew. Annual memberships are non-refundable but you keep access for the full year.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Do I keep the Drill Playbook if I cancel?</h4>
+                            <p>Absolutely. The PDF is yours to keep forever, even if you cancel your membership.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>How do contest milestone rewards work?</h4>
+                            <p>Every time you win a weekly community contest, it counts toward your milestones. Win 5 total contests (they don't have to be consecutive) and you get a free 30-minute analysis. Win 10 total and you get a free 60-minute analysis!</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>What is "Founding Member" pricing?</h4>
+                            <p>The first 50 members get locked in at $19.99/month forever — even if prices increase later. After 50 members, new signups will pay $29.99/month. Join early to save!</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <style>
+        /* Founding Member Banner */
+        .founding-member-banner {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 30px 40px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        .founding-icon {
+            font-size: 3rem;
+        }
+
+        .founding-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .founding-content p {
+            opacity: 0.95;
+            margin-bottom: 15px;
+        }
+
+        .spots-counter {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 25px;
+            display: inline-flex;
+        }
+
+        .spots-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .spots-text {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .founding-member-banner.almost-gone .spots-counter {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .founding-member-banner.sold-out {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        }
+
+        /* Founding Badge */
+        .founding-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #10b981;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .future-price {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 10px;
+            margin-bottom: 15px;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        /* Membership Pricing Grid */
+        .membership-pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+
+        .membership-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            position: relative;
+        }
+
+        .membership-card.featured {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.15);
+        }
+
+        .membership-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .membership-price {
+            margin-bottom: 10px;
+        }
+
+        .membership-price .amount {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .membership-price .period {
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+
+        .membership-billing {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .save-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--secondary-color);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Benefits Section */
+        .membership-benefits {
+            margin-bottom: 60px;
+        }
+
+        .membership-benefits h2 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .benefit-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .benefit-card.highlight {
+            border: 2px solid var(--secondary-color);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, white 100%);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .benefit-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .benefit-value {
+            display: inline-block;
+            margin-top: 12px;
+            background: var(--secondary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Pricing Comparison Table */
+        .pricing-comparison {
+            margin-bottom: 60px;
+        }
+
+        .pricing-comparison h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .comparison-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table th {
+            background: var(--background-alt);
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .member-price {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .savings {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        /* Join Section */
+        .join-section {
+            background: var(--background-alt);
+            border-radius: 16px;
+            padding: 50px 40px;
+            margin-bottom: 40px;
+        }
+
+        .join-section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .join-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .join-step {
+            text-align: center;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 15px;
+        }
+
+        .join-step h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .join-step p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .payment-info-box {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid var(--primary-color);
+        }
+
+        .venmo-details {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .venmo-icon {
+            font-size: 2.5rem;
+        }
+
+        .venmo-details strong {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+        }
+
+        .venmo-details p {
+            color: var(--text-light);
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        /* Activation Form */
+        .activation-form {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .activation-form h3 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .activation-form > p {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            margin-bottom: 15px;
+        }
+
+        .form-row input,
+        .form-row select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-row input:focus,
+        .form-row select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .activation-note {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-top: 15px;
+        }
+
+        /* Referral Code Field */
+        .referral-row {
+            position: relative;
+        }
+
+        #referralCode {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .form-help {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .referral-validation {
+            font-size: 0.85rem;
+            margin-top: 5px;
+            text-align: center;
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+
+        .referral-validation.valid {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .referral-validation.invalid {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Member Login */
+        .member-login-section {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 60px;
+            border: 1px solid var(--border-color);
+        }
+
+        .member-login-section h3 {
+            margin-bottom: 10px;
+        }
+
+        .member-login-section > p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .login-row {
+            display: flex;
+            gap: 10px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .login-row input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .login-row input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        /* FAQ */
+        .membership-faq h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+        }
+
+        .faq-item h4 {
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .faq-item p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Payment Method Selector */
+        .payment-method-selector {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .payment-method-selector h3 {
+            margin-bottom: 20px;
+        }
+
+        .payment-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .payment-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 30px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 180px;
+        }
+
+        .payment-option:hover {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.02);
+        }
+
+        .payment-option.active {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .payment-label {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 4px;
+        }
+
+        .payment-desc {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* Stripe Checkout Box */
+        .stripe-checkout-box {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            margin: 0 auto;
+            border: 2px solid var(--primary-color);
+        }
+
+        .stripe-checkout-box h3 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .stripe-checkout-box > p {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+
+        .stripe-security-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .stripe-security-note svg {
+            color: #10b981;
+        }
+
+        /* Form Messages */
+        .form-message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .form-message.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        /* Button Loading State */
+        .btn-loading {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-loading::before {
+            content: '';
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .login-row {
+                flex-direction: column;
+            }
+
+            .join-section {
+                padding: 30px 20px;
+            }
+
+            .payment-options {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .payment-option {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+
+    <script>
+        // ============================================
+        // MEMBERSHIP MANAGEMENT
+        // ============================================
+
+        // Referral code generation (same algorithm as members.html)
+        function generateReferralCode(email) {
+            let hash = 0;
+            for (let i = 0; i < email.length; i++) {
+                const char = email.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return 'RAY' + Math.abs(hash).toString(36).toUpperCase().slice(0, 5);
+        }
+
+        // ============================================
+        // PAYMENT METHOD TOGGLE
+        // ============================================
+        document.querySelectorAll('.payment-option').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Update active state
+                document.querySelectorAll('.payment-option').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                // Show/hide sections
+                const method = this.dataset.method;
+                if (method === 'stripe') {
+                    document.getElementById('stripePaymentSection').style.display = 'block';
+                    document.getElementById('venmoPaymentSection').style.display = 'none';
+                } else {
+                    document.getElementById('stripePaymentSection').style.display = 'none';
+                    document.getElementById('venmoPaymentSection').style.display = 'block';
+                }
+            });
+        });
+
+        // ============================================
+        // STRIPE CHECKOUT
+        // ============================================
+        document.getElementById('stripeCheckoutForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('stripeName').value.trim();
+            const email = document.getElementById('stripeEmail').value.trim().toLowerCase();
+            const plan = document.getElementById('stripePlan').value;
+            const referralCode = document.getElementById('stripeReferralCode').value.toUpperCase().trim();
+
+            if (!name || !email || !plan) {
+                FormHelpers.showFormMessage(this, 'Please fill in all required fields.', 'error');
+                return;
+            }
+
+            const submitBtn = document.getElementById('stripeCheckoutBtn');
+            FormHelpers.setButtonLoading(submitBtn, true);
+
+            try {
+                // First, submit membership to API to create record
+                const membershipData = {
+                    name,
+                    email,
+                    plan: plan === 'membership_monthly' ? 'monthly' : 'annual',
+                    paymentMethod: 'stripe',
+                    referralCode: referralCode || null,
+                    isFoundingMember: updateFoundingMemberCounter() > 0
+                };
+
+                let membershipId = null;
+
+                // Try to submit to API (will work when Supabase is configured)
+                if (typeof API !== 'undefined' && CONFIG.isSupabaseConfigured()) {
+                    try {
+                        const response = await API.submitMembership(membershipData);
+                        if (response.success && response.membership) {
+                            membershipId = response.membership.id;
+                        }
+                    } catch (apiError) {
+                        console.log('API not available, continuing with Stripe checkout');
+                    }
+                } else {
+                    // Store in localStorage as fallback
+                    const storedRequest = EmailService.storePendingMembershipRequest(membershipData);
+                    membershipId = storedRequest.id;
+                }
+
+                // Create Stripe checkout session
+                if (typeof API !== 'undefined' && CONFIG.isStripeConfigured()) {
+                    const checkoutResponse = await API.createCheckout({
+                        productType: plan,
+                        itemId: membershipId,
+                        customerEmail: email,
+                        customerName: name,
+                        metadata: {
+                            referralCode: referralCode || '',
+                            plan: membershipData.plan
+                        }
+                    });
+
+                    if (checkoutResponse.success && checkoutResponse.url) {
+                        // Redirect to Stripe Checkout
+                        window.location.href = checkoutResponse.url;
+                        return;
+                    } else {
+                        throw new Error(checkoutResponse.error || 'Failed to create checkout session');
+                    }
+                } else {
+                    // Stripe not configured - show message to use Venmo
+                    FormHelpers.showFormMessage(this,
+                        'Card payments are being set up. Please use Venmo for now, or check back later.',
+                        'error'
+                    );
+                    FormHelpers.setButtonLoading(submitBtn, false);
+                }
+
+            } catch (error) {
+                console.error('Checkout error:', error);
+                FormHelpers.showFormMessage(this,
+                    'Unable to process payment. Please try Venmo or contact us.',
+                    'error'
+                );
+                FormHelpers.setButtonLoading(submitBtn, false);
+            }
+        });
+
+        // ============================================
+        // REFERRAL CODE VALIDATION
+        // ============================================
+
+        // Validate referral code on input for Venmo form
+        document.getElementById('referralCode').addEventListener('input', function(e) {
+            const code = e.target.value.toUpperCase().trim();
+            const validationEl = document.getElementById('referralValidation');
+            const helpEl = document.getElementById('referralHelp');
+
+            if (code.length === 0) {
+                validationEl.style.display = 'none';
+                validationEl.className = 'referral-validation';
+                helpEl.style.display = 'block';
+                return;
+            }
+
+            if (code.length === 8 && code.startsWith('RAY')) {
+                // Validate against existing members
+                const members = JSON.parse(localStorage.getItem('members') || '[]');
+                const referrer = members.find(m => generateReferralCode(m.email) === code);
+
+                if (referrer) {
+                    validationEl.innerHTML = `<span>✓ Valid code from <strong>${referrer.name.split(' ')[0]}</strong>!</span>`;
+                    validationEl.className = 'referral-validation valid';
+                    validationEl.style.display = 'block';
+                    helpEl.style.display = 'none';
+                } else {
+                    validationEl.innerHTML = `<span>✗ Code not found</span>`;
+                    validationEl.className = 'referral-validation invalid';
+                    validationEl.style.display = 'block';
+                    helpEl.style.display = 'none';
+                }
+            } else if (code.length > 0) {
+                validationEl.innerHTML = `<span>Enter 8-character code (e.g., RAY2F9KL)</span>`;
+                validationEl.className = 'referral-validation';
+                validationEl.style.display = 'block';
+                helpEl.style.display = 'none';
+            }
+        });
+
+        // Check for referral code in URL
+        (function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            if (refCode) {
+                document.getElementById('referralCode').value = refCode.toUpperCase();
+                // Trigger validation
+                document.getElementById('referralCode').dispatchEvent(new Event('input'));
+            }
+        })();
+
+        // Check if user is already logged in
+        function checkMemberStatus() {
+            const memberEmail = localStorage.getItem('memberEmail');
+            if (memberEmail) {
+                const members = JSON.parse(localStorage.getItem('members') || '[]');
+                const member = members.find(m => m.email.toLowerCase() === memberEmail.toLowerCase());
+                if (member && member.active) {
+                    showMemberDashboard(member);
+                }
+            }
+        }
+
+        // Show member dashboard if logged in
+        function showMemberDashboard(member) {
+            const loginSection = document.querySelector('.member-login-section');
+            loginSection.innerHTML = `
+                <h3>Welcome back, ${member.name}!</h3>
+                <p>You're logged in as a ${member.plan} member.</p>
+                <div style="margin-top: 20px;">
+                    <p><strong>Contest Wins:</strong> ${member.wins || 0}</p>
+                    <p style="color: var(--text-light); font-size: 0.9rem; margin-top: 10px;">
+                        ${getMilestoneProgress(member.wins || 0)}
+                    </p>
+                </div>
+                <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <a href="community.html" class="btn btn-primary">Go to Community</a>
+                    <button onclick="logoutMember()" class="btn btn-secondary">Log Out</button>
+                </div>
+            `;
+        }
+
+        function getMilestoneProgress(wins) {
+            if (wins >= 10) return '🏆 You\'ve earned a FREE 60-minute analysis! Contact Ray to claim.';
+            if (wins >= 5) return '🏆 You\'ve earned a FREE 30-minute analysis! Contact Ray to claim. ' + (10 - wins) + ' more wins for 60-minute!';
+            return (5 - wins) + ' more wins until your free 30-minute analysis!';
+        }
+
+        // Activation form submission (Venmo flow)
+        document.getElementById('activationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('memberName').value.trim();
+            const email = document.getElementById('memberEmail').value.trim().toLowerCase();
+            const plan = document.getElementById('planType').value;
+            const referralCode = document.getElementById('referralCode').value.toUpperCase().trim();
+
+            // Disable submit button
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            // Validate referral code if provided
+            let validReferrer = null;
+            if (referralCode && referralCode.length === 8) {
+                const members = JSON.parse(localStorage.getItem('members') || '[]');
+                validReferrer = members.find(m => generateReferralCode(m.email) === referralCode);
+
+                // Prevent self-referral
+                if (validReferrer && validReferrer.email.toLowerCase() === email.toLowerCase()) {
+                    validReferrer = null;
+                }
+            }
+
+            // Prepare request data with referral info
+            const requestData = {
+                name,
+                email,
+                plan,
+                paymentMethod: 'venmo',
+                referralCode: validReferrer ? referralCode : null,
+                isFoundingMember: updateFoundingMemberCounter() > 0,
+                referredBy: validReferrer ? {
+                    code: referralCode,
+                    referrerEmail: validReferrer.email,
+                    referrerName: validReferrer.name
+                } : null
+            };
+
+            // If valid referral, add to referrer's pending list (localStorage fallback)
+            if (validReferrer) {
+                processNewReferral(validReferrer.email, { name, email });
+            }
+
+            let apiSuccess = false;
+            let emailSuccess = false;
+
+            // Try to submit to API first (when Supabase is configured)
+            if (typeof API !== 'undefined' && CONFIG.isSupabaseConfigured()) {
+                try {
+                    const response = await API.submitMembership(requestData);
+                    apiSuccess = response.success;
+                    if (apiSuccess) {
+                        console.log('Membership submitted to API:', response.membership?.id);
+                    }
+                } catch (apiError) {
+                    console.log('API not available, falling back to localStorage');
+                }
+            }
+
+            try {
+                // Send Stage 1 emails
+                const [customerResult, adminResult] = await Promise.all([
+                    EmailService.sendMembershipReceived(requestData),
+                    EmailService.sendMembershipAdminNotification(requestData)
+                ]);
+
+                emailSuccess = customerResult.success && adminResult.success;
+
+                if (emailSuccess) {
+                    console.log('Membership Stage 1 emails sent successfully');
+                }
+            } catch (error) {
+                console.error('Email error:', error);
+            }
+
+            // Store pending request with unique ID for admin panel (localStorage fallback)
+            if (!apiSuccess) {
+                const storedRequest = EmailService.storePendingMembershipRequest(requestData);
+                console.log('Membership request stored in localStorage:', storedRequest.id);
+            }
+
+            // Show confirmation with email status
+            const emailNote = emailSuccess
+                ? `<p style="background: #d1fae5; padding: 10px 15px; border-radius: 6px; margin-top: 15px; font-size: 0.9rem; color: #065f46;">📧 Confirmation email sent to ${email}</p>`
+                : '';
+
+            this.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">✓</div>
+                    <h3>Request Submitted!</h3>
+                    <p style="color: var(--text-light); margin-top: 10px;">
+                        You'll receive a welcome email at <strong>${email}</strong> within 24 hours once your Venmo payment is verified.
+                    </p>
+                    ${emailNote}
+                </div>
+            `;
+        });
+
+        // Member login
+        document.getElementById('memberLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const member = members.find(m => m.email.toLowerCase() === email);
+
+            if (member && member.active) {
+                localStorage.setItem('memberEmail', email);
+                showMemberDashboard(member);
+            } else {
+                alert('Member not found. Please check your email or contact Ray if you\'ve recently signed up.');
+            }
+        });
+
+        // Process new referral - add to referrer's pending list
+        function processNewReferral(referrerEmail, newMemberData) {
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const referrerIndex = members.findIndex(m => m.email.toLowerCase() === referrerEmail.toLowerCase());
+
+            if (referrerIndex === -1) return false;
+
+            const referrer = members[referrerIndex];
+
+            // Initialize referral structure if needed (migrate from old number format)
+            if (!referrer.referrals || typeof referrer.referrals === 'number') {
+                const oldCount = typeof referrer.referrals === 'number' ? referrer.referrals : 0;
+                referrer.referrals = {
+                    total: oldCount,
+                    currentCycle: oldCount % 15,
+                    pending: [],
+                    confirmed: []
+                };
+            }
+
+            // Check if already referred (prevent duplicates)
+            const alreadyPending = referrer.referrals.pending.some(
+                p => p.referredEmail.toLowerCase() === newMemberData.email.toLowerCase()
+            );
+            const alreadyConfirmed = referrer.referrals.confirmed.some(
+                c => c.referredEmail.toLowerCase() === newMemberData.email.toLowerCase()
+            );
+
+            if (alreadyPending || alreadyConfirmed) {
+                console.log('Referral already exists');
+                return false;
+            }
+
+            // Add to pending (confirms after 30 days)
+            const now = new Date();
+            const confirmsAt = new Date(now.getTime() + (30 * 24 * 60 * 60 * 1000));
+
+            referrer.referrals.pending.push({
+                referredEmail: newMemberData.email,
+                referredName: newMemberData.name,
+                referredAt: now.toISOString(),
+                confirmsAt: confirmsAt.toISOString()
+            });
+
+            // Save updated referrer
+            members[referrerIndex] = referrer;
+            localStorage.setItem('members', JSON.stringify(members));
+
+            console.log(`Referral added: ${newMemberData.name} referred by ${referrer.name}`);
+
+            // Send pending referral notification email (if EmailService is available)
+            if (typeof EmailService !== 'undefined' && EmailService.sendReferralPending) {
+                EmailService.sendReferralPending({
+                    referrerName: referrer.name,
+                    referrerEmail: referrer.email,
+                    referredName: newMemberData.name,
+                    confirmsAt: confirmsAt.toISOString()
+                });
+            }
+
+            return true;
+        }
+
+        // Logout
+        function logoutMember() {
+            localStorage.removeItem('memberEmail');
+            location.reload();
+        }
+
+        // Initialize
+        checkMemberStatus();
+
+        // ============================================
+        // FOUNDING MEMBER SPOTS COUNTER
+        // ============================================
+        const FOUNDING_MEMBER_LIMIT = 50;
+
+        function updateFoundingMemberCounter() {
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const foundingMembers = members.filter(m => m.isFoundingMember === true).length;
+            const spotsRemaining = Math.max(0, FOUNDING_MEMBER_LIMIT - foundingMembers);
+
+            const banner = document.getElementById('foundingBanner');
+            const spotsEl = document.getElementById('spotsRemaining');
+
+            if (spotsEl) {
+                spotsEl.textContent = spotsRemaining;
+            }
+
+            // Update banner state based on spots
+            if (banner) {
+                if (spotsRemaining === 0) {
+                    banner.classList.add('sold-out');
+                    banner.querySelector('.founding-content h3').textContent = 'Founding Member Spots Filled!';
+                    banner.querySelector('.founding-content p').textContent = 'Standard pricing now applies.';
+                    banner.querySelector('.spots-counter').innerHTML = '<span class="spots-text">Join at regular price</span>';
+
+                    // Update pricing cards to show regular pricing
+                    document.querySelectorAll('.founding-badge').forEach(el => el.style.display = 'none');
+                    document.querySelectorAll('.future-price').forEach(el => {
+                        el.style.textDecoration = 'none';
+                        el.style.opacity = '1';
+                        el.style.fontWeight = '600';
+                        el.style.color = 'var(--text-color)';
+                        el.textContent = el.textContent.replace('After 50 members: ', '');
+                    });
+
+                    // Update displayed prices
+                    const monthlyPrice = document.querySelector('.membership-card:not(.featured) .amount');
+                    const annualPrice = document.querySelector('.membership-card.featured .amount');
+                    if (monthlyPrice) monthlyPrice.textContent = '$29.99';
+                    if (annualPrice) annualPrice.textContent = '$299';
+
+                } else if (spotsRemaining <= 10) {
+                    banner.classList.add('almost-gone');
+                    banner.querySelector('.founding-content p').textContent = `Only ${spotsRemaining} founding member spots left! Lock in $19.99/month forever.`;
+                }
+            }
+
+            return spotsRemaining;
+        }
+
+        // Run on page load
+        updateFoundingMemberCounter();
+    </script>
+</body>
+</html>

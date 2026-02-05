@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What's My Pickleball Level? - Ray's Pickleball</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Hero Section */
+        .eval-hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .eval-hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+        }
+
+        .eval-hero p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+        }
+
+        /* Pricing Card */
+        .pricing-section {
+            padding: 60px 20px;
+            background: var(--background-alt);
+        }
+
+        .pricing-card {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 3px solid var(--primary-color);
+        }
+
+        .pricing-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .pricing-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .pricing-amount {
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+
+        .pricing-amount span {
+            font-size: 1.2rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        .pricing-body {
+            padding: 30px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 25px 0;
+        }
+
+        .pricing-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features .check {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+
+        .pricing-cta {
+            text-align: center;
+        }
+
+        .pricing-cta .btn {
+            width: 100%;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+        }
+
+        .turnaround {
+            text-align: center;
+            margin-top: 15px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 70px 20px;
+        }
+
+        .how-it-works h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 50px;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 20px auto;
+        }
+
+        .step-card h3 {
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .step-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Sample Evaluation */
+        .sample-section {
+            padding: 70px 20px;
+            background: var(--background-alt);
+        }
+
+        .sample-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .sample-section > p {
+            text-align: center;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+        }
+
+        .sample-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .sample-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sample-level {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .sample-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sample-text {
+            color: var(--text-color);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 70px 20px;
+        }
+
+        .faq-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+        }
+
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 20px;
+            font-weight: 600;
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question:hover {
+            background: var(--background-alt);
+        }
+
+        .faq-toggle {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            transition: transform 0.3s;
+        }
+
+        .faq-item.open .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+        }
+
+        .faq-item.open .faq-answer {
+            padding: 0 20px 20px 20px;
+            max-height: 300px;
+        }
+
+        .faq-answer p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* Level Guide */
+        .level-guide {
+            padding: 70px 20px;
+            background: var(--background-alt);
+        }
+
+        .level-guide h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .level-guide > p {
+            text-align: center;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+        }
+
+        .levels-table {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .level-row {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .level-row:last-child {
+            border-bottom: none;
+        }
+
+        .level-number {
+            width: 80px;
+            background: var(--primary-color);
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .level-description {
+            padding: 20px;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 70px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--text-color) 0%, #374151 100%);
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .cta-section p {
+            opacity: 0.9;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .cta-section .btn {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .cta-section .btn:hover {
+            background: var(--background-alt);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--text-color);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .eval-hero h1 {
+                font-size: 2rem;
+            }
+
+            .eval-hero p {
+                font-size: 1.1rem;
+            }
+
+            .pricing-amount {
+                font-size: 2.8rem;
+            }
+
+            .sample-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .level-row {
+                flex-direction: column;
+            }
+
+            .level-number {
+                width: 100%;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">🏓 Ray's Pickleball</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="services.html" class="active">Services</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="services.html">Video Analysis</a></li>
+                        <li><a href="skill-evaluation.html" class="active">Skill Evaluation</a></li>
+                        <li><a href="doubles-analysis.html">Doubles Analysis</a></li>
+                        <li><a href="level-up.html" class="dropdown-highlight">Level Up Program</a></li>
+                    </ul>
+                </li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="membership.html">Membership</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="btn btn-primary" style="padding: 8px 20px; color: white;">Submit Video</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="eval-hero">
+            <h1>What's My Pickleball Level?</h1>
+            <p>Stop guessing. Get a professional skill evaluation from Ray and know exactly where you stand.</p>
+        </section>
+
+        <!-- Pricing Card -->
+        <section class="pricing-section">
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h2>Skill Evaluation</h2>
+                    <div class="pricing-amount">$35 <span>one-time</span></div>
+                </div>
+                <div class="pricing-body">
+                    <ul class="pricing-features">
+                        <li>
+                            <span class="check">✓</span>
+                            <span>Your skill level (2.5 - 5.0+)</span>
+                        </li>
+                        <li>
+                            <span class="check">✓</span>
+                            <span>Detailed explanation of your rating</span>
+                        </li>
+                        <li>
+                            <span class="check">✓</span>
+                            <span>Key strengths identified</span>
+                        </li>
+                        <li>
+                            <span class="check">✓</span>
+                            <span>Areas for improvement highlighted</span>
+                        </li>
+                        <li>
+                            <span class="check">✓</span>
+                            <span>Personalized feedback from Ray</span>
+                        </li>
+                    </ul>
+                    <div class="pricing-cta">
+                        <a href="skill-evaluation-form.html" class="btn btn-primary">Get Evaluated →</a>
+                    </div>
+                    <p class="turnaround">⏱️ Results delivered within 24-48 hours</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="how-it-works">
+            <h2>How It Works</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Submit Your Video</h3>
+                    <p>Upload 2-5 minutes of gameplay showing a variety of shots and situations.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Pay $35</h3>
+                    <p>Complete your payment via credit card or Venmo - simple and secure.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Ray Evaluates</h3>
+                    <p>Ray carefully analyzes your gameplay, assessing all aspects of your skills.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Get Your Results</h3>
+                    <p>Receive your skill level and detailed evaluation via email within 48 hours.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sample Evaluation -->
+        <section class="sample-section">
+            <h2>Sample Evaluation</h2>
+            <p>Here's what your evaluation will look like</p>
+            <div class="sample-card">
+                <div class="sample-header">
+                    <div>
+                        <div class="sample-label">Your Skill Level</div>
+                        <div class="sample-level">3.5</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="sample-label">Evaluation Date</div>
+                        <div style="color: var(--text-color); font-weight: 500;">February 4, 2025</div>
+                    </div>
+                </div>
+                <p class="sample-text">
+                    Based on your video, I'd rate you at approximately <strong>3.5 level</strong>. You have solid fundamentals with your dinks and third shot drops - your soft game is definitely a strength. Your serve is consistent and you're placing it well.
+                    <br><br>
+                    The areas holding you back from 4.0 are primarily court positioning (you tend to hang back at the baseline too long after the return) and your reaction time at the net during fast exchanges. I'd also work on adding more variety to your serves to keep opponents guessing.
+                    <br><br>
+                    With focused practice on these areas, you could be pushing into 3.75+ territory within a few months. Keep up the great work!
+                </p>
+            </div>
+        </section>
+
+        <!-- Level Guide -->
+        <section class="level-guide">
+            <h2>Skill Level Guide</h2>
+            <p>Understanding pickleball skill ratings</p>
+            <div class="levels-table">
+                <div class="level-row">
+                    <div class="level-number">2.5</div>
+                    <div class="level-description">Learning basic rules and techniques. Can sustain a short rally. Developing serve and return consistency.</div>
+                </div>
+                <div class="level-row">
+                    <div class="level-number">3.0</div>
+                    <div class="level-description">Comfortable with all basic shots. Understands positioning. Can play competitively with similar-level players.</div>
+                </div>
+                <div class="level-row">
+                    <div class="level-number">3.5</div>
+                    <div class="level-description">Consistent with fundamentals. Has control over power and placement. Beginning to develop strategy and shot selection.</div>
+                </div>
+                <div class="level-row">
+                    <div class="level-number">4.0</div>
+                    <div class="level-description">Strong all-around game. Can vary speed, spin, and placement. Makes few unforced errors. Good court awareness.</div>
+                </div>
+                <div class="level-row">
+                    <div class="level-number">4.5</div>
+                    <div class="level-description">Advanced skills and strategy. Can attack and defend effectively. Excellent shot anticipation and placement.</div>
+                </div>
+                <div class="level-row">
+                    <div class="level-number">5.0+</div>
+                    <div class="level-description">Tournament-level player. Exceptional skills in all areas. Can compete at the highest amateur levels.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Is this an official DUPR rating?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>No, this is an independent evaluation by Ray. For official DUPR ratings, you need to play sanctioned matches that report results to DUPR. However, Ray's evaluation gives you an accurate sense of your skill level based on the same criteria used by official rating systems.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What video should I submit?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Ideally, submit 2-5 minutes of competitive gameplay (not drilling). The video should show a variety of situations - serves, returns, dinks, drives, volleys, and point play. Film from a position where your full body and court position are visible.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How long until I get my results?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Most evaluations are completed within 24-48 hours. You'll receive an email with your skill level and detailed evaluation as soon as Ray finishes reviewing your video.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I submit another video later to track progress?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! Many players submit videos every few months to track their improvement. It's a great way to see how your training is paying off and identify new areas to focus on.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What payment methods do you accept?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We accept credit/debit cards through Stripe and Venmo. Both options are secure and easy to use. You'll choose your preferred payment method during checkout.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How is this different from video analysis?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Video analysis focuses on breaking down your technique and providing detailed coaching on how to improve specific shots. Skill evaluation is specifically designed to answer "what level am I?" - giving you a rating and explaining where you stand. Many players do both!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <h2>Ready to Find Out Your Level?</h2>
+            <p>Get your professional skill evaluation today.</p>
+            <a href="skill-evaluation-form.html" class="btn btn-large">Get Evaluated for $35 →</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const isOpen = item.classList.contains('open');
+
+                // Close all items
+                document.querySelectorAll('.faq-item').forEach(faq => {
+                    faq.classList.remove('open');
+                });
+
+                // Open clicked item if it wasn't already open
+                if (!isOpen) {
+                    item.classList.add('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

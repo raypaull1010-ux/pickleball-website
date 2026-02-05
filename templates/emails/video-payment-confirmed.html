@@ -1,0 +1,151 @@
+<!--
+  EMAIL TEMPLATE: Video Payment Confirmed
+  RECIPIENT: Customer
+  TRIGGER: Admin clicks "Confirm Payment" in admin panel (Stage 2)
+
+  EMAILJS VARIABLES:
+  {{customer_name}} - Customer's full name
+  {{customer_email}} - Customer's email
+  {{video_length}} - "30 minutes" or "60 minutes"
+  {{price}} - "$75" or "$120"
+  {{turnaround}} - "48-72 hours"
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Confirmed - Ray's Pickleball</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #f3f4f6;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f3f4f6;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color: #10b981; padding: 30px; text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 10px;">&#10003;</div>
+                            <h1 style="color: #ffffff; margin: 0; font-size: 24px;">Payment Confirmed!</h1>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                                Hey {{customer_name}}!
+                            </p>
+
+                            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                                Great news - I received your payment and your video analysis is now in progress! I'm diving into your {{video_length}} of gameplay and can't wait to share what I find.
+                            </p>
+
+                            <!-- Status Box -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #ecfdf5; border: 2px solid #10b981; border-radius: 8px; margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 25px; text-align: center;">
+                                        <p style="color: #059669; font-size: 14px; margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px;">Analysis Status</p>
+                                        <p style="color: #047857; font-size: 20px; margin: 0; font-weight: 700;">In Progress</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Order Summary -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f9fafb; border-radius: 8px; margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 25px;">
+                                        <h3 style="color: #1f2937; margin: 0 0 15px 0; font-size: 16px;">Your Order</h3>
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="color: #6b7280; font-size: 14px; padding: 5px 0;">Package:</td>
+                                                <td style="color: #1f2937; font-size: 14px; padding: 5px 0; text-align: right; font-weight: 600;">{{video_length}} Analysis</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #6b7280; font-size: 14px; padding: 5px 0;">Amount Paid:</td>
+                                                <td style="color: #10b981; font-size: 14px; padding: 5px 0; text-align: right; font-weight: 600;">{{price}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #6b7280; font-size: 14px; padding: 5px 0;">Expected Delivery:</td>
+                                                <td style="color: #1f2937; font-size: 14px; padding: 5px 0; text-align: right; font-weight: 600;">{{turnaround}}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- What You'll Receive -->
+                            <h3 style="color: #1f2937; margin: 0 0 15px 0; font-size: 16px;">What You'll Receive</h3>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="width: 30px; vertical-align: top; padding-top: 2px;">
+                                                    <span style="color: #2563eb; font-size: 16px;">&#128202;</span>
+                                                </td>
+                                                <td>
+                                                    <p style="color: #1f2937; font-size: 14px; margin: 0; font-weight: 600;">Statistical Report</p>
+                                                    <p style="color: #6b7280; font-size: 13px; margin: 5px 0 0 0;">Complete breakdown of all 15+ metrics tracked</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="width: 30px; vertical-align: top; padding-top: 2px;">
+                                                    <span style="color: #2563eb; font-size: 16px;">&#127909;</span>
+                                                </td>
+                                                <td>
+                                                    <p style="color: #1f2937; font-size: 14px; margin: 0; font-weight: 600;">Video Walkthrough</p>
+                                                    <p style="color: #6b7280; font-size: 13px; margin: 5px 0 0 0;">Recorded feedback where I walk through your footage</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px 0;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="width: 30px; vertical-align: top; padding-top: 2px;">
+                                                    <span style="color: #2563eb; font-size: 16px;">&#127919;</span>
+                                                </td>
+                                                <td>
+                                                    <p style="color: #1f2937; font-size: 14px; margin: 0; font-weight: 600;">Player Snapshot</p>
+                                                    <p style="color: #6b7280; font-size: 13px; margin: 5px 0 0 0;">Your biggest strength, biggest leak, and top fix</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0;">
+                                I'll email you as soon as your analysis is ready. Get excited - actionable insights are on the way!
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f9fafb; padding: 25px 30px; border-top: 1px solid #e5e7eb;">
+                            <p style="color: #6b7280; font-size: 14px; margin: 0 0 10px 0; text-align: center;">
+                                Questions? Reply to this email or text <a href="tel:+18012059124" style="color: #2563eb; text-decoration: none;">(801) 205-9124</a>
+                            </p>
+                            <p style="color: #9ca3af; font-size: 12px; margin: 0; text-align: center;">
+                                Ray Paull Pickleball Analysis
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

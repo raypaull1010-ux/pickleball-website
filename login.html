@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Ray's Pickleball</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .auth-container {
+      max-width: 400px;
+      margin: 80px auto;
+      padding: 40px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .auth-header h1 {
+      color: var(--primary-color);
+      margin-bottom: 8px;
+    }
+
+    .auth-header p {
+      color: var(--text-light);
+    }
+
+    .auth-form .form-group {
+      margin-bottom: 20px;
+    }
+
+    .auth-form label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+
+    .auth-form input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .auth-form input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+
+    .auth-form .btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      margin-top: 8px;
+    }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      margin: 24px 0;
+      color: var(--text-light);
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e5e7eb;
+    }
+
+    .auth-divider span {
+      padding: 0 16px;
+      font-size: 14px;
+    }
+
+    .auth-links {
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    .auth-links a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .auth-links a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      background: #fef2f2;
+      color: #dc2626;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .success-message {
+      background: #f0fdf4;
+      color: #16a34a;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .forgot-password {
+      text-align: right;
+      margin-top: -12px;
+      margin-bottom: 20px;
+    }
+
+    .forgot-password a {
+      color: var(--text-light);
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .forgot-password a:hover {
+      color: var(--primary-color);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container navbar-content">
+      <a href="index.html" class="logo">Ray's Pickleball</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="membership.html">Membership</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="auth-container">
+      <div class="auth-header">
+        <h1>Welcome Back</h1>
+        <p>Sign in to access your dashboard</p>
+      </div>
+
+      <div class="error-message" id="error-message"></div>
+      <div class="success-message" id="success-message"></div>
+
+      <form class="auth-form" id="login-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="you@example.com">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required placeholder="Enter your password">
+        </div>
+
+        <div class="forgot-password">
+          <a href="#" id="forgot-password-link">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Sign In</button>
+      </form>
+
+      <div class="auth-divider">
+        <span>or</span>
+      </div>
+
+      <div class="auth-links">
+        <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    // Initialize Supabase client
+    // IMPORTANT: Replace these with your actual Supabase credentials
+    const SUPABASE_URL = 'YOUR_SUPABASE_URL'; // e.g., https://xxxxx.supabase.co
+    const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+    let supabase;
+
+    // Check if Supabase is configured
+    if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
+      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+
+    const form = document.getElementById('login-form');
+    const errorMessage = document.getElementById('error-message');
+    const successMessage = document.getElementById('success-message');
+    const forgotPasswordLink = document.getElementById('forgot-password-link');
+
+    // Check if already logged in
+    async function checkAuth() {
+      if (!supabase) return;
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        // Redirect to appropriate dashboard based on role
+        const { data: user } = await supabase
+          .from('users')
+          .select('role')
+          .eq('id', session.user.id)
+          .single();
+
+        if (user?.role === 'admin') {
+          window.location.href = 'admin-panel.html';
+        } else if (user?.role === 'instructor') {
+          window.location.href = 'instructor-dashboard.html';
+        } else {
+          window.location.href = 'members.html';
+        }
+      }
+    }
+
+    checkAuth();
+
+    // Handle login
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!supabase) {
+        showError('Authentication is not configured. Please contact support.');
+        return;
+      }
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      form.classList.add('loading');
+      hideMessages();
+
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) throw error;
+
+        // Get user role
+        const { data: userData } = await supabase
+          .from('users')
+          .select('role')
+          .eq('id', data.user.id)
+          .single();
+
+        showSuccess('Login successful! Redirecting...');
+
+        // Redirect based on role
+        setTimeout(() => {
+          if (userData?.role === 'admin') {
+            window.location.href = 'admin-panel.html';
+          } else if (userData?.role === 'instructor') {
+            window.location.href = 'instructor-dashboard.html';
+          } else {
+            window.location.href = 'members.html';
+          }
+        }, 1000);
+
+      } catch (error) {
+        showError(error.message || 'Login failed. Please check your credentials.');
+      } finally {
+        form.classList.remove('loading');
+      }
+    });
+
+    // Handle forgot password
+    forgotPasswordLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+
+      if (!supabase) {
+        showError('Authentication is not configured.');
+        return;
+      }
+
+      const email = document.getElementById('email').value;
+
+      if (!email) {
+        showError('Please enter your email address first.');
+        return;
+      }
+
+      try {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/reset-password.html`
+        });
+
+        if (error) throw error;
+
+        showSuccess('Password reset email sent! Check your inbox.');
+      } catch (error) {
+        showError(error.message || 'Failed to send reset email.');
+      }
+    });
+
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.style.display = 'block';
+      successMessage.style.display = 'none';
+    }
+
+    function showSuccess(message) {
+      successMessage.textContent = message;
+      successMessage.style.display = 'block';
+      errorMessage.style.display = 'none';
+    }
+
+    function hideMessages() {
+      errorMessage.style.display = 'none';
+      successMessage.style.display = 'none';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level Up Package - 1-Month Training Program | Ray Paull Pickleball</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Level Up Hero */
+        .levelup-hero {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .levelup-hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+        }
+
+        .levelup-hero p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 650px;
+            margin: 0 auto 30px auto;
+        }
+
+        .levelup-hero .hero-badges {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .hero-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+        }
+
+        /* Pricing Tiers */
+        .levelup-pricing {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .levelup-tier {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .levelup-tier:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        .levelup-tier.featured {
+            border-color: #f59e0b;
+            border-width: 2px;
+            transform: scale(1.02);
+        }
+
+        .levelup-tier.featured:hover {
+            transform: scale(1.02) translateY(-5px);
+        }
+
+        .tier-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #f59e0b;
+            color: white;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .tier-name {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .tier-price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #f59e0b;
+            margin-bottom: 5px;
+        }
+
+        .tier-period {
+            color: var(--text-light);
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .tier-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .tier-features li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tier-features li:last-child {
+            border-bottom: none;
+        }
+
+        .tier-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .tier-features li.not-included {
+            color: var(--text-light);
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .tier-features li.not-included::before {
+            content: "✗";
+            color: #d1d5db;
+        }
+
+        .levelup-tier .btn-primary {
+            background: #f59e0b;
+        }
+
+        .levelup-tier .btn-primary:hover {
+            background: #d97706;
+        }
+
+        /* Timeline */
+        .program-timeline {
+            background: var(--background-alt);
+            padding: 60px 20px;
+        }
+
+        .timeline-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline-phase {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .timeline-phase:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-phase::before {
+            content: "";
+            position: absolute;
+            left: 45px;
+            top: 50px;
+            bottom: -40px;
+            width: 2px;
+            background: var(--border-color);
+        }
+
+        .timeline-phase:last-child::before {
+            display: none;
+        }
+
+        .phase-marker {
+            width: 90px;
+            height: 90px;
+            background: #f59e0b;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .phase-marker .week {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .phase-marker .number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .phase-content {
+            flex: 1;
+            padding-top: 10px;
+        }
+
+        .phase-content h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .phase-content p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .phase-deliverables {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .deliverable-tag {
+            background: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .deliverable-tag.elite-only {
+            background: #fef3c7;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+
+        .deliverable-tag.complete-up {
+            background: #dbeafe;
+            border-color: var(--primary-color);
+            color: var(--primary-dark);
+        }
+
+        /* What's Included Grid */
+        .included-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .included-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .included-card .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .included-card h4 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .included-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .included-card .tier-indicator {
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .tier-indicator.all {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .tier-indicator.complete {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .tier-indicator.elite {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Sample Output */
+        .sample-output-section {
+            background: var(--background-alt);
+            padding: 60px 20px;
+        }
+
+        .sample-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .sample-output-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .sample-output-header {
+            background: #f59e0b;
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+
+        .sample-output-body {
+            padding: 20px;
+        }
+
+        .drill-session {
+            margin-bottom: 20px;
+        }
+
+        .drill-session:last-child {
+            margin-bottom: 0;
+        }
+
+        .drill-session h5 {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .drill-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .drill-item:last-child {
+            border-bottom: none;
+        }
+
+        .drill-name {
+            color: var(--text-color);
+        }
+
+        .drill-duration {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .workout-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .workout-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .workout-list li:last-child {
+            border-bottom: none;
+        }
+
+        .workout-reps {
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        /* CTA Section */
+        .levelup-cta {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .levelup-cta h2 {
+            margin-bottom: 15px;
+        }
+
+        .levelup-cta p {
+            opacity: 0.95;
+            margin-bottom: 30px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .levelup-cta .btn-primary {
+            background: white;
+            color: #d97706;
+        }
+
+        .levelup-cta .btn-primary:hover {
+            background: #f9fafb;
+        }
+
+        @media (max-width: 768px) {
+            .levelup-hero h1 {
+                font-size: 2rem;
+            }
+
+            .levelup-pricing {
+                grid-template-columns: 1fr;
+            }
+
+            .levelup-tier.featured {
+                transform: none;
+            }
+
+            .timeline-phase {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .timeline-phase::before {
+                display: none;
+            }
+
+            .phase-marker {
+                width: 70px;
+                height: 70px;
+            }
+
+            .phase-marker .number {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">🏓 Ray's Pickleball</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="services.html" class="active">Services</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="services.html">Video Analysis</a></li>
+                        <li><a href="skill-evaluation.html">Skill Evaluation</a></li>
+                        <li><a href="doubles-analysis.html">Doubles Analysis</a></li>
+                        <li><a href="level-up.html" class="dropdown-highlight active">Level Up Program</a></li>
+                    </ul>
+                </li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="membership.html">Membership</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="btn btn-primary" style="padding: 8px 20px; color: white;">Submit Video</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="levelup-hero">
+            <div class="container">
+                <p style="text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px; opacity: 0.9; margin-bottom: 15px;">1-Month Training Program</p>
+                <h1>Ready to Level Up?</h1>
+                <p>A structured 4-week program with two video analyses, custom drill programs, workouts, and nutrition guidance. Everything you need to break through your plateau.</p>
+
+                <div class="hero-badges">
+                    <span class="hero-badge">2 Video Analyses</span>
+                    <span class="hero-badge">Custom Drill Programs</span>
+                    <span class="hero-badge">Progress Tracking</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="services-content">
+            <div class="container">
+
+                <!-- PRICING TIERS -->
+                <div style="margin-bottom: 60px;">
+                    <h2 style="text-align: center; margin-bottom: 15px;">Choose Your Package</h2>
+                    <p style="text-align: center; color: var(--text-light); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                        All packages include two video analyses and personalized drill programs. Upgrade for workouts and nutrition guidance.
+                    </p>
+
+                    <div class="levelup-pricing">
+                        <!-- Essentials -->
+                        <div class="levelup-tier">
+                            <h3 class="tier-name">Essentials</h3>
+                            <div class="tier-price">$199</div>
+                            <p class="tier-period">1-month program</p>
+
+                            <ul class="tier-features">
+                                <li>2 full video analyses (start + midpoint)</li>
+                                <li>Statistical breakdown each time</li>
+                                <li>Video walkthrough feedback</li>
+                                <li>2 custom drill programs (2 weeks each)</li>
+                                <li>Progress comparison report</li>
+                                <li class="not-included">Workout plans</li>
+                                <li class="not-included">Nutrition guide</li>
+                            </ul>
+
+                            <a href="contact.html?service=levelup-essentials" class="btn btn-primary btn-full">Get Started</a>
+                        </div>
+
+                        <!-- Complete (Featured) -->
+                        <div class="levelup-tier featured">
+                            <span class="tier-badge">Most Popular</span>
+                            <h3 class="tier-name">Complete</h3>
+                            <div class="tier-price">$279</div>
+                            <p class="tier-period">1-month program</p>
+
+                            <ul class="tier-features">
+                                <li>2 full video analyses (start + midpoint)</li>
+                                <li>Statistical breakdown each time</li>
+                                <li>Video walkthrough feedback</li>
+                                <li>2 custom drill programs (2 weeks each)</li>
+                                <li>Progress comparison report</li>
+                                <li>2 pickleball-specific workout plans</li>
+                                <li class="not-included">Nutrition guide</li>
+                            </ul>
+
+                            <a href="levelup-health-waiver.html?service=levelup-complete" class="btn btn-primary btn-full">Get Started</a>
+                            <p style="margin-top: 10px; font-size: 0.8rem; color: var(--text-light);">Includes health questionnaire</p>
+                        </div>
+
+                        <!-- Elite -->
+                        <div class="levelup-tier">
+                            <h3 class="tier-name">Elite</h3>
+                            <div class="tier-price">$349</div>
+                            <p class="tier-period">1-month program</p>
+
+                            <ul class="tier-features">
+                                <li>2 full video analyses (start + midpoint)</li>
+                                <li>Statistical breakdown each time</li>
+                                <li>Video walkthrough feedback</li>
+                                <li>2 custom drill programs (2 weeks each)</li>
+                                <li>Progress comparison report</li>
+                                <li>2 pickleball-specific workout plans</li>
+                                <li>Complete nutrition guide</li>
+                            </ul>
+
+                            <a href="levelup-health-waiver.html?service=levelup-elite" class="btn btn-primary btn-full">Get Started</a>
+                            <p style="margin-top: 10px; font-size: 0.85rem; color: var(--text-light);">+ Priority support</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HOW IT WORKS TIMELINE -->
+                <section class="program-timeline">
+                    <div class="timeline-container">
+                        <h2 style="text-align: center; margin-bottom: 50px;">Your 4-Week Journey</h2>
+
+                        <div class="timeline-phase">
+                            <div class="phase-marker">
+                                <span class="week">WEEK</span>
+                                <span class="number">1</span>
+                            </div>
+                            <div class="phase-content">
+                                <h4>Submit Your First Video</h4>
+                                <p>Send 30 minutes of competitive gameplay. I'll analyze everything and build your personalized program.</p>
+                                <div class="phase-deliverables">
+                                    <span class="deliverable-tag">Full statistical breakdown</span>
+                                    <span class="deliverable-tag">Video walkthrough</span>
+                                    <span class="deliverable-tag">2-week drill program</span>
+                                    <span class="deliverable-tag complete-up">Workout Plan A & B</span>
+                                    <span class="deliverable-tag elite-only">Nutrition guide</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-phase">
+                            <div class="phase-marker">
+                                <span class="week">WEEK</span>
+                                <span class="number">2</span>
+                            </div>
+                            <div class="phase-content">
+                                <h4>Execute Your Program</h4>
+                                <p>Follow your custom drill sessions (2-3x per week, 20-30 min each) and workouts. Focus on the specific areas identified in your analysis.</p>
+                                <div class="phase-deliverables">
+                                    <span class="deliverable-tag">Drill sessions 2-3x/week</span>
+                                    <span class="deliverable-tag complete-up">Workouts 2x/week</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-phase">
+                            <div class="phase-marker">
+                                <span class="week">WEEK</span>
+                                <span class="number">3</span>
+                            </div>
+                            <div class="phase-content">
+                                <h4>Submit Follow-Up Video</h4>
+                                <p>Send another 30 minutes of gameplay. I'll compare your progress, celebrate improvements, and adjust your program for the final push.</p>
+                                <div class="phase-deliverables">
+                                    <span class="deliverable-tag">Progress comparison</span>
+                                    <span class="deliverable-tag">Updated analysis</span>
+                                    <span class="deliverable-tag">Adjusted drill program</span>
+                                    <span class="deliverable-tag complete-up">Progressed workouts</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-phase">
+                            <div class="phase-marker">
+                                <span class="week">WEEK</span>
+                                <span class="number">4</span>
+                            </div>
+                            <div class="phase-content">
+                                <h4>Finish Strong</h4>
+                                <p>Complete your final two weeks with your updated program. By now, you should feel noticeable improvement in your weak areas.</p>
+                                <div class="phase-deliverables">
+                                    <span class="deliverable-tag">Final drill sessions</span>
+                                    <span class="deliverable-tag">Skills locked in</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- WHAT'S INCLUDED -->
+                <div style="margin: 60px 0;">
+                    <h2 style="text-align: center; margin-bottom: 40px;">What's Included</h2>
+
+                    <div class="included-grid">
+                        <div class="included-card">
+                            <div class="card-icon">📊</div>
+                            <h4>Full Video Analysis</h4>
+                            <p>15+ statistics tracked with FH/BH breakdown. Strength, leak, decision quality, and top fix identified.</p>
+                            <span class="tier-indicator all">All Tiers</span>
+                        </div>
+
+                        <div class="included-card">
+                            <div class="card-icon">🎥</div>
+                            <h4>Video Walkthrough</h4>
+                            <p>Recorded commentary walking through your footage with timestamps and specific feedback.</p>
+                            <span class="tier-indicator all">All Tiers</span>
+                        </div>
+
+                        <div class="included-card">
+                            <div class="card-icon">🎯</div>
+                            <h4>Custom Drill Program</h4>
+                            <p>2-3 sessions per week with specific drills targeting your weak areas. 20-30 min per session.</p>
+                            <span class="tier-indicator all">All Tiers</span>
+                        </div>
+
+                        <div class="included-card">
+                            <div class="card-icon">📈</div>
+                            <h4>Progress Tracking</h4>
+                            <p>Before/after comparison showing exactly how much you've improved in each area.</p>
+                            <span class="tier-indicator all">All Tiers</span>
+                        </div>
+
+                        <div class="included-card">
+                            <div class="card-icon">💪</div>
+                            <h4>Workout Plans</h4>
+                            <p>Two 20-30 min pickleball-specific workouts: lower body/lateral movement and upper body/rotational power.</p>
+                            <span class="tier-indicator complete">Complete & Elite</span>
+                        </div>
+
+                        <div class="included-card">
+                            <div class="card-icon">🥗</div>
+                            <h4>Nutrition Guide</h4>
+                            <p>Pre-game fueling, hydration strategies, recovery nutrition, and weekly meal framework.</p>
+                            <span class="tier-indicator elite">Elite Only</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SAMPLE OUTPUTS -->
+                <section class="sample-output-section" style="margin: 0 -20px; padding: 60px 20px;">
+                    <div class="container">
+                        <h2 style="text-align: center; margin-bottom: 40px;">Sample Program Content</h2>
+
+                        <div class="sample-cards">
+                            <!-- Drill Program Sample -->
+                            <div class="sample-output-card">
+                                <div class="sample-output-header">Sample Drill Session (Day 1)</div>
+                                <div class="sample-output-body">
+                                    <div class="drill-session">
+                                        <h5>Warm-Up</h5>
+                                        <div class="drill-item">
+                                            <span class="drill-name">Shadow dinks (FH/BH)</span>
+                                            <span class="drill-duration">2 min</span>
+                                        </div>
+                                    </div>
+                                    <div class="drill-session">
+                                        <h5>Main Drills</h5>
+                                        <div class="drill-item">
+                                            <span class="drill-name">Backhand reset wall drill</span>
+                                            <span class="drill-duration">5 min</span>
+                                        </div>
+                                        <div class="drill-item">
+                                            <span class="drill-name">Third shot drop accuracy</span>
+                                            <span class="drill-duration">8 min</span>
+                                        </div>
+                                        <div class="drill-item">
+                                            <span class="drill-name">Transition zone resets</span>
+                                            <span class="drill-duration">5 min</span>
+                                        </div>
+                                    </div>
+                                    <div class="drill-session">
+                                        <h5>Cool-Down</h5>
+                                        <div class="drill-item">
+                                            <span class="drill-name">Serve placement targets</span>
+                                            <span class="drill-duration">5 min</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Workout Sample -->
+                            <div class="sample-output-card">
+                                <div class="sample-output-header">Sample Workout A (Lower Body)</div>
+                                <div class="sample-output-body">
+                                    <ul class="workout-list">
+                                        <li>
+                                            <span>Lateral Lunges</span>
+                                            <span class="workout-reps">3x10 each</span>
+                                        </li>
+                                        <li>
+                                            <span>Split Squat Holds</span>
+                                            <span class="workout-reps">3x30 sec</span>
+                                        </li>
+                                        <li>
+                                            <span>Quick Feet Ladder</span>
+                                            <span class="workout-reps">3 rounds</span>
+                                        </li>
+                                        <li>
+                                            <span>Plank w/ Shoulder Taps</span>
+                                            <span class="workout-reps">3x30 sec</span>
+                                        </li>
+                                        <li>
+                                            <span>Side Shuffles</span>
+                                            <span class="workout-reps">3x20 yds</span>
+                                        </li>
+                                        <li>
+                                            <span>Dead Bugs</span>
+                                            <span class="workout-reps">3x10 each</span>
+                                        </li>
+                                    </ul>
+                                    <p style="margin-top: 15px; font-size: 0.85rem; color: var(--text-light); text-align: center;">
+                                        ~25 minutes | No equipment needed
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Nutrition Sample -->
+                            <div class="sample-output-card">
+                                <div class="sample-output-header">Sample Nutrition Guide</div>
+                                <div class="sample-output-body">
+                                    <div class="drill-session">
+                                        <h5>Pre-Game (1-2 hrs before)</h5>
+                                        <p style="color: var(--text-light); font-size: 0.9rem;">
+                                            Easy-to-digest carbs + moderate protein. Banana + peanut butter, oatmeal, or toast with eggs.
+                                        </p>
+                                    </div>
+                                    <div class="drill-session">
+                                        <h5>During Play</h5>
+                                        <p style="color: var(--text-light); font-size: 0.9rem;">
+                                            Hydrate every changeover. Water + electrolytes for sessions over 1 hour.
+                                        </p>
+                                    </div>
+                                    <div class="drill-session">
+                                        <h5>Post-Game (within 60 min)</h5>
+                                        <p style="color: var(--text-light); font-size: 0.9rem;">
+                                            Protein + carbs for recovery. Greek yogurt with fruit, protein shake, or chicken with rice.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FAQ -->
+                <div class="faq-section" style="margin-top: 60px;">
+                    <h2>Frequently Asked Questions</h2>
+                    <div class="faq-grid">
+                        <div class="faq-item">
+                            <h4>What if I can't submit my second video exactly at 2 weeks?</h4>
+                            <p>No problem! The program is flexible. Submit your follow-up video whenever you're ready — slightly before or after the 2-week mark is fine.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>What video should I send?</h4>
+                            <p>30 minutes of competitive match play (rec games against strong opponents, league matches, etc.). The more game-like, the better.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Can I do the drills without a partner?</h4>
+                            <p>Many drills require a partner, but I'll include solo wall drills when possible. I'll design your program based on your practice situation.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>I already have a workout routine. Can I combine them?</h4>
+                            <p>Absolutely! The pickleball workouts are designed to complement your game, not replace your existing routine. We can discuss how to integrate them.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>How is this different from a single video analysis?</h4>
+                            <p>A single analysis tells you what to work on. Level Up gives you the complete roadmap: analysis + drills + workouts + progress tracking over a full month.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Can I renew for another month?</h4>
+                            <p>Yes! Many players continue with additional months. Each month builds on your progress with fresh analysis and updated programs.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>What's the health questionnaire for?</h4>
+                            <p>Complete and Elite packages include workout plans. The health questionnaire helps me customize exercises for your age, fitness level, and any injuries or limitations. It also includes a liability waiver required for workout programs.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>What if I have injuries or limitations?</h4>
+                            <p>No problem! I'll modify exercises based on your health questionnaire. Whether it's bad knees, shoulder issues, or anything else, I'll provide alternatives that work for your body.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <section class="levelup-cta" style="margin-top: 60px; border-radius: 12px;">
+                    <h2>Ready to Break Through Your Plateau?</h2>
+                    <p>Start your 1-month Level Up program today and see real, measurable improvement in your game.</p>
+                    <a href="contact.html?service=levelup" class="btn btn-primary btn-large">Get Started — From $199</a>
+                </section>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

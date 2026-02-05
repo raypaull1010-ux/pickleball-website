@@ -1,0 +1,92 @@
+<!--
+  EMAIL TEMPLATE: Reward Tier Unlocked
+  RECIPIENT: Member who unlocked a tier
+  TRIGGER: When member reaches a referral milestone (1, 3, 5, 10)
+
+  EMAILJS VARIABLES:
+  {{customer_name}} - Member's name
+  {{customer_email}} - Member's email
+  {{tier_level}} - Tier number (1, 2, 3, 4)
+  {{reward_name}} - Name of the reward
+  {{reward_value}} - Dollar value of reward
+  {{instructions}} - How to claim
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reward Unlocked! - Ray's Pickleball</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #f3f4f6;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f3f4f6;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); padding: 30px; text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 10px;">🎁</div>
+                            <h1 style="color: #ffffff; margin: 0; font-size: 24px;">Reward Unlocked!</h1>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+                                Hey {{customer_name}}!
+                            </p>
+
+                            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                                Congratulations! You've hit <strong>Tier {{tier_level}}</strong> in the referral program and unlocked a reward! 🏆
+                            </p>
+
+                            <!-- Reward Box -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #f59e0b; border-radius: 12px; margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 30px; text-align: center;">
+                                        <p style="color: #92400e; font-size: 14px; margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px;">Your Reward</p>
+                                        <p style="color: #78350f; font-size: 24px; margin: 0 0 10px 0; font-weight: 700;">{{reward_name}}</p>
+                                        <p style="color: #b45309; font-size: 18px; margin: 0;">{{reward_value}} value</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- How to Claim -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f9fafb; border-radius: 8px; margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <h3 style="color: #1f2937; margin: 0 0 10px 0; font-size: 16px;">How to Claim</h3>
+                                        <p style="color: #4b5563; font-size: 14px; margin: 0; line-height: 1.6;">
+                                            {{instructions}}
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0;">
+                                Keep referring friends to unlock even bigger rewards. Only <strong>15 referrals</strong> to Ambassador status!
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f9fafb; padding: 25px 30px; border-top: 1px solid #e5e7eb;">
+                            <p style="color: #6b7280; font-size: 14px; margin: 0 0 10px 0; text-align: center;">
+                                Questions? Reply to this email or text <a href="tel:+18012059124" style="color: #2563eb; text-decoration: none;">(801) 205-9124</a>
+                            </p>
+                            <p style="color: #9ca3af; font-size: 12px; margin: 0; text-align: center;">
+                                Ray Paull Pickleball Analysis
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!--
+  EMAIL TEMPLATE: Instructor Account Reactivated
+  RECIPIENT: Instructor whose account has been reactivated
+  TRIGGER: When admin reactivates or they meet requirements
+
+  EMAILJS VARIABLES:
+  {{instructor_name}} - Instructor's name
+  {{instructor_email}} - Instructor's email
+  {{reactivation_reason}} - Why account was reactivated
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Reactivated! - Ray's Pickleball</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #f3f4f6;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f3f4f6;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px; text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 15px;">&#127881;</div>
+                            <h1 style="color: #ffffff; margin: 0; font-size: 28px;">You're Back!</h1>
+                            <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 16px;">Your profile is live again</p>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                                Hey {{instructor_name}}!
+                            </p>
+
+                            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                                Great news - your instructor profile has been reactivated! Students can now find you again in our directory.
+                            </p>
+
+                            <!-- Status Box -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #ecfdf5; border: 2px solid #10b981; border-radius: 8px; margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 25px; text-align: center;">
+                                        <p style="color: #059669; font-size: 14px; margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px;">Status</p>
+                                        <p style="color: #047857; font-size: 24px; margin: 0; font-weight: 700;">&#10003; Active</p>
+                                        <p style="color: #6b7280; font-size: 13px; margin: 10px 0 0 0;">{{reactivation_reason}}</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Reminder -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f9fafb; border-radius: 8px; margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <p style="color: #1f2937; margin: 0 0 10px 0; font-weight: 600;">Quick Reminder:</p>
+                                        <p style="color: #6b7280; font-size: 14px; margin: 0;">
+                                            To stay listed, refer 2 students per month using your code, OR pay $40/month. Check your dashboard to see your current referral count!
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Dashboard CTA -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td align="center">
+                                        <a href="https://rayspickleball.com/instructor-dashboard.html" style="display: inline-block; background-color: #10b981; color: #ffffff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: 600;">Go to Dashboard</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f9fafb; padding: 25px 30px; border-top: 1px solid #e5e7eb;">
+                            <p style="color: #6b7280; font-size: 14px; margin: 0 0 10px 0; text-align: center;">
+                                Welcome back! &#127934;
+                            </p>
+                            <p style="color: #9ca3af; font-size: 12px; margin: 0; text-align: center;">
+                                Ray Paull Pickleball Analysis
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

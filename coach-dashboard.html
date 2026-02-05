@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Coach Dashboard - Ray's Pickleball</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #10b981;
+            --text-color: #1f2937;
+            --text-light: #6b7280;
+            --background: #ffffff;
+            --background-alt: #f9fafb;
+            --border-color: #e5e7eb;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--background-alt);
+            color: var(--text-color);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .login-box h1 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .login-box p {
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            transition: border-color 0.2s;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .login-box button:hover {
+            background: var(--primary-dark);
+        }
+
+        .login-error {
+            color: var(--danger-color);
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .dashboard-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .dashboard-header h1 {
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-actions button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        .header-actions button:active {
+            transform: scale(0.97);
+        }
+
+        .btn-tracker {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-loom {
+            background: #625df5;
+            color: white;
+        }
+
+        .btn-logout {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        /* Main Content */
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Customer Info Panel */
+        .customer-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .customer-panel h2 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+
+        .customer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .customer-field label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .customer-field input, .customer-field textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .customer-field textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        /* Video Player Section */
+        .video-section {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .video-header {
+            padding: 15px 20px;
+            background: var(--background-alt);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .video-header h2 {
+            font-size: 1rem;
+        }
+
+        .video-container {
+            background: #000;
+            position: relative;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-container video {
+            max-width: 100%;
+            max-height: 70vh;
+            display: none;
+        }
+
+        .video-container video.active {
+            display: block;
+        }
+
+        .video-placeholder {
+            text-align: center;
+            color: #888;
+            padding: 40px;
+        }
+
+        .video-placeholder.hidden {
+            display: none;
+        }
+
+        .video-placeholder svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .video-placeholder p {
+            margin-bottom: 20px;
+        }
+
+        .drop-zone {
+            border: 3px dashed #444;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 20px;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        .video-controls {
+            padding: 15px 20px;
+            background: #1a1a1a;
+            display: none;
+        }
+
+        .video-controls.active {
+            display: block;
+        }
+
+        .controls-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .control-btn:hover {
+            background: #444;
+        }
+
+        .control-btn.primary {
+            background: var(--primary-color);
+        }
+
+        .control-btn.primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .speed-control label {
+            color: #aaa;
+            font-size: 0.85rem;
+        }
+
+        .speed-control select {
+            background: #333;
+            color: white;
+            border: 1px solid #444;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .time-display {
+            color: white;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            background: #333;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            margin-top: 15px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        /* Timestamp Notes */
+        .timestamp-section {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .timestamp-section h3 {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+
+        .timestamp-list {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .timestamp-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            background: var(--background-alt);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+
+        .timestamp-item .time {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            cursor: pointer;
+        }
+
+        .timestamp-item .note {
+            flex: 1;
+        }
+
+        .timestamp-item .delete {
+            color: var(--danger-color);
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .add-timestamp {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .add-timestamp input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .sidebar-card h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-action {
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            background: var(--background-alt);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            transition: background 0.2s, border-color 0.2s;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .quick-action:hover {
+            background: white;
+            border-color: var(--primary-color);
+        }
+
+        .quick-action:last-child {
+            margin-bottom: 0;
+        }
+
+        .quick-action span {
+            display: block;
+            font-weight: 600;
+        }
+
+        .quick-action small {
+            color: var(--text-light);
+        }
+
+        /* Keyboard Shortcuts */
+        .shortcuts-list {
+            font-size: 0.85rem;
+        }
+
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .shortcut-item:last-child {
+            border-bottom: none;
+        }
+
+        .shortcut-key {
+            background: var(--background-alt);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: 600;
+        }
+
+        /* URL Input */
+        .url-input-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+
+        .url-input-section label {
+            display: block;
+            color: #aaa;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .url-input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .url-input-row input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #444;
+            border-radius: 6px;
+            background: #333;
+            color: white;
+        }
+
+        .url-input-row button {
+            padding: 10px 20px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Session Info */
+        .session-info {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .session-info p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .session-info strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <h1>Coach Dashboard</h1>
+            <p>Enter your password to access coaching tools</p>
+            <input type="password" id="passwordInput" placeholder="Password" autofocus>
+            <button onclick="checkPassword()">Access Dashboard</button>
+            <p class="login-error" id="loginError">Incorrect password. Try again.</p>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <header class="dashboard-header">
+            <h1>Coach Dashboard</h1>
+            <div class="header-actions">
+                <a href="analysis-tracker.html" target="_blank" class="btn-tracker" style="text-decoration: none; display: inline-block;">
+                    <button class="btn-tracker">Open Stat Tracker</button>
+                </a>
+                <a href="https://www.loom.com/record" target="_blank" style="text-decoration: none;">
+                    <button class="btn-loom">Record with Loom</button>
+                </a>
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <div class="main-content">
+                <!-- Customer Info Panel -->
+                <div class="customer-panel">
+                    <h2>Customer Information</h2>
+                    <div class="customer-grid">
+                        <div class="customer-field">
+                            <label>Customer Name</label>
+                            <input type="text" id="customerName" placeholder="Enter name" onchange="saveSession()">
+                        </div>
+                        <div class="customer-field">
+                            <label>Email</label>
+                            <input type="email" id="customerEmail" placeholder="customer@email.com" onchange="saveSession()">
+                        </div>
+                        <div class="customer-field">
+                            <label>Video Link</label>
+                            <input type="text" id="customerVideoLink" placeholder="Google Drive / Dropbox link" onchange="saveSession()">
+                        </div>
+                        <div class="customer-field">
+                            <label>Notes</label>
+                            <textarea id="customerNotes" placeholder="Analysis notes..." onchange="saveSession()"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Player Section -->
+                <div class="video-section">
+                    <div class="video-header">
+                        <h2>Video Player</h2>
+                        <input type="file" id="videoFileInput" accept="video/*" style="display: none;" onchange="loadVideoFile(event)">
+                        <button class="control-btn" onclick="document.getElementById('videoFileInput').click()">
+                            Choose File
+                        </button>
+                    </div>
+
+                    <div class="video-container" id="videoContainer">
+                        <video id="videoPlayer" controls>
+                            Your browser does not support the video tag.
+                        </video>
+
+                        <div class="video-placeholder" id="videoPlaceholder">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+
+                            <div class="drop-zone" id="dropZone">
+                                <p><strong>Drag & drop a video file here</strong></p>
+                                <p>or click "Choose File" above</p>
+                                <p style="margin-top: 15px; font-size: 0.85rem;">Supports MP4, MOV, WebM</p>
+                            </div>
+
+                            <div class="url-input-section">
+                                <label>Or paste a direct video URL:</label>
+                                <div class="url-input-row">
+                                    <input type="text" id="videoUrlInput" placeholder="https://...">
+                                    <button onclick="loadVideoFromUrl()">Load</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="video-controls" id="videoControls">
+                        <div class="controls-row">
+                            <button class="control-btn primary" onclick="togglePlay()" id="playPauseBtn">
+                                Play
+                            </button>
+                            <button class="control-btn" onclick="skipFrames(-1)" title="Previous frame">
+                                &lt; Frame
+                            </button>
+                            <button class="control-btn" onclick="skipFrames(1)" title="Next frame">
+                                Frame &gt;
+                            </button>
+                            <button class="control-btn" onclick="skip(-5)">-5s</button>
+                            <button class="control-btn" onclick="skip(5)">+5s</button>
+
+                            <div class="speed-control">
+                                <label>Speed:</label>
+                                <select id="speedSelect" onchange="changeSpeed()">
+                                    <option value="0.25">0.25x</option>
+                                    <option value="0.5">0.5x</option>
+                                    <option value="0.75">0.75x</option>
+                                    <option value="1" selected>1x</option>
+                                    <option value="1.25">1.25x</option>
+                                    <option value="1.5">1.5x</option>
+                                    <option value="2">2x</option>
+                                </select>
+                            </div>
+
+                            <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+                        </div>
+
+                        <div class="progress-bar" id="progressBar" onclick="seekVideo(event)">
+                            <div class="progress-bar-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+
+                    <!-- Timestamp Notes -->
+                    <div class="timestamp-section">
+                        <h3>Timestamp Notes (Click time to jump)</h3>
+                        <div class="timestamp-list" id="timestampList">
+                            <!-- Timestamps will appear here -->
+                        </div>
+                        <div class="add-timestamp">
+                            <input type="text" id="timestampNote" placeholder="Add note at current time...">
+                            <button class="control-btn primary" onclick="addTimestamp()">Add Note</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Current Session -->
+                <div class="sidebar-card">
+                    <div class="session-info">
+                        <p>Current Session</p>
+                        <strong id="sessionCustomerDisplay">No customer loaded</strong>
+                    </div>
+                    <button class="quick-action" onclick="clearSession()">
+                        <span>Clear Session</span>
+                        <small>Start fresh with new customer</small>
+                    </button>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="sidebar-card">
+                    <h3>Quick Actions</h3>
+                    <a href="analysis-tracker.html" target="_blank" class="quick-action">
+                        <span>Open Stat Tracker</span>
+                        <small>Track shots in separate window</small>
+                    </a>
+                    <a href="https://www.loom.com/record" target="_blank" class="quick-action">
+                        <span>Record Loom Video</span>
+                        <small>Create video walkthrough</small>
+                    </a>
+                    <button class="quick-action" onclick="copyEmailTemplate()">
+                        <span>Copy Results Email</span>
+                        <small>Template ready to paste</small>
+                    </button>
+                    <a href="admin-notify.html" target="_blank" class="quick-action">
+                        <span>Payment Notifications</span>
+                        <small>Log Venmo payments</small>
+                    </a>
+                </div>
+
+                <!-- Keyboard Shortcuts -->
+                <div class="sidebar-card">
+                    <h3>Keyboard Shortcuts</h3>
+                    <div class="shortcuts-list">
+                        <div class="shortcut-item">
+                            <span>Play/Pause</span>
+                            <span class="shortcut-key">Space</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span>Skip -5s</span>
+                            <span class="shortcut-key">&larr;</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span>Skip +5s</span>
+                            <span class="shortcut-key">&rarr;</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span>Prev Frame</span>
+                            <span class="shortcut-key">,</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span>Next Frame</span>
+                            <span class="shortcut-key">.</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span>Speed Down</span>
+                            <span class="shortcut-key">[</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span>Speed Up</span>
+                            <span class="shortcut-key">]</span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span>Add Note</span>
+                            <span class="shortcut-key">N</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        const COACH_PASSWORD = 'raycoach2025';  // Change this!
+
+        // ============================================
+        // PASSWORD PROTECTION
+        // ============================================
+        function checkPassword() {
+            const entered = document.getElementById('passwordInput').value;
+            if (entered === COACH_PASSWORD) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').classList.add('active');
+                localStorage.setItem('coachLoggedIn', 'true');
+                loadSession();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('coachLoggedIn');
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        // Check if already logged in
+        if (localStorage.getItem('coachLoggedIn') === 'true') {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            loadSession();
+        }
+
+        // Enter key to submit password
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkPassword();
+        });
+
+        // ============================================
+        // VIDEO PLAYER
+        // ============================================
+        const video = document.getElementById('videoPlayer');
+        const placeholder = document.getElementById('videoPlaceholder');
+        const controls = document.getElementById('videoControls');
+        const dropZone = document.getElementById('dropZone');
+        const speedSpeeds = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 2];
+        let currentSpeedIndex = 3; // 1x
+
+        // Drag and drop
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('video/')) {
+                loadVideo(file);
+            }
+        });
+
+        function loadVideoFile(event) {
+            const file = event.target.files[0];
+            if (file) {
+                loadVideo(file);
+            }
+        }
+
+        function loadVideo(file) {
+            const url = URL.createObjectURL(file);
+            video.src = url;
+            video.classList.add('active');
+            placeholder.classList.add('hidden');
+            controls.classList.add('active');
+            video.load();
+        }
+
+        function loadVideoFromUrl() {
+            const url = document.getElementById('videoUrlInput').value.trim();
+            if (url) {
+                video.src = url;
+                video.classList.add('active');
+                placeholder.classList.add('hidden');
+                controls.classList.add('active');
+                video.load();
+            }
+        }
+
+        // Playback controls
+        function togglePlay() {
+            if (video.paused) {
+                video.play();
+                document.getElementById('playPauseBtn').textContent = 'Pause';
+            } else {
+                video.pause();
+                document.getElementById('playPauseBtn').textContent = 'Play';
+            }
+        }
+
+        function skip(seconds) {
+            video.currentTime += seconds;
+        }
+
+        function skipFrames(frames) {
+            // Approximate 30fps
+            video.pause();
+            video.currentTime += (frames / 30);
+        }
+
+        function changeSpeed() {
+            const speed = parseFloat(document.getElementById('speedSelect').value);
+            video.playbackRate = speed;
+        }
+
+        function cycleSpeedUp() {
+            currentSpeedIndex = Math.min(currentSpeedIndex + 1, speedSpeeds.length - 1);
+            video.playbackRate = speedSpeeds[currentSpeedIndex];
+            document.getElementById('speedSelect').value = speedSpeeds[currentSpeedIndex];
+        }
+
+        function cycleSpeedDown() {
+            currentSpeedIndex = Math.max(currentSpeedIndex - 1, 0);
+            video.playbackRate = speedSpeeds[currentSpeedIndex];
+            document.getElementById('speedSelect').value = speedSpeeds[currentSpeedIndex];
+        }
+
+        // Progress bar
+        video.addEventListener('timeupdate', () => {
+            const progress = (video.currentTime / video.duration) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            updateTimeDisplay();
+        });
+
+        video.addEventListener('play', () => {
+            document.getElementById('playPauseBtn').textContent = 'Pause';
+        });
+
+        video.addEventListener('pause', () => {
+            document.getElementById('playPauseBtn').textContent = 'Play';
+        });
+
+        function seekVideo(event) {
+            const bar = document.getElementById('progressBar');
+            const rect = bar.getBoundingClientRect();
+            const percent = (event.clientX - rect.left) / rect.width;
+            video.currentTime = percent * video.duration;
+        }
+
+        function updateTimeDisplay() {
+            const current = formatTime(video.currentTime);
+            const duration = formatTime(video.duration);
+            document.getElementById('timeDisplay').textContent = `${current} / ${duration}`;
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // ============================================
+        // TIMESTAMP NOTES
+        // ============================================
+        let timestamps = [];
+
+        function addTimestamp() {
+            const note = document.getElementById('timestampNote').value.trim();
+            if (!note) {
+                // Focus on input if empty
+                document.getElementById('timestampNote').focus();
+                return;
+            }
+
+            const time = video.currentTime;
+            timestamps.push({ time, note });
+            timestamps.sort((a, b) => a.time - b.time);
+            renderTimestamps();
+            document.getElementById('timestampNote').value = '';
+            saveSession();
+        }
+
+        function renderTimestamps() {
+            const list = document.getElementById('timestampList');
+            if (timestamps.length === 0) {
+                list.innerHTML = '<p style="color: var(--text-light); font-size: 0.85rem;">No timestamps yet. Add notes as you watch!</p>';
+                return;
+            }
+
+            list.innerHTML = timestamps.map((ts, i) => `
+                <div class="timestamp-item">
+                    <span class="time" onclick="jumpToTime(${ts.time})">${formatTime(ts.time)}</span>
+                    <span class="note">${ts.note}</span>
+                    <span class="delete" onclick="deleteTimestamp(${i})">x</span>
+                </div>
+            `).join('');
+        }
+
+        function jumpToTime(time) {
+            video.currentTime = time;
+            video.play();
+        }
+
+        function deleteTimestamp(index) {
+            timestamps.splice(index, 1);
+            renderTimestamps();
+            saveSession();
+        }
+
+        // ============================================
+        // SESSION MANAGEMENT
+        // ============================================
+        function saveSession() {
+            const session = {
+                customerName: document.getElementById('customerName').value,
+                customerEmail: document.getElementById('customerEmail').value,
+                customerVideoLink: document.getElementById('customerVideoLink').value,
+                customerNotes: document.getElementById('customerNotes').value,
+                timestamps: timestamps
+            };
+            localStorage.setItem('coachSession', JSON.stringify(session));
+            updateSessionDisplay();
+        }
+
+        function loadSession() {
+            const saved = localStorage.getItem('coachSession');
+            if (saved) {
+                const session = JSON.parse(saved);
+                document.getElementById('customerName').value = session.customerName || '';
+                document.getElementById('customerEmail').value = session.customerEmail || '';
+                document.getElementById('customerVideoLink').value = session.customerVideoLink || '';
+                document.getElementById('customerNotes').value = session.customerNotes || '';
+                timestamps = session.timestamps || [];
+                renderTimestamps();
+                updateSessionDisplay();
+            } else {
+                renderTimestamps();
+            }
+        }
+
+        function clearSession() {
+            if (confirm('Clear all session data? This cannot be undone.')) {
+                localStorage.removeItem('coachSession');
+                document.getElementById('customerName').value = '';
+                document.getElementById('customerEmail').value = '';
+                document.getElementById('customerVideoLink').value = '';
+                document.getElementById('customerNotes').value = '';
+                timestamps = [];
+                renderTimestamps();
+                updateSessionDisplay();
+
+                // Reset video
+                video.src = '';
+                video.classList.remove('active');
+                placeholder.classList.remove('hidden');
+                controls.classList.remove('active');
+            }
+        }
+
+        function updateSessionDisplay() {
+            const name = document.getElementById('customerName').value;
+            document.getElementById('sessionCustomerDisplay').textContent =
+                name ? name : 'No customer loaded';
+        }
+
+        // ============================================
+        // EMAIL TEMPLATE
+        // ============================================
+        function copyEmailTemplate() {
+            const name = document.getElementById('customerName').value || '[FIRST NAME]';
+
+            const template = `Hi ${name}!
+
+Your video analysis is complete! Here's everything:
+
+STATISTICAL REPORT
+[Paste Google Doc link or attach PDF]
+
+VIDEO WALKTHROUGH
+[Paste Loom link]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+KEY TAKEAWAYS
+
+Biggest Strength: [e.g., Backhand dink consistency - you rarely pop up on your BH side]
+
+Biggest Leak: [e.g., Third shot drop placement - 60% of drops landed in transition zone]
+
+Decision Quality: [Letter Grade, e.g., B-]
+
+Top Fix: [e.g., Focus on arc height - aim for drops to peak at the net and land in the kitchen]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Thanks for trusting me with your game! If you have questions about the analysis or want to discuss anything, just reply to this email or text me at (801) 205-9124.
+
+See you on the courts,
+Ray`;
+
+            navigator.clipboard.writeText(template).then(() => {
+                alert('Email template copied to clipboard!');
+            }).catch(() => {
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = template;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Email template copied to clipboard!');
+            });
+        }
+
+        // ============================================
+        // KEYBOARD SHORTCUTS
+        // ============================================
+        document.addEventListener('keydown', (e) => {
+            // Don't trigger if typing in an input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                if (e.key === 'Escape') {
+                    e.target.blur();
+                }
+                return;
+            }
+
+            switch(e.key) {
+                case ' ':
+                    e.preventDefault();
+                    togglePlay();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    skip(-5);
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    skip(5);
+                    break;
+                case ',':
+                    e.preventDefault();
+                    skipFrames(-1);
+                    break;
+                case '.':
+                    e.preventDefault();
+                    skipFrames(1);
+                    break;
+                case '[':
+                    e.preventDefault();
+                    cycleSpeedDown();
+                    break;
+                case ']':
+                    e.preventDefault();
+                    cycleSpeedUp();
+                    break;
+                case 'n':
+                case 'N':
+                    e.preventDefault();
+                    document.getElementById('timestampNote').focus();
+                    break;
+            }
+        });
+
+        // Initialize
+        renderTimestamps();
+    </script>
+</body>
+</html>

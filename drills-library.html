@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drills Library - All Trackable Drills | Ray Paull Pickleball</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">🏓 Ray's Pickleball</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="services.html">Services</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="services.html">Video Analysis</a></li>
+                        <li><a href="skill-evaluation.html">Skill Evaluation</a></li>
+                        <li><a href="doubles-analysis.html">Doubles Analysis</a></li>
+                        <li><a href="level-up.html" class="dropdown-highlight">Level Up Program</a></li>
+                    </ul>
+                </li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="membership.html">Membership</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="btn btn-primary" style="padding: 8px 20px; color: white;">Submit Video</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Drills Library</h1>
+            <p>Every drill type we track with the AI Session Tracker</p>
+        </section>
+
+        <section class="drills-content">
+            <div class="container">
+                <!-- Filter Bar -->
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="all">All Drills</button>
+                    <button class="filter-btn" data-filter="beginner">Beginner</button>
+                    <button class="filter-btn" data-filter="intermediate">Intermediate</button>
+                    <button class="filter-btn" data-filter="advanced">Advanced</button>
+                </div>
+
+                <!-- SERVES -->
+                <div class="drill-category" id="serves">
+                    <div class="category-header">
+                        <span class="category-icon">🎾</span>
+                        <div>
+                            <h2>Serve Drills</h2>
+                            <p class="category-subtitle">Master your serve with placement, speed, and consistency tracking</p>
+                        </div>
+                    </div>
+
+                    <div class="drill-cards">
+                        <div class="drill-card" data-level="beginner">
+                            <span class="level-badge beginner">Beginner</span>
+                            <h3>Serve Depth Drill</h3>
+                            <p>Practice hitting serves deep into the service box. Focus on consistent depth rather than speed.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Depth (short/medium/deep zones)</li>
+                                    <li>Consistency % to target zone</li>
+                                    <li>Error rate (net/out)</li>
+                                    <li>FH vs BH serve comparison</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Aim for the back 1/3 of the service box. Deep serves give your partner less angle.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="intermediate">
+                            <span class="level-badge intermediate">Intermediate</span>
+                            <h3>Serve Placement Drill</h3>
+                            <p>Target specific zones - corners, body, and T-serves. Develop placement variety.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Placement heatmap (9 zones)</li>
+                                    <li>Target accuracy %</li>
+                                    <li>Serve speed (mph)</li>
+                                    <li>Spin type detection</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Mix up your targets. Don't hit the same spot twice in a row.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="advanced">
+                            <span class="level-badge advanced">Advanced</span>
+                            <h3>Power Serve Drill</h3>
+                            <p>Maximize serve speed while maintaining accuracy. Push your limits.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Speed tracking (mph)</li>
+                                    <li>Speed vs accuracy correlation</li>
+                                    <li>Fault rate at max speed</li>
+                                    <li>Optimal speed zone identification</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Find your "80% speed" - fast enough to pressure, consistent enough to trust.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RETURNS -->
+                <div class="drill-category" id="returns">
+                    <div class="category-header">
+                        <span class="category-icon">↩️</span>
+                        <div>
+                            <h2>Return Drills</h2>
+                            <p class="category-subtitle">Deep, consistent returns that neutralize the serve</p>
+                        </div>
+                    </div>
+
+                    <div class="drill-cards">
+                        <div class="drill-card" data-level="beginner">
+                            <span class="level-badge beginner">Beginner</span>
+                            <h3>Deep Return Drill</h3>
+                            <p>Every return should land past the kitchen line. Focus on depth over power.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Landing depth (feet from baseline)</li>
+                                    <li>Deep return % (past kitchen)</li>
+                                    <li>FH vs BH depth comparison</li>
+                                    <li>Error breakdown</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Aim 2-3 feet inside the baseline. Margin is your friend on returns.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="intermediate">
+                            <span class="level-badge intermediate">Intermediate</span>
+                            <h3>Return & Rush Drill</h3>
+                            <p>Hit deep return and immediately move forward. Track shot quality while transitioning.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Return depth</li>
+                                    <li>Speed of return</li>
+                                    <li>Court position after return</li>
+                                    <li>Split-step timing</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Don't sacrifice depth for speed. A deep return buys you time to move up.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="advanced">
+                            <span class="level-badge advanced">Advanced</span>
+                            <h3>Targeted Return Drill</h3>
+                            <p>Hit returns to specific targets - backhand corner, body, or down the line.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Target accuracy %</li>
+                                    <li>Placement heatmap</li>
+                                    <li>Speed by target zone</li>
+                                    <li>Winner/error ratio</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Most players' backhand is weaker. Attack it early and often.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- THIRD SHOT -->
+                <div class="drill-category" id="third-shot">
+                    <div class="category-header">
+                        <span class="category-icon">3️⃣</span>
+                        <div>
+                            <h2>Third Shot Drills</h2>
+                            <p class="category-subtitle">Drops, drives, and the most important shot in pickleball</p>
+                        </div>
+                    </div>
+
+                    <div class="drill-cards">
+                        <div class="drill-card" data-level="beginner">
+                            <span class="level-badge beginner">Beginner</span>
+                            <h3>Third Shot Drop - Basics</h3>
+                            <p>Get the ball into the kitchen with a soft, arcing drop shot.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Landing zone (kitchen/transition/deep)</li>
+                                    <li>Arc height (high/medium/low-perfect)</li>
+                                    <li>Consistency %</li>
+                                    <li>Net clearance</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> The apex of your drop should be on YOUR side of the net, then fall into the kitchen.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="intermediate">
+                            <span class="level-badge intermediate">Intermediate</span>
+                            <h3>Third Shot Drive</h3>
+                            <p>Attack with a low, fast drive when opponent gives you a high ball.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Drive speed (mph)</li>
+                                    <li>Trajectory (high/ok/low-perfect)</li>
+                                    <li>Spin movement detection</li>
+                                    <li>Placement accuracy</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Aim at the feet or the backhand hip. Make them hit up.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="advanced">
+                            <span class="level-badge advanced">Advanced</span>
+                            <h3>Drop vs Drive Decision</h3>
+                            <p>Practice reading the situation and choosing the right third shot.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Drive vs drop ratio</li>
+                                    <li>Success rate by choice</li>
+                                    <li>Decision quality rating</li>
+                                    <li>Pattern recognition</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Drive when they're back or give you a high ball. Drop when they're at the kitchen.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VOLLEYS -->
+                <div class="drill-category" id="volleys">
+                    <div class="category-header">
+                        <span class="category-icon">⚡</span>
+                        <div>
+                            <h2>Volley Drills</h2>
+                            <p class="category-subtitle">Punch volleys, drive volleys, and net play</p>
+                        </div>
+                    </div>
+
+                    <div class="drill-cards">
+                        <div class="drill-card" data-level="beginner">
+                            <span class="level-badge beginner">Beginner</span>
+                            <h3>Punch Volley Basics</h3>
+                            <p>Short, compact volleys with minimal backswing. Keep it simple.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Pop-up % (attackable returns)</li>
+                                    <li>Low/unattackable %</li>
+                                    <li>Placement accuracy</li>
+                                    <li>Error rate (net/out)</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Punch, don't swing. Think "catch and redirect" the ball.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="intermediate">
+                            <span class="level-badge intermediate">Intermediate</span>
+                            <h3>Drive Volley Drill</h3>
+                            <p>Attack high balls with pace while staying balanced.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Speed tracking</li>
+                                    <li>Winner vs error ratio</li>
+                                    <li>Trajectory analysis</li>
+                                    <li>Recovery position</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Step INTO the volley. Weight moving forward = more power, better control.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="advanced">
+                            <span class="level-badge advanced">Advanced</span>
+                            <h3>Reflex Volley Drill</h3>
+                            <p>Fast-hands practice for rapid exchanges at the net.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Reaction time</li>
+                                    <li>Rally length sustained</li>
+                                    <li>Error under pressure %</li>
+                                    <li>Hand speed rating</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Soften your grip. A looser grip = faster reactions and better touch.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESETS -->
+                <div class="drill-category" id="resets">
+                    <div class="category-header">
+                        <span class="category-icon">🛡️</span>
+                        <div>
+                            <h2>Reset & Counter Drills</h2>
+                            <p class="category-subtitle">Defend attacks and neutralize with soft hands</p>
+                        </div>
+                    </div>
+
+                    <div class="drill-cards">
+                        <div class="drill-card" data-level="beginner">
+                            <span class="level-badge beginner">Beginner</span>
+                            <h3>Basic Reset Drill</h3>
+                            <p>Absorb pace and drop the ball softly into the kitchen.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Reset success %</li>
+                                    <li>Landing zone accuracy</li>
+                                    <li>Soft hands rating</li>
+                                    <li>Ball height over net</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Let the ball come to you. Absorb with a loose grip and open paddle face.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="intermediate">
+                            <span class="level-badge intermediate">Intermediate</span>
+                            <h3>Block & Reset Combo</h3>
+                            <p>Block the first attack, reset the second. Two-shot defense sequence.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Block success rate</li>
+                                    <li>Reset after block %</li>
+                                    <li>Sequence completion rate</li>
+                                    <li>Recovery position</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> First block just needs to stay low. Second shot resets to the kitchen.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="advanced">
+                            <span class="level-badge advanced">Advanced</span>
+                            <h3>Counter-Attack Drill</h3>
+                            <p>Turn defense into offense. Reset, then attack when they pop up.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Counter-attack success %</li>
+                                    <li>Pattern recognition</li>
+                                    <li>Transition from defense to offense</li>
+                                    <li>Point win rate after reset</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Be patient. Reset until THEY pop up, then attack.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DINKS -->
+                <div class="drill-category" id="dinks">
+                    <div class="category-header">
+                        <span class="category-icon">🏓</span>
+                        <div>
+                            <h2>Dink Drills</h2>
+                            <p class="category-subtitle">The foundation of high-level pickleball</p>
+                        </div>
+                    </div>
+
+                    <div class="drill-cards">
+                        <div class="drill-card" data-level="beginner">
+                            <span class="level-badge beginner">Beginner</span>
+                            <h3>Straight-Ahead Dinks</h3>
+                            <p>Basic dinking drill - keep it in the kitchen, straight to your partner.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Pop-up rate %</li>
+                                    <li>Consistency (rally length)</li>
+                                    <li>Net clearance</li>
+                                    <li>FH vs BH breakdown</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Lift with your legs, not your wrist. Think "push" not "hit."
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="intermediate">
+                            <span class="level-badge intermediate">Intermediate</span>
+                            <h3>Cross-Court Dinks</h3>
+                            <p>Move the ball diagonally - more angle, more margin over the net.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Cross-court L→R accuracy</li>
+                                    <li>Cross-court R→L accuracy</li>
+                                    <li>Angle consistency</li>
+                                    <li>Pop-up rate by direction</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Cross-court dinks have 3 feet more margin. Use it to your advantage.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="advanced">
+                            <span class="level-badge advanced">Advanced</span>
+                            <h3>Attacking Dink Patterns</h3>
+                            <p>Set up attacks with strategic dink placement. Move them, then strike.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Attack dink %</li>
+                                    <li>Dead dink % (neutral)</li>
+                                    <li>Pattern sequences</li>
+                                    <li>Points won after attack dink</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Move them side to side, then attack the open court or their backhand.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OVERHEADS -->
+                <div class="drill-category" id="overheads">
+                    <div class="category-header">
+                        <span class="category-icon">💥</span>
+                        <div>
+                            <h2>Overhead Drills</h2>
+                            <p class="category-subtitle">Put away lobs and high balls with authority</p>
+                        </div>
+                    </div>
+
+                    <div class="drill-cards">
+                        <div class="drill-card" data-level="beginner">
+                            <span class="level-badge beginner">Beginner</span>
+                            <h3>Basic Overhead Drill</h3>
+                            <p>Focus on contact point and getting the ball in play.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>In-play rate %</li>
+                                    <li>Error breakdown (net/out)</li>
+                                    <li>Placement zones</li>
+                                    <li>Footwork rating</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Turn sideways, point at the ball with your non-paddle hand, then swing.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="intermediate">
+                            <span class="level-badge intermediate">Intermediate</span>
+                            <h3>Placement Overhead</h3>
+                            <p>Target specific zones - corners, body, or back at their feet.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Target accuracy %</li>
+                                    <li>Put-away rate</li>
+                                    <li>Speed by placement</li>
+                                    <li>Winner % by zone</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Don't always crush it. A well-placed overhead at 70% is often more effective.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="advanced">
+                            <span class="level-badge advanced">Advanced</span>
+                            <h3>Moving Overhead Drill</h3>
+                            <p>Handle lobs that push you back. Backpedal, set, execute.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Recovery after overhead</li>
+                                    <li>Success rate while moving</li>
+                                    <li>Decision quality (hit vs let bounce)</li>
+                                    <li>Balance rating</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> If you're struggling, let it bounce. A controlled bounce smash beats a wild overhead.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TRANSITION -->
+                <div class="drill-category" id="transition">
+                    <div class="category-header">
+                        <span class="category-icon">🎯</span>
+                        <div>
+                            <h2>Transition Zone Drills</h2>
+                            <p class="category-subtitle">Navigate the danger zone between baseline and kitchen</p>
+                        </div>
+                    </div>
+
+                    <div class="drill-cards">
+                        <div class="drill-card" data-level="intermediate">
+                            <span class="level-badge intermediate">Intermediate</span>
+                            <h3>Drop & Move Forward</h3>
+                            <p>Hit a drop, move forward, handle the response. Continuous progression.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Successful transitions %</li>
+                                    <li>Steps forward per drop</li>
+                                    <li>Position at opponent contact</li>
+                                    <li>Next shot quality</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Move forward AFTER your drop crosses the net, not before.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="intermediate">
+                            <span class="level-badge intermediate">Intermediate</span>
+                            <h3>Split-Step Timing</h3>
+                            <p>Practice the split-step at the perfect moment for optimal reaction.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Split-step timing accuracy</li>
+                                    <li>Balance on landing</li>
+                                    <li>First-step direction efficiency</li>
+                                    <li>Reaction to ball direction</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Split-step when opponent is about to hit. Land balanced, ready to move either way.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="advanced">
+                            <span class="level-badge advanced">Advanced</span>
+                            <h3>Transition Under Pressure</h3>
+                            <p>Handle attacks while moving through the transition zone.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Reset success while moving</li>
+                                    <li>Balance under attack</li>
+                                    <li>Decision quality (reset vs counter)</li>
+                                    <li>Point completion rate</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Stay low through the transition. High = easy target. Low = harder to attack.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LOBS -->
+                <div class="drill-category" id="lobs">
+                    <div class="category-header">
+                        <span class="category-icon">🌈</span>
+                        <div>
+                            <h2>Lob Drills</h2>
+                            <p class="category-subtitle">Offensive weapons and defensive escapes</p>
+                        </div>
+                    </div>
+
+                    <div class="drill-cards">
+                        <div class="drill-card" data-level="intermediate">
+                            <span class="level-badge intermediate">Intermediate</span>
+                            <h3>Offensive Lob</h3>
+                            <p>Catch them off guard with a perfectly placed lob over their reach.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Lob success rate</li>
+                                    <li>Height/depth accuracy</li>
+                                    <li>Winner % from lobs</li>
+                                    <li>Disguise rating</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Use the same setup as a dink. The disguise makes the lob effective.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="intermediate">
+                            <span class="level-badge intermediate">Intermediate</span>
+                            <h3>Defensive Lob</h3>
+                            <p>Escape pressure with a high, deep lob. Buy time to reset.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Recovery time after lob</li>
+                                    <li>Depth accuracy</li>
+                                    <li>Short lobs % (punished)</li>
+                                    <li>Point continuation rate</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Height is your friend on defensive lobs. High = more time to recover.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SPEED-UPS -->
+                <div class="drill-category" id="speedups">
+                    <div class="category-header">
+                        <span class="category-icon">🔥</span>
+                        <div>
+                            <h2>Speed-up & Firefight Drills</h2>
+                            <p class="category-subtitle">Fast hands and quick decisions at the kitchen line</p>
+                        </div>
+                    </div>
+
+                    <div class="drill-cards">
+                        <div class="drill-card" data-level="intermediate">
+                            <span class="level-badge intermediate">Intermediate</span>
+                            <h3>Controlled Speed-up</h3>
+                            <p>Practice initiating speed-ups with control, not just power.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Speed-up success rate</li>
+                                    <li>Target accuracy (body/feet)</li>
+                                    <li>Winner % from speed-ups</li>
+                                    <li>Error rate when initiating</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Speed up at their paddle shoulder or hip. Make them reach.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="advanced">
+                            <span class="level-badge advanced">Advanced</span>
+                            <h3>Firefight Survival</h3>
+                            <p>Extended hand battles. Last one standing wins.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Firefight win rate</li>
+                                    <li>Average rally length</li>
+                                    <li>Reaction time</li>
+                                    <li>Error type breakdown</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Stay compact. Smaller swings = faster recovery for next ball.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADVANCED -->
+                <div class="drill-category" id="advanced">
+                    <div class="category-header">
+                        <span class="category-icon">🦅</span>
+                        <div>
+                            <h2>Erne & ATP Drills</h2>
+                            <p class="category-subtitle">Advanced techniques for competitive players</p>
+                        </div>
+                    </div>
+
+                    <div class="drill-cards">
+                        <div class="drill-card" data-level="advanced">
+                            <span class="level-badge advanced">Advanced</span>
+                            <h3>Erne Setup & Execution</h3>
+                            <p>Recognize Erne opportunities and execute the jump around the post.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Erne attempt rate</li>
+                                    <li>Conversion rate</li>
+                                    <li>Setup recognition</li>
+                                    <li>Footwork legality</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> Set up your Erne by dinking wide. When they go cross-court, GO.
+                            </div>
+                        </div>
+
+                        <div class="drill-card" data-level="advanced">
+                            <span class="level-badge advanced">Advanced</span>
+                            <h3>Around-the-Post (ATP)</h3>
+                            <p>The highlight reel shot. When to attempt and how to execute.</p>
+                            <div class="tracked-metrics">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>ATP attempt recognition</li>
+                                    <li>Success rate</li>
+                                    <li>Decision quality</li>
+                                    <li>Placement accuracy</li>
+                                </ul>
+                            </div>
+                            <div class="drill-tip">
+                                <strong>Tip:</strong> You need a wide ball and court time. Don't force it - wait for the right setup.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="drill-library-cta">
+                    <h2>Ready to Track Your Drills?</h2>
+                    <p>Upload your practice session and get stats on every shot.</p>
+                    <div class="cta-buttons">
+                        <a href="session-upload.html" class="btn btn-primary btn-large">Upload Session</a>
+                        <a href="games-library.html" class="btn btn-secondary btn-large">Browse Fun Games</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <style>
+        /* Drills Library Styles */
+        .drills-content {
+            padding: var(--section-padding) 20px;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 24px;
+            border: 2px solid var(--border-color);
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary-color);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Category Sections */
+        .drill-category {
+            margin-bottom: 60px;
+            padding-bottom: 60px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .drill-category:last-of-type {
+            border-bottom: none;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            background: var(--background-alt);
+            padding: 20px;
+            border-radius: 16px;
+        }
+
+        .category-header h2 {
+            margin: 0 0 5px 0;
+            font-size: 1.8rem;
+        }
+
+        .category-subtitle {
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* Drill Cards */
+        .drill-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .drill-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            position: relative;
+        }
+
+        .level-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .level-badge.beginner {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .level-badge.intermediate {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .level-badge.advanced {
+            background: #fce7f3;
+            color: #9d174d;
+        }
+
+        .drill-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            padding-right: 80px;
+        }
+
+        .drill-card > p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .tracked-metrics {
+            background: var(--background-alt);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .tracked-metrics h4 {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .tracked-metrics ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tracked-metrics li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .tracked-metrics li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--secondary-color);
+        }
+
+        .drill-tip {
+            background: #fef3c7;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #92400e;
+        }
+
+        /* CTA */
+        .drill-library-cta {
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #8b5cf6 100%);
+            border-radius: 16px;
+            color: white;
+            margin-top: 40px;
+        }
+
+        .drill-library-cta h2 {
+            margin-bottom: 10px;
+        }
+
+        .drill-library-cta p {
+            opacity: 0.9;
+            margin-bottom: 25px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .drill-library-cta .btn-primary {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .drill-library-cta .btn-secondary {
+            border-color: white;
+            color: white;
+        }
+
+        .drill-library-cta .btn-secondary:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+    </style>
+
+    <script>
+        // Filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const drillCards = document.querySelectorAll('.drill-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+
+                drillCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.level === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

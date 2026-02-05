@@ -1,0 +1,77 @@
+<!--
+  EMAIL TEMPLATE: Reward Claimed Confirmation
+  RECIPIENT: Member who claimed reward
+  TRIGGER: When admin marks reward as claimed
+
+  EMAILJS VARIABLES:
+  {{customer_name}} - Member's name
+  {{customer_email}} - Member's email
+  {{reward_name}} - Name of the reward claimed
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reward Claimed! - Ray's Pickleball</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #f3f4f6;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f3f4f6;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 30px; text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 10px;">✅</div>
+                            <h1 style="color: #ffffff; margin: 0; font-size: 24px;">Reward Claimed!</h1>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+                                Hey {{customer_name}}!
+                            </p>
+
+                            <p style="color: #4b5563; font-size: 16px; line-height: 1.6; margin: 0 0 25px 0;">
+                                Your referral reward has been processed! 🎉
+                            </p>
+
+                            <!-- Claimed Reward Box -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #ecfdf5; border: 2px solid #10b981; border-radius: 12px; margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 30px; text-align: center;">
+                                        <p style="color: #059669; font-size: 14px; margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px;">Claimed</p>
+                                        <p style="color: #047857; font-size: 24px; margin: 0; font-weight: 700;">{{reward_name}}</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
+                                Thanks for spreading the word about Ray's Pickleball! Your support helps grow our community.
+                            </p>
+
+                            <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0;">
+                                Keep referring friends to unlock more rewards and work toward <strong>Ambassador status</strong>!
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f9fafb; padding: 25px 30px; border-top: 1px solid #e5e7eb;">
+                            <p style="color: #9ca3af; font-size: 12px; margin: 0; text-align: center;">
+                                Ray Paull Pickleball Analysis
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

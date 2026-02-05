@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find a Pickleball Instructor - Ray's Pickleball</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Instructor Directory Styles */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Search & Filter Section */
+        .search-section {
+            background: var(--background-alt);
+            padding: 30px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .filter-select {
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            min-width: 180px;
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stats-bar span {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .stats-bar strong {
+            color: var(--primary-color);
+        }
+
+        /* Directory Section */
+        .directory-section {
+            padding: 50px 20px;
+        }
+
+        .instructor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Instructor Card */
+        .instructor-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .instructor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .instructor-photo {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--primary-color);
+        }
+
+        .instructor-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .instructor-info {
+            padding: 20px;
+        }
+
+        .instructor-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
+        .instructor-location {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .instructor-certifications {
+            color: var(--secondary-color);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .instructor-bio {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .instructor-specialties {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .specialty-tag {
+            background: var(--background-alt);
+            color: var(--text-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .instructor-rate {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .instructor-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .instructor-actions .btn {
+            flex: 1;
+            text-align: center;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        /* CTA Section */
+        .become-instructor-cta {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            padding: 60px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .become-instructor-cta h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .become-instructor-cta p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 25px auto;
+        }
+
+        .become-instructor-cta .btn {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .become-instructor-cta .btn:hover {
+            background: var(--background-alt);
+        }
+
+        /* Benefits Grid */
+        .benefits-section {
+            background: var(--background-alt);
+            padding: 60px 20px;
+        }
+
+        .benefits-section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2rem;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .benefit-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .benefit-card h3 {
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .benefit-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Instructor Detail Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--background-alt);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .modal-photo {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: var(--primary-color);
+        }
+
+        .modal-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .modal-location {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .modal-certifications {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .modal-section {
+            margin-bottom: 20px;
+        }
+
+        .modal-section h4 {
+            color: var(--text-color);
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .modal-section p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .modal-rate {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .modal-contact-info {
+            background: var(--background-alt);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .modal-contact-info p {
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .modal-contact-info a {
+            color: var(--primary-color);
+        }
+
+        .modal-social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .modal-social-links a {
+            padding: 8px 15px;
+            background: var(--background-alt);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        /* Reviews & Ratings */
+        .instructor-rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .stars {
+            color: #f59e0b;
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .rating-count {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .no-reviews {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        /* Modal Reviews Section */
+        .reviews-section {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .reviews-header h4 {
+            margin: 0;
+        }
+
+        .add-review-btn {
+            font-size: 0.85rem;
+            padding: 8px 16px;
+        }
+
+        .review-card {
+            background: var(--background-alt);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .review-date {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .review-stars {
+            color: #f59e0b;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .review-text {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .empty-reviews {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        /* Review Form Modal */
+        .review-form-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .review-form-overlay.active {
+            display: flex;
+        }
+
+        .review-form-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            position: relative;
+        }
+
+        .review-form-content h3 {
+            margin-bottom: 20px;
+        }
+
+        .star-rating-input {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .star-rating-input span {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #d1d5db;
+            transition: color 0.2s;
+        }
+
+        .star-rating-input span:hover,
+        .star-rating-input span.active {
+            color: #f59e0b;
+        }
+
+        .review-form-content label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .review-form-content input,
+        .review-form-content textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .review-form-content input:focus,
+        .review-form-content textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .review-form-content textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .review-form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--text-color);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            .search-input, .filter-select {
+                width: 100%;
+            }
+
+            .instructor-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">🏓 Ray's Pickleball</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="services.html">Services</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="services.html">Video Analysis</a></li>
+                        <li><a href="skill-evaluation.html">Skill Evaluation</a></li>
+                        <li><a href="doubles-analysis.html">Doubles Analysis</a></li>
+                        <li><a href="level-up.html" class="dropdown-highlight">Level Up Program</a></li>
+                    </ul>
+                </li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="membership.html">Membership</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="btn btn-primary" style="padding: 8px 20px; color: white;">Submit Video</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Page Header -->
+        <section class="page-header">
+            <h1>Find a Pickleball Instructor</h1>
+            <p>Connect with certified coaches in your area. Get personalized instruction to accelerate your game.</p>
+        </section>
+
+        <!-- Search & Filter -->
+        <section class="search-section">
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search by name, city, or specialty...">
+                <select id="locationFilter" class="filter-select">
+                    <option value="">All Locations</option>
+                    <option value="UT">Utah</option>
+                    <!-- More states added dynamically -->
+                </select>
+                <select id="specialtyFilter" class="filter-select">
+                    <option value="">All Specialties</option>
+                    <option value="Beginners">Beginners</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                    <option value="Doubles Strategy">Doubles Strategy</option>
+                    <option value="Singles">Singles</option>
+                    <option value="Dinking">Dinking</option>
+                    <option value="Third Shot Drop">Third Shot Drop</option>
+                    <option value="Serving">Serving</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Stats Bar -->
+        <section class="stats-bar">
+            <span id="instructorCount"><strong>0</strong> instructors available in your area</span>
+        </section>
+
+        <!-- Instructor Directory -->
+        <section class="directory-section">
+            <div id="instructorGrid" class="instructor-grid">
+                <!-- Instructors populated by JavaScript -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-state-icon">🔍</div>
+                <h3>No instructors found</h3>
+                <p>Try adjusting your search or filters, or check back soon as we grow our network!</p>
+            </div>
+        </section>
+
+        <!-- Why Choose Our Instructors -->
+        <section class="benefits-section">
+            <h2>Why Train With Our Instructors?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">✓</div>
+                    <h3>Vetted & Certified</h3>
+                    <p>All instructors are verified professionals with recognized certifications.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎯</div>
+                    <h3>Specialized Expertise</h3>
+                    <p>Find coaches who specialize in exactly what you need to improve.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📍</div>
+                    <h3>Local & Convenient</h3>
+                    <p>Connect with instructors near you for in-person training sessions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Become an Instructor CTA -->
+        <section class="become-instructor-cta">
+            <h2>Are You a Pickleball Instructor?</h2>
+            <p>Join our network and connect with students looking for quality coaching. Get listed for free during our launch period!</p>
+            <a href="instructor-signup.html" class="btn btn-large">Join the Network</a>
+        </section>
+    </main>
+
+    <!-- Instructor Detail Modal -->
+    <div id="instructorModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modalPhoto" class="modal-photo">🏓</div>
+            <div class="modal-body">
+                <h2 id="modalName" class="modal-name">Instructor Name</h2>
+                <p id="modalLocation" class="modal-location">📍 Location</p>
+                <div id="modalRating" class="instructor-rating" style="margin-bottom: 15px;"></div>
+                <p id="modalCertifications" class="modal-certifications">Certifications</p>
+
+                <div class="modal-section">
+                    <h4>About</h4>
+                    <p id="modalBio">Bio goes here...</p>
+                </div>
+
+                <div class="modal-section">
+                    <h4>Specialties</h4>
+                    <div id="modalSpecialties" class="instructor-specialties"></div>
+                </div>
+
+                <div class="modal-section">
+                    <h4>Session Types</h4>
+                    <p id="modalSessionTypes">Private, Group, Clinics</p>
+                </div>
+
+                <p id="modalRate" class="modal-rate">$60-80/hour</p>
+
+                <div id="modalContactInfo" class="modal-contact-info">
+                    <h4 style="margin-bottom: 10px;">Contact</h4>
+                    <p id="modalEmail">📧 email@example.com</p>
+                    <p id="modalPhone">📱 (801) 555-1234</p>
+                    <div id="modalSocialLinks" class="modal-social-links"></div>
+                </div>
+
+                <!-- Reviews Section -->
+                <div class="reviews-section">
+                    <div class="reviews-header">
+                        <h4>⭐ Student Reviews</h4>
+                        <button class="btn btn-secondary add-review-btn" onclick="openReviewForm()">Write a Review</button>
+                    </div>
+                    <div id="modalReviews">
+                        <div class="empty-reviews">No reviews yet. Be the first to review!</div>
+                    </div>
+                </div>
+
+                <a id="modalContactBtn" href="#" class="btn btn-primary btn-full" style="margin-top: 20px;">Contact This Instructor</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Form Modal -->
+    <div id="reviewFormModal" class="review-form-overlay">
+        <div class="review-form-content">
+            <button class="modal-close" onclick="closeReviewForm()">&times;</button>
+            <h3>Write a Review</h3>
+            <p style="color: var(--text-light); margin-bottom: 20px;">Share your experience with <strong id="reviewInstructorName">this instructor</strong></p>
+
+            <label>Your Rating</label>
+            <div class="star-rating-input" id="starRatingInput">
+                <span data-rating="1" onclick="setRating(1)">★</span>
+                <span data-rating="2" onclick="setRating(2)">★</span>
+                <span data-rating="3" onclick="setRating(3)">★</span>
+                <span data-rating="4" onclick="setRating(4)">★</span>
+                <span data-rating="5" onclick="setRating(5)">★</span>
+            </div>
+
+            <label for="reviewerName">Your Name</label>
+            <input type="text" id="reviewerName" placeholder="John D.">
+
+            <label for="reviewText">Your Review</label>
+            <textarea id="reviewText" placeholder="Share your experience working with this instructor..."></textarea>
+
+            <div class="review-form-actions">
+                <button class="btn btn-secondary" onclick="closeReviewForm()">Cancel</button>
+                <button class="btn btn-primary" onclick="submitReview()">Submit Review</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // ============================================
+        // INSTRUCTOR DIRECTORY
+        // ============================================
+
+        // Load and display instructors
+        function loadInstructors() {
+            const instructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+            const activeInstructors = instructors.filter(i => i.status === 'active');
+
+            // Update count
+            document.getElementById('instructorCount').innerHTML =
+                `<strong>${activeInstructors.length}</strong> instructor${activeInstructors.length !== 1 ? 's' : ''} available`;
+
+            // Apply filters
+            filterAndDisplayInstructors(activeInstructors);
+
+            // Populate location filter with unique states
+            populateLocationFilter(activeInstructors);
+        }
+
+        function populateLocationFilter(instructors) {
+            const states = [...new Set(instructors.map(i => i.state).filter(s => s))];
+            const select = document.getElementById('locationFilter');
+
+            // Keep first option
+            select.innerHTML = '<option value="">All Locations</option>';
+
+            states.sort().forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = getStateName(state);
+                select.appendChild(option);
+            });
+        }
+
+        function getStateName(abbr) {
+            const states = {
+                'UT': 'Utah', 'CA': 'California', 'AZ': 'Arizona', 'NV': 'Nevada',
+                'CO': 'Colorado', 'TX': 'Texas', 'FL': 'Florida', 'NY': 'New York',
+                'WA': 'Washington', 'OR': 'Oregon', 'ID': 'Idaho'
+            };
+            return states[abbr] || abbr;
+        }
+
+        function filterAndDisplayInstructors(instructors) {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const locationFilter = document.getElementById('locationFilter').value;
+            const specialtyFilter = document.getElementById('specialtyFilter').value;
+
+            let filtered = instructors;
+
+            // Search filter
+            if (searchTerm) {
+                filtered = filtered.filter(i =>
+                    i.name.toLowerCase().includes(searchTerm) ||
+                    i.city.toLowerCase().includes(searchTerm) ||
+                    (i.specialties || []).some(s => s.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            // Location filter
+            if (locationFilter) {
+                filtered = filtered.filter(i => i.state === locationFilter);
+            }
+
+            // Specialty filter
+            if (specialtyFilter) {
+                filtered = filtered.filter(i =>
+                    (i.specialties || []).includes(specialtyFilter)
+                );
+            }
+
+            displayInstructors(filtered);
+        }
+
+        function displayInstructors(instructors) {
+            const grid = document.getElementById('instructorGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            if (instructors.length === 0) {
+                grid.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            grid.innerHTML = instructors.map(instructor => {
+                const photoHtml = instructor.photo
+                    ? `<img src="${instructor.photo}" alt="${instructor.name}">`
+                    : '🏓';
+
+                const specialtiesHtml = (instructor.specialties || []).slice(0, 3)
+                    .map(s => `<span class="specialty-tag">${s}</span>`).join('');
+
+                const certifications = (instructor.certifications || []).join(' • ') || 'Certified Instructor';
+
+                // Calculate average rating
+                const reviews = instructor.reviews || [];
+                const avgRating = reviews.length > 0
+                    ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+                    : 0;
+                const starsHtml = getStarsHtml(avgRating);
+                const ratingHtml = reviews.length > 0
+                    ? `<div class="instructor-rating">
+                        <span class="stars">${starsHtml}</span>
+                        <span class="rating-count">${avgRating} (${reviews.length} review${reviews.length !== 1 ? 's' : ''})</span>
+                       </div>`
+                    : `<div class="instructor-rating"><span class="no-reviews">No reviews yet</span></div>`;
+
+                return `
+                    <div class="instructor-card">
+                        <div class="instructor-photo">${photoHtml}</div>
+                        <div class="instructor-info">
+                            <h3 class="instructor-name">${instructor.name}</h3>
+                            <p class="instructor-location">📍 ${instructor.city}, ${instructor.state}</p>
+                            ${ratingHtml}
+                            <p class="instructor-certifications">${certifications}</p>
+                            <p class="instructor-bio">${instructor.bio || 'Experienced pickleball instructor dedicated to helping players improve their game.'}</p>
+                            <div class="instructor-specialties">${specialtiesHtml}</div>
+                            <p class="instructor-rate">${instructor.hourlyRate || '$50-75'}/hour</p>
+                            <div class="instructor-actions">
+                                <button class="btn btn-secondary" onclick="viewInstructor('${instructor.id}')">View Profile</button>
+                                <a href="mailto:${instructor.email}" class="btn btn-primary">Contact</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // View instructor modal
+        function viewInstructor(instructorId) {
+            const instructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+            const instructor = instructors.find(i => i.id === instructorId);
+
+            if (!instructor) return;
+
+            // Set current instructor for reviews
+            currentInstructorId = instructorId;
+
+            // Populate modal
+            document.getElementById('modalName').textContent = instructor.name;
+            document.getElementById('modalLocation').textContent = `📍 ${instructor.city}, ${instructor.state}`;
+
+            // Rating display
+            const reviews = instructor.reviews || [];
+            const avgRating = reviews.length > 0
+                ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+                : 0;
+            const modalRatingEl = document.getElementById('modalRating');
+            if (reviews.length > 0) {
+                modalRatingEl.innerHTML = `
+                    <span class="stars">${getStarsHtml(avgRating)}</span>
+                    <span class="rating-count">${avgRating} (${reviews.length} review${reviews.length !== 1 ? 's' : ''})</span>
+                `;
+            } else {
+                modalRatingEl.innerHTML = '<span class="no-reviews">No reviews yet</span>';
+            }
+
+            document.getElementById('modalCertifications').textContent =
+                (instructor.certifications || []).join(' • ') || 'Certified Instructor';
+            document.getElementById('modalBio').textContent =
+                instructor.bio || 'Experienced pickleball instructor dedicated to helping players improve their game.';
+
+            // Specialties
+            document.getElementById('modalSpecialties').innerHTML =
+                (instructor.specialties || []).map(s => `<span class="specialty-tag">${s}</span>`).join('');
+
+            // Session types
+            document.getElementById('modalSessionTypes').textContent =
+                (instructor.sessionTypes || ['Private lessons']).join(', ');
+
+            // Rate
+            document.getElementById('modalRate').textContent =
+                `${instructor.hourlyRate || '$50-75'}/hour`;
+
+            // Contact info
+            document.getElementById('modalEmail').innerHTML =
+                `📧 <a href="mailto:${instructor.email}">${instructor.email}</a>`;
+            document.getElementById('modalPhone').textContent =
+                instructor.phone ? `📱 ${instructor.phone}` : '';
+
+            // Photo
+            const photoEl = document.getElementById('modalPhoto');
+            if (instructor.photo) {
+                photoEl.innerHTML = `<img src="${instructor.photo}" alt="${instructor.name}">`;
+            } else {
+                photoEl.innerHTML = '🏓';
+            }
+
+            // Social links
+            const socialContainer = document.getElementById('modalSocialLinks');
+            socialContainer.innerHTML = '';
+            if (instructor.website) {
+                socialContainer.innerHTML += `<a href="${instructor.website}" target="_blank">🌐 Website</a>`;
+            }
+            if (instructor.instagram) {
+                socialContainer.innerHTML += `<a href="https://instagram.com/${instructor.instagram.replace('@', '')}" target="_blank">📷 Instagram</a>`;
+            }
+            if (instructor.facebook) {
+                socialContainer.innerHTML += `<a href="${instructor.facebook}" target="_blank">📘 Facebook</a>`;
+            }
+
+            // Contact button
+            document.getElementById('modalContactBtn').href = `mailto:${instructor.email}`;
+
+            // Load reviews
+            loadReviewsInModal(instructor);
+
+            // Show modal
+            document.getElementById('instructorModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('instructorModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on overlay click
+        document.getElementById('instructorModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal on escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeReviewForm();
+            }
+        });
+
+        // ============================================
+        // REVIEWS SYSTEM
+        // ============================================
+        let currentInstructorId = null;
+        let selectedRating = 0;
+
+        function getStarsHtml(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalf = rating % 1 >= 0.5;
+            let html = '';
+
+            for (let i = 0; i < fullStars; i++) {
+                html += '★';
+            }
+            if (hasHalf) {
+                html += '★'; // Could use half star unicode if desired
+            }
+            for (let i = html.length; i < 5; i++) {
+                html += '☆';
+            }
+
+            return html;
+        }
+
+        function loadReviewsInModal(instructor) {
+            const container = document.getElementById('modalReviews');
+            const reviews = instructor.reviews || [];
+
+            if (reviews.length === 0) {
+                container.innerHTML = '<div class="empty-reviews">No reviews yet. Be the first to review!</div>';
+                return;
+            }
+
+            // Sort by date descending
+            const sortedReviews = [...reviews].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            container.innerHTML = sortedReviews.map(review => `
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="reviewer-name">${review.reviewerName}</span>
+                        <span class="review-date">${new Date(review.date).toLocaleDateString()}</span>
+                    </div>
+                    <div class="review-stars">${getStarsHtml(review.rating)}</div>
+                    <p class="review-text">${review.text}</p>
+                </div>
+            `).join('');
+        }
+
+        function openReviewForm() {
+            if (!currentInstructorId) return;
+
+            const instructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+            const instructor = instructors.find(i => i.id === currentInstructorId);
+
+            if (!instructor) return;
+
+            document.getElementById('reviewInstructorName').textContent = instructor.name;
+            document.getElementById('reviewFormModal').classList.add('active');
+
+            // Reset form
+            selectedRating = 0;
+            updateStarDisplay();
+            document.getElementById('reviewerName').value = '';
+            document.getElementById('reviewText').value = '';
+        }
+
+        function closeReviewForm() {
+            document.getElementById('reviewFormModal').classList.remove('active');
+        }
+
+        function setRating(rating) {
+            selectedRating = rating;
+            updateStarDisplay();
+        }
+
+        function updateStarDisplay() {
+            const stars = document.querySelectorAll('#starRatingInput span');
+            stars.forEach((star, index) => {
+                if (index < selectedRating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function submitReview() {
+            const reviewerName = document.getElementById('reviewerName').value.trim();
+            const reviewText = document.getElementById('reviewText').value.trim();
+
+            if (!selectedRating) {
+                alert('Please select a rating');
+                return;
+            }
+
+            if (!reviewerName) {
+                alert('Please enter your name');
+                return;
+            }
+
+            if (!reviewText) {
+                alert('Please write a review');
+                return;
+            }
+
+            // Create review object
+            const review = {
+                id: 'rev_' + Date.now(),
+                reviewerName: reviewerName,
+                rating: selectedRating,
+                text: reviewText,
+                date: new Date().toISOString()
+            };
+
+            // Save to instructor's reviews
+            const instructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+            const index = instructors.findIndex(i => i.id === currentInstructorId);
+
+            if (index === -1) return;
+
+            if (!instructors[index].reviews) {
+                instructors[index].reviews = [];
+            }
+
+            instructors[index].reviews.push(review);
+            localStorage.setItem('instructors', JSON.stringify(instructors));
+
+            // Update modal display
+            loadReviewsInModal(instructors[index]);
+
+            // Refresh the instructor grid
+            loadInstructors();
+
+            // Close form
+            closeReviewForm();
+
+            alert('Thank you for your review!');
+        }
+
+        // Close review form on overlay click
+        document.getElementById('reviewFormModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeReviewForm();
+            }
+        });
+
+        // Event listeners for filters
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const instructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+            const activeInstructors = instructors.filter(i => i.status === 'active');
+            filterAndDisplayInstructors(activeInstructors);
+        });
+
+        document.getElementById('locationFilter').addEventListener('change', function() {
+            const instructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+            const activeInstructors = instructors.filter(i => i.status === 'active');
+            filterAndDisplayInstructors(activeInstructors);
+        });
+
+        document.getElementById('specialtyFilter').addEventListener('change', function() {
+            const instructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+            const activeInstructors = instructors.filter(i => i.status === 'active');
+            filterAndDisplayInstructors(activeInstructors);
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', loadInstructors);
+
+        // ============================================
+        // DEMO DATA (Remove in production)
+        // ============================================
+        function loadDemoData() {
+            const existing = JSON.parse(localStorage.getItem('instructors') || '[]');
+            if (existing.length > 0) return; // Already has data
+
+            const demoInstructors = [
+                {
+                    id: 'inst_demo_1',
+                    name: 'Sarah Johnson',
+                    email: 'sarah@pickleballcoach.com',
+                    phone: '(801) 555-1234',
+                    city: 'Salt Lake City',
+                    state: 'UT',
+                    bio: 'PPR certified instructor with 8 years of experience. Specializing in helping beginners and intermediate players develop solid fundamentals and court awareness.',
+                    specialties: ['Beginners', 'Intermediate', 'Dinking'],
+                    certifications: ['PPR', 'IPTPA Level II'],
+                    hourlyRate: '$60-80',
+                    sessionTypes: ['Private', 'Group', 'Clinics'],
+                    website: 'https://sarahpickleball.com',
+                    instagram: '@sarahpb',
+                    status: 'active',
+                    joinedAt: new Date().toISOString(),
+                    gracePeriodEnds: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
+                    inGracePeriod: true,
+                    referralCode: 'INST8K2PL',
+                    referrals: { total: 0, currentMonth: 0, history: [] },
+                    paymentStatus: 'free',
+                    reviews: [
+                        {
+                            id: 'rev_demo_1',
+                            reviewerName: 'Mike T.',
+                            rating: 5,
+                            text: 'Sarah is an amazing instructor! She helped me improve my dinking game tremendously in just a few sessions. Highly recommend!',
+                            date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+                        },
+                        {
+                            id: 'rev_demo_2',
+                            reviewerName: 'Jennifer L.',
+                            rating: 4,
+                            text: 'Great patience with beginners. Sarah made learning pickleball fun and accessible. Would definitely recommend for anyone starting out.',
+                            date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString()
+                        }
+                    ]
+                },
+                {
+                    id: 'inst_demo_2',
+                    name: 'Mike Chen',
+                    email: 'mike@courtmastery.com',
+                    phone: '(801) 555-5678',
+                    city: 'Provo',
+                    state: 'UT',
+                    bio: 'Former tennis pro turned pickleball enthusiast. Focus on advanced strategy, tournament preparation, and helping competitive players reach the next level.',
+                    specialties: ['Advanced', 'Doubles Strategy', 'Tournament Prep'],
+                    certifications: ['PPR', 'USAPA Ambassador'],
+                    hourlyRate: '$75-100',
+                    sessionTypes: ['Private', 'Clinics'],
+                    instagram: '@mikechen_pb',
+                    status: 'active',
+                    joinedAt: new Date().toISOString(),
+                    gracePeriodEnds: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
+                    inGracePeriod: true,
+                    referralCode: 'INST3M7QR',
+                    referrals: { total: 0, currentMonth: 0, history: [] },
+                    paymentStatus: 'free',
+                    reviews: [
+                        {
+                            id: 'rev_demo_3',
+                            reviewerName: 'David R.',
+                            rating: 5,
+                            text: 'Mike took my game to the next level! His tournament preparation tips were invaluable. If you want to compete, this is your guy.',
+                            date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
+                        }
+                    ]
+                },
+                {
+                    id: 'inst_demo_3',
+                    name: 'Lisa Martinez',
+                    email: 'lisa@utahpickleball.com',
+                    phone: '(801) 555-9012',
+                    city: 'Ogden',
+                    state: 'UT',
+                    bio: 'Passionate about making pickleball accessible to everyone! Specializing in group clinics and beginners who want a fun, supportive learning environment.',
+                    specialties: ['Beginners', 'Seniors', 'Third Shot Drop'],
+                    certifications: ['IPTPA'],
+                    hourlyRate: '$45-60',
+                    sessionTypes: ['Group', 'Clinics', 'Private'],
+                    facebook: 'https://facebook.com/lisapickleball',
+                    status: 'active',
+                    joinedAt: new Date().toISOString(),
+                    gracePeriodEnds: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
+                    inGracePeriod: true,
+                    referralCode: 'INST5N2WT',
+                    referrals: { total: 0, currentMonth: 0, history: [] },
+                    paymentStatus: 'free'
+                }
+            ];
+
+            localStorage.setItem('instructors', JSON.stringify(demoInstructors));
+            loadInstructors();
+        }
+
+        // Uncomment to load demo data for testing:
+        // loadDemoData();
+    </script>
+</body>
+</html>

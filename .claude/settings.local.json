@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --version:*)",
+      "Bash(live-server:*)",
+      "Bash(npm --version:*)",
+      "Bash(python3:*)",
+      "WebFetch(domain:unbounce.com)",
+      "WebFetch(domain:cxl.com)",
+      "WebFetch(domain:landingi.com)",
+      "WebFetch(domain:www.pickleballbycoachray.com)",
+      "Bash(lsof:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(wc:*)"
+    ]
+  }
+}

@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Session - AI Session Tracker | Ray Paull Pickleball</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">Ray's Pickleball</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="membership.html">Membership</a></li>
+                <li><a href="contact.html">Submit Video</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Upload Your Drill Session</h1>
+            <p>Get comprehensive stats on every shot for up to 4 players</p>
+        </section>
+
+        <section class="session-upload-content">
+            <div class="container">
+                <div class="upload-grid">
+
+                    <!-- UPLOAD FORM -->
+                    <div class="upload-form-container">
+                        <!-- Session Credits Display -->
+                        <div class="credits-display">
+                            <div class="credits-info">
+                                <span class="credits-label">Session Credits:</span>
+                                <span class="credits-count" id="creditsCount">0</span>
+                            </div>
+                            <a href="session-tracker.html#pricing" class="buy-credits-btn">Buy More</a>
+                        </div>
+
+                        <form id="sessionUploadForm" class="contact-form">
+                            <!-- Video Upload Area -->
+                            <div class="form-group">
+                                <label>Upload Video *</label>
+                                <div class="upload-dropzone" id="dropzone">
+                                    <div class="dropzone-content" id="dropzoneContent">
+                                        <span class="dropzone-icon">🎬</span>
+                                        <p class="dropzone-text">Drag & drop your session video here</p>
+                                        <p class="dropzone-subtext">or click to browse</p>
+                                        <p class="dropzone-requirements">MP4, MOV, or WebM • Up to 60 minutes • Max 2GB</p>
+                                    </div>
+                                    <div class="dropzone-preview" id="dropzonePreview" style="display: none;">
+                                        <video id="videoPreview" controls></video>
+                                        <div class="video-info" id="videoInfo"></div>
+                                        <button type="button" class="remove-video-btn" id="removeVideo">Remove</button>
+                                    </div>
+                                    <input type="file" id="videoInput" accept="video/mp4,video/quicktime,video/webm" hidden>
+                                </div>
+                                <div class="upload-progress" id="uploadProgress" style="display: none;">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="progressFill"></div>
+                                    </div>
+                                    <span class="progress-text" id="progressText">Uploading... 0%</span>
+                                </div>
+                            </div>
+
+                            <!-- Player Count -->
+                            <div class="form-group">
+                                <label>How many players? *</label>
+                                <div class="player-count-selector">
+                                    <button type="button" class="player-count-btn active" data-count="1">1 Player</button>
+                                    <button type="button" class="player-count-btn" data-count="2">2 Players</button>
+                                    <button type="button" class="player-count-btn" data-count="3">3 Players</button>
+                                    <button type="button" class="player-count-btn" data-count="4">4 Players</button>
+                                </div>
+                                <p class="pricing-note" id="pricingNote">1-2 players: Uses 1 session credit</p>
+                            </div>
+
+                            <!-- Player Names -->
+                            <div class="form-group" id="playerNamesGroup">
+                                <label>Player Name(s) *</label>
+                                <div class="player-inputs" id="playerInputs">
+                                    <input type="text" id="player1" placeholder="Player 1 name" required>
+                                </div>
+                            </div>
+
+                            <!-- Drill Type -->
+                            <div class="form-group">
+                                <label for="drillType">Primary Drill Type *</label>
+                                <select id="drillType" required>
+                                    <option value="">Select the main drill...</option>
+                                    <optgroup label="Fundamentals">
+                                        <option value="serves">Serve Practice</option>
+                                        <option value="returns">Return Practice</option>
+                                        <option value="third-shot">Third Shot (Drops & Drives)</option>
+                                    </optgroup>
+                                    <optgroup label="Net Play">
+                                        <option value="volleys">Volley Drills</option>
+                                        <option value="dinks">Dinking</option>
+                                        <option value="resets">Resets & Counters</option>
+                                        <option value="overheads">Overheads</option>
+                                    </optgroup>
+                                    <optgroup label="Advanced">
+                                        <option value="transition">Transition Zone</option>
+                                        <option value="lobs">Lobs</option>
+                                        <option value="speedups">Speed-ups & Firefights</option>
+                                        <option value="erne-atp">Erne / ATP</option>
+                                    </optgroup>
+                                    <optgroup label="Games">
+                                        <option value="game-dink-wars">Game: Dink Wars</option>
+                                        <option value="game-target">Game: Target Practice</option>
+                                        <option value="game-king">Game: King of the Kitchen</option>
+                                        <option value="game-speedup">Game: Speed-up Roulette</option>
+                                        <option value="game-21drops">Game: 21 Drops</option>
+                                        <option value="game-crossfire">Game: Crossfire</option>
+                                        <option value="game-other">Game: Other</option>
+                                    </optgroup>
+                                    <option value="mixed">Mixed Session (Multiple Drills)</option>
+                                </select>
+                            </div>
+
+                            <!-- Additional Notes -->
+                            <div class="form-group">
+                                <label for="sessionNotes">Session Notes (optional)</label>
+                                <textarea id="sessionNotes" rows="3" placeholder="Any specific things you want us to focus on? e.g., 'Working on backhand dinks' or 'First time trying Erne'"></textarea>
+                            </div>
+
+                            <!-- Email for Results -->
+                            <div class="form-group">
+                                <label for="email">Email for Results *</label>
+                                <input type="email" id="email" placeholder="you@example.com" required>
+                                <p class="field-note">We'll send your stats dashboard to this email within 24 hours</p>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-full btn-large" id="submitBtn" disabled>
+                                <span class="btn-text">Submit Session for Analysis</span>
+                                <span class="btn-loading" style="display: none;">
+                                    <span class="spinner"></span> Processing...
+                                </span>
+                            </button>
+                        </form>
+
+                        <!-- Error Message -->
+                        <div class="error-message" id="errorMessage" style="display: none;"></div>
+                    </div>
+
+                    <!-- TIPS SIDEBAR -->
+                    <div class="upload-tips">
+                        <h3>Recording Tips</h3>
+
+                        <div class="tip-card">
+                            <span class="tip-icon">📹</span>
+                            <div class="tip-content">
+                                <h4>Camera Position</h4>
+                                <p>Set up behind the baseline or elevated from the side. Make sure all players are visible throughout.</p>
+                            </div>
+                        </div>
+
+                        <div class="tip-card">
+                            <span class="tip-icon">⏱️</span>
+                            <div class="tip-content">
+                                <h4>Session Length</h4>
+                                <p>30-60 minutes ideal. Longer sessions = more data = better insights.</p>
+                            </div>
+                        </div>
+
+                        <div class="tip-card">
+                            <span class="tip-icon">👕</span>
+                            <div class="tip-content">
+                                <h4>Identify Players</h4>
+                                <p>Wear different colored shirts so we can track each player separately.</p>
+                            </div>
+                        </div>
+
+                        <div class="tip-card">
+                            <span class="tip-icon">🎯</span>
+                            <div class="tip-content">
+                                <h4>Consistent Drills</h4>
+                                <p>Stick to one drill type for best results. Mixed sessions still work but focused sessions give deeper insights.</p>
+                            </div>
+                        </div>
+
+                        <!-- Pricing Reminder -->
+                        <div class="pricing-reminder">
+                            <h4>Session Pricing</h4>
+                            <div class="price-row">
+                                <span>1-2 Players</span>
+                                <span>$12.99/session</span>
+                            </div>
+                            <div class="price-row">
+                                <span>3-4 Players</span>
+                                <span>$19.99/session</span>
+                            </div>
+                            <div class="price-row highlight">
+                                <span>10-Pack (1-2)</span>
+                                <span>$99.99</span>
+                            </div>
+                            <div class="price-row highlight">
+                                <span>10-Pack (3-4)</span>
+                                <span>$149.99</span>
+                            </div>
+                            <a href="session-tracker.html#pricing" class="btn btn-secondary btn-full">Buy Session Credits</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <style>
+        /* Session Upload Page Styles */
+        .session-upload-content {
+            padding: var(--section-padding) 20px;
+            background: var(--background-alt);
+        }
+
+        .upload-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 900px) {
+            .upload-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .upload-form-container {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Credits Display */
+        .credits-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #8b5cf6 100%);
+            border-radius: 10px;
+            margin-bottom: 25px;
+            color: white;
+        }
+
+        .credits-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .credits-label {
+            opacity: 0.9;
+        }
+
+        .credits-count {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .buy-credits-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .buy-credits-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            text-decoration: none;
+        }
+
+        /* Dropzone */
+        .upload-dropzone {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 50px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--background-alt);
+        }
+
+        .upload-dropzone:hover,
+        .upload-dropzone.dragover {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .dropzone-icon {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .dropzone-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
+        .dropzone-subtext {
+            color: var(--primary-color);
+            font-size: 0.95rem;
+        }
+
+        .dropzone-requirements {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-top: 15px;
+        }
+
+        /* Video Preview */
+        .dropzone-preview {
+            position: relative;
+        }
+
+        .dropzone-preview video {
+            width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            background: black;
+        }
+
+        .video-info {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .remove-video-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .remove-video-btn:hover {
+            background: #dc2626;
+        }
+
+        /* Progress Bar */
+        .upload-progress {
+            margin-top: 15px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: var(--background-alt);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), #8b5cf6);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* Player Count Selector */
+        .player-count-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .player-count-btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .player-count-btn:hover {
+            border-color: var(--primary-color);
+        }
+
+        .player-count-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pricing-note {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 10px;
+        }
+
+        /* Player Inputs */
+        .player-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .player-inputs input {
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .player-inputs input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .field-note {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 8px;
+        }
+
+        /* Button States */
+        .btn-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Error Message */
+        .error-message {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fee2e2;
+            border: 1px solid #ef4444;
+            border-radius: 8px;
+            color: #991b1b;
+        }
+
+        /* Tips Sidebar */
+        .upload-tips {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+        }
+
+        .upload-tips h3 {
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+        }
+
+        .tip-card {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tip-card:last-of-type {
+            border-bottom: none;
+        }
+
+        .tip-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .tip-content h4 {
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        .tip-content p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        /* Pricing Reminder */
+        .pricing-reminder {
+            background: var(--background-alt);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+        }
+
+        .pricing-reminder h4 {
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .price-row:last-of-type {
+            border-bottom: none;
+            margin-bottom: 15px;
+        }
+
+        .price-row.highlight {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+    </style>
+
+    <script>
+        // ============================================
+        // VIDEO UPLOAD HANDLING
+        // ============================================
+
+        const dropzone = document.getElementById('dropzone');
+        const dropzoneContent = document.getElementById('dropzoneContent');
+        const dropzonePreview = document.getElementById('dropzonePreview');
+        const videoInput = document.getElementById('videoInput');
+        const videoPreview = document.getElementById('videoPreview');
+        const videoInfo = document.getElementById('videoInfo');
+        const removeVideoBtn = document.getElementById('removeVideo');
+        const uploadProgress = document.getElementById('uploadProgress');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const submitBtn = document.getElementById('submitBtn');
+        const sessionUploadForm = document.getElementById('sessionUploadForm');
+        const errorMessage = document.getElementById('errorMessage');
+
+        let selectedFile = null;
+
+        // Click to upload
+        dropzone.addEventListener('click', () => {
+            if (!selectedFile) {
+                videoInput.click();
+            }
+        });
+
+        // Drag and drop
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('dragover');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('dragover');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileSelect(files[0]);
+            }
+        });
+
+        // File input change
+        videoInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+
+        // Handle file selection
+        function handleFileSelect(file) {
+            // Validate file type
+            const validTypes = ['video/mp4', 'video/quicktime', 'video/webm'];
+            if (!validTypes.includes(file.type)) {
+                showError('Please upload an MP4, MOV, or WebM video file.');
+                return;
+            }
+
+            // Validate file size (2GB max)
+            if (file.size > 2 * 1024 * 1024 * 1024) {
+                showError('Video file must be under 2GB.');
+                return;
+            }
+
+            selectedFile = file;
+            hideError();
+
+            // Show preview
+            const videoUrl = URL.createObjectURL(file);
+            videoPreview.src = videoUrl;
+            dropzoneContent.style.display = 'none';
+            dropzonePreview.style.display = 'block';
+
+            // Show video info when metadata loads
+            videoPreview.addEventListener('loadedmetadata', () => {
+                const duration = videoPreview.duration;
+                const minutes = Math.floor(duration / 60);
+                const seconds = Math.floor(duration % 60);
+                const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+
+                videoInfo.innerHTML = `
+                    <strong>${file.name}</strong><br>
+                    Duration: ${minutes}:${seconds.toString().padStart(2, '0')} • Size: ${sizeMB} MB
+                `;
+
+                if (duration > 3600) { // 60 minutes
+                    showError('Video is longer than 60 minutes. Please trim or upload a shorter session.');
+                    return;
+                }
+
+                // Enable submit button
+                checkFormValidity();
+            });
+        }
+
+        // Remove video
+        removeVideoBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            removeVideo();
+        });
+
+        function removeVideo() {
+            selectedFile = null;
+            videoInput.value = '';
+            videoPreview.src = '';
+            videoInfo.innerHTML = '';
+            dropzoneContent.style.display = 'block';
+            dropzonePreview.style.display = 'none';
+            checkFormValidity();
+        }
+
+        // Show/hide errors
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        function hideError() {
+            errorMessage.style.display = 'none';
+        }
+
+        // ============================================
+        // PLAYER COUNT SELECTOR
+        // ============================================
+
+        const playerCountBtns = document.querySelectorAll('.player-count-btn');
+        const playerInputs = document.getElementById('playerInputs');
+        const pricingNote = document.getElementById('pricingNote');
+        let playerCount = 1;
+
+        playerCountBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                playerCountBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                playerCount = parseInt(btn.dataset.count);
+                updatePlayerInputs();
+                updatePricingNote();
+            });
+        });
+
+        function updatePlayerInputs() {
+            let html = '';
+            for (let i = 1; i <= playerCount; i++) {
+                html += `<input type="text" id="player${i}" placeholder="Player ${i} name" required>`;
+            }
+            playerInputs.innerHTML = html;
+        }
+
+        function updatePricingNote() {
+            if (playerCount <= 2) {
+                pricingNote.textContent = '1-2 players: Uses 1 session credit ($12.99)';
+            } else {
+                pricingNote.textContent = '3-4 players: Uses 1 session credit ($19.99)';
+            }
+        }
+
+        // ============================================
+        // FORM VALIDATION
+        // ============================================
+
+        function checkFormValidity() {
+            const drillType = document.getElementById('drillType').value;
+            const email = document.getElementById('email').value;
+            const playerInputsValid = Array.from(playerInputs.querySelectorAll('input')).every(input => input.value.trim());
+
+            submitBtn.disabled = !(selectedFile && drillType && email && playerInputsValid);
+        }
+
+        // Listen for form changes
+        document.getElementById('drillType').addEventListener('change', checkFormValidity);
+        document.getElementById('email').addEventListener('input', checkFormValidity);
+        playerInputs.addEventListener('input', checkFormValidity);
+
+        // ============================================
+        // FORM SUBMISSION
+        // ============================================
+
+        sessionUploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!selectedFile) {
+                showError('Please select a video to upload.');
+                return;
+            }
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.querySelector('.btn-text').style.display = 'none';
+            submitBtn.querySelector('.btn-loading').style.display = 'flex';
+            uploadProgress.style.display = 'block';
+            hideError();
+
+            try {
+                // Simulate upload progress
+                await simulateUpload();
+
+                // Success - redirect to confirmation
+                progressText.textContent = 'Upload complete! Processing your session...';
+
+                // Store session info
+                const sessionData = {
+                    id: Date.now(),
+                    playerCount: playerCount,
+                    players: Array.from(playerInputs.querySelectorAll('input')).map(input => input.value),
+                    drillType: document.getElementById('drillType').value,
+                    notes: document.getElementById('sessionNotes').value,
+                    email: document.getElementById('email').value,
+                    timestamp: new Date().toISOString(),
+                    status: 'processing'
+                };
+
+                localStorage.setItem('lastSessionUpload', JSON.stringify(sessionData));
+
+                // Redirect after short delay
+                setTimeout(() => {
+                    window.location.href = 'session-confirmation.html';
+                }, 1500);
+
+            } catch (error) {
+                console.error('Upload failed:', error);
+                showError('Something went wrong. Please try again.');
+                resetForm();
+            }
+        });
+
+        // Simulate upload progress
+        function simulateUpload() {
+            return new Promise((resolve) => {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += Math.random() * 8;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(interval);
+                        progressFill.style.width = '100%';
+                        progressText.textContent = 'Upload complete!';
+                        resolve();
+                    } else {
+                        progressFill.style.width = progress + '%';
+                        progressText.textContent = `Uploading... ${Math.round(progress)}%`;
+                    }
+                }, 300);
+            });
+        }
+
+        function resetForm() {
+            submitBtn.disabled = false;
+            submitBtn.querySelector('.btn-text').style.display = 'inline';
+            submitBtn.querySelector('.btn-loading').style.display = 'none';
+            uploadProgress.style.display = 'none';
+            progressFill.style.width = '0%';
+        }
+
+        // ============================================
+        // LOAD SESSION CREDITS
+        // ============================================
+
+        function loadCredits() {
+            const credits = parseInt(localStorage.getItem('sessionCredits') || '0');
+            document.getElementById('creditsCount').textContent = credits;
+        }
+
+        // Initialize
+        loadCredits();
+    </script>
+</body>
+</html>

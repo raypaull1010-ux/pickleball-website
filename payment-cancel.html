@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Cancelled - Ray's Pickleball</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .cancel-container {
+      max-width: 500px;
+      margin: 100px auto;
+      padding: 40px;
+      text-align: center;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .cancel-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .cancel-icon svg {
+      width: 40px;
+      height: 40px;
+      color: white;
+    }
+
+    .cancel-container h1 {
+      color: var(--text-color);
+      margin-bottom: 12px;
+    }
+
+    .cancel-container p {
+      color: var(--text-light);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .options-box {
+      background: var(--background-alt);
+      padding: 24px;
+      border-radius: 12px;
+      margin: 24px 0;
+      text-align: left;
+    }
+
+    .options-box h3 {
+      color: var(--text-color);
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .option-item:last-child {
+      border-bottom: none;
+    }
+
+    .option-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--primary-color);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .option-icon svg {
+      width: 18px;
+      height: 18px;
+      color: white;
+    }
+
+    .option-text strong {
+      display: block;
+      color: var(--text-color);
+      margin-bottom: 4px;
+    }
+
+    .option-text span {
+      font-size: 14px;
+      color: var(--text-light);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .action-buttons .btn {
+      padding: 12px 24px;
+    }
+
+    .venmo-option {
+      background: #008cff;
+      color: white;
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 24px;
+    }
+
+    .venmo-option h3 {
+      margin-bottom: 8px;
+    }
+
+    .venmo-option p {
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 12px;
+    }
+
+    .venmo-option code {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container navbar-content">
+      <a href="index.html" class="logo">Ray's Pickleball</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="membership.html">Membership</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="cancel-container">
+      <div class="cancel-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </div>
+
+      <h1>Payment Cancelled</h1>
+      <p>No worries! Your payment was not processed. Your submission is saved and you can complete payment whenever you're ready.</p>
+
+      <div class="options-box">
+        <h3>What would you like to do?</h3>
+
+        <div class="option-item">
+          <div class="option-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+            </svg>
+          </div>
+          <div class="option-text">
+            <strong>Try Again with Card</strong>
+            <span>Return to checkout and complete your payment with a credit or debit card.</span>
+          </div>
+        </div>
+
+        <div class="option-item">
+          <div class="option-icon" style="background: #008cff;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <div class="option-text">
+            <strong>Pay with Venmo</strong>
+            <span>Send payment via Venmo to @Ray-Paull with your email in the note.</span>
+          </div>
+        </div>
+
+        <div class="option-item">
+          <div class="option-icon" style="background: var(--text-light);">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div class="option-text">
+            <strong>Have Questions?</strong>
+            <span>Contact us at raypaull1010@gmail.com or (801) 205-9124</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="venmo-option">
+        <h3>Prefer Venmo?</h3>
+        <p>Send payment to <code>@Ray-Paull</code> and include your email address in the payment note. We'll confirm your submission within 24 hours.</p>
+      </div>
+
+      <div class="action-buttons">
+        <a href="contact.html" class="btn btn-primary">Submit New Video</a>
+        <a href="index.html" class="btn btn-secondary">Back to Home</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

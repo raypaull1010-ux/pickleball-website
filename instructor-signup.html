@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join the Instructor Network - Ray's Pickleball</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Instructor Signup Styles */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Benefits Banner */
+        .benefits-banner {
+            background: var(--background-alt);
+            padding: 40px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .benefits-banner-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .benefits-banner h2 {
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+
+        .benefits-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .benefit-icon {
+            font-size: 1.5rem;
+        }
+
+        .benefit-text {
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        /* Launch Offer Badge */
+        .launch-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #78350f;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        /* Form Section */
+        .signup-section {
+            padding: 60px 20px;
+        }
+
+        .signup-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .form-intro {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-intro h2 {
+            margin-bottom: 10px;
+        }
+
+        .form-intro p {
+            color: var(--text-light);
+        }
+
+        /* Form Groups */
+        .form-section-title {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .form-row {
+            margin-bottom: 20px;
+        }
+
+        .form-row label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-row label .required {
+            color: #ef4444;
+        }
+
+        .form-row input,
+        .form-row textarea,
+        .form-row select {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-row input:focus,
+        .form-row textarea:focus,
+        .form-row select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-row textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row-half {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-hint {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        /* Checkbox Group */
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        /* Photo Upload */
+        .photo-upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--background-alt);
+        }
+
+        .photo-upload-area:hover {
+            border-color: var(--primary-color);
+            background: white;
+        }
+
+        .photo-upload-area.has-photo {
+            border-style: solid;
+            border-color: var(--secondary-color);
+        }
+
+        .photo-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 15px auto;
+            display: none;
+        }
+
+        .photo-preview.visible {
+            display: block;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            color: var(--text-light);
+        }
+
+        .upload-text strong {
+            color: var(--primary-color);
+        }
+
+        #photoInput {
+            display: none;
+        }
+
+        /* Terms */
+        .terms-section {
+            background: var(--background-alt);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+
+        .terms-section h4 {
+            margin-bottom: 15px;
+        }
+
+        .terms-list {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .terms-list li {
+            margin-bottom: 8px;
+            color: var(--text-light);
+            list-style-type: disc;
+        }
+
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .terms-checkbox input {
+            margin-top: 3px;
+        }
+
+        /* Submit Button */
+        .submit-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .submit-section .btn {
+            min-width: 250px;
+        }
+
+        /* Success Message */
+        .success-message {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .success-message h2 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .success-message p {
+            color: var(--text-light);
+            max-width: 500px;
+            margin: 0 auto 25px auto;
+        }
+
+        .referral-code-display {
+            background: var(--background-alt);
+            padding: 20px 30px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+
+        .referral-code-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .referral-code-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 2px;
+        }
+
+        /* How It Works Section */
+        .how-it-works-section {
+            background: var(--background-alt);
+            padding: 60px 20px;
+        }
+
+        .how-it-works-section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .step-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 auto 15px auto;
+        }
+
+        .step-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .step-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--text-color);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .benefits-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .form-row-half {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">🏓 Ray's Pickleball</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="instructors.html" class="active">Instructors</a></li>
+                <li><a href="membership.html">Membership</a></li>
+                <li><a href="contact.html">Submit Video</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="launch-badge">🎉 LAUNCH SPECIAL: 3 Months Free!</div>
+            <h1>Join Our Instructor Network</h1>
+            <p>Get listed in our directory and connect with students looking for quality pickleball coaching.</p>
+        </section>
+
+        <!-- Benefits Banner -->
+        <section class="benefits-banner">
+            <div class="benefits-banner-content">
+                <h2>What You Get</h2>
+                <div class="benefits-row">
+                    <div class="benefit-item">
+                        <span class="benefit-icon">📋</span>
+                        <span class="benefit-text">Professional profile listing</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">🔗</span>
+                        <span class="benefit-text">Referral code for tracking</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">📊</span>
+                        <span class="benefit-text">Dashboard with stats</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">👥</span>
+                        <span class="benefit-text">Connect with local students</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Signup Form Section -->
+        <section class="signup-section">
+            <div class="signup-container">
+                <div class="form-intro">
+                    <h2>Create Your Profile</h2>
+                    <p>Fill out the form below to get listed in our instructor directory.</p>
+                </div>
+
+                <form id="instructorSignupForm">
+                    <!-- Personal Information -->
+                    <h3 class="form-section-title">👤 Personal Information</h3>
+
+                    <div class="form-row">
+                        <label>Full Name <span class="required">*</span></label>
+                        <input type="text" id="instructorName" placeholder="Your full name" required>
+                    </div>
+
+                    <div class="form-row-half">
+                        <div class="form-row">
+                            <label>Email <span class="required">*</span></label>
+                            <input type="email" id="instructorEmail" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-row">
+                            <label>Phone <span class="required">*</span></label>
+                            <input type="tel" id="instructorPhone" placeholder="(801) 555-1234" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row-half">
+                        <div class="form-row">
+                            <label>City <span class="required">*</span></label>
+                            <input type="text" id="instructorCity" placeholder="Salt Lake City" required>
+                        </div>
+                        <div class="form-row">
+                            <label>State <span class="required">*</span></label>
+                            <select id="instructorState" required>
+                                <option value="">Select State</option>
+                                <option value="UT">Utah</option>
+                                <option value="AZ">Arizona</option>
+                                <option value="CA">California</option>
+                                <option value="CO">Colorado</option>
+                                <option value="FL">Florida</option>
+                                <option value="ID">Idaho</option>
+                                <option value="NV">Nevada</option>
+                                <option value="TX">Texas</option>
+                                <option value="WA">Washington</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Profile Information -->
+                    <h3 class="form-section-title">📝 Profile Information</h3>
+
+                    <div class="form-row">
+                        <label>Profile Photo</label>
+                        <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()">
+                            <img id="photoPreview" class="photo-preview" src="" alt="Preview">
+                            <div id="uploadPrompt">
+                                <div class="upload-icon">📷</div>
+                                <p class="upload-text"><strong>Click to upload</strong> a profile photo</p>
+                                <p class="form-hint">Recommended: Square image, at least 300x300px</p>
+                            </div>
+                        </div>
+                        <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(this)">
+                    </div>
+
+                    <div class="form-row">
+                        <label>Bio <span class="required">*</span></label>
+                        <textarea id="instructorBio" placeholder="Tell students about yourself, your coaching philosophy, and what makes you unique..." required></textarea>
+                        <p class="form-hint">150-500 characters recommended</p>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Certifications</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="certPPR" value="PPR">
+                                <label for="certPPR">PPR Certified</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="certIPTPA" value="IPTPA">
+                                <label for="certIPTPA">IPTPA</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="certUSAPA" value="USAPA Ambassador">
+                                <label for="certUSAPA">USAPA Ambassador</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="certPCI" value="PCI">
+                                <label for="certPCI">PCI Certified</label>
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-top: 15px;">
+                            <input type="text" id="otherCertifications" placeholder="Other certifications (comma separated)">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Specialties <span class="required">*</span></label>
+                        <div class="checkbox-group" id="specialtiesGroup">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specBeginners" value="Beginners">
+                                <label for="specBeginners">Beginners</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specIntermediate" value="Intermediate">
+                                <label for="specIntermediate">Intermediate</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specAdvanced" value="Advanced">
+                                <label for="specAdvanced">Advanced</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specDoubles" value="Doubles Strategy">
+                                <label for="specDoubles">Doubles Strategy</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specSingles" value="Singles">
+                                <label for="specSingles">Singles</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specDinking" value="Dinking">
+                                <label for="specDinking">Dinking</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specThirdShot" value="Third Shot Drop">
+                                <label for="specThirdShot">Third Shot Drop</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specServing" value="Serving">
+                                <label for="specServing">Serving</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specSeniors" value="Seniors">
+                                <label for="specSeniors">Seniors</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="specTournament" value="Tournament Prep">
+                                <label for="specTournament">Tournament Prep</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coaching Details -->
+                    <h3 class="form-section-title">💰 Coaching Details</h3>
+
+                    <div class="form-row">
+                        <label>Hourly Rate Range <span class="required">*</span></label>
+                        <input type="text" id="instructorRate" placeholder="$50-75" required>
+                        <p class="form-hint">Example: $50-75, $60/hour, $80+</p>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Session Types Offered <span class="required">*</span></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="sessionPrivate" value="Private">
+                                <label for="sessionPrivate">Private Lessons</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="sessionGroup" value="Group">
+                                <label for="sessionGroup">Group Sessions</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="sessionClinics" value="Clinics">
+                                <label for="sessionClinics">Clinics</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="sessionCamps" value="Camps">
+                                <label for="sessionCamps">Camps</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Links -->
+                    <h3 class="form-section-title">🔗 Links (Optional)</h3>
+
+                    <div class="form-row">
+                        <label>Website</label>
+                        <input type="url" id="instructorWebsite" placeholder="https://yourwebsite.com">
+                    </div>
+
+                    <div class="form-row-half">
+                        <div class="form-row">
+                            <label>Instagram</label>
+                            <input type="text" id="instructorInstagram" placeholder="@yourhandle">
+                        </div>
+                        <div class="form-row">
+                            <label>Facebook</label>
+                            <input type="url" id="instructorFacebook" placeholder="https://facebook.com/yourpage">
+                        </div>
+                    </div>
+
+                    <!-- Terms -->
+                    <div class="terms-section">
+                        <h4>How the Network Works</h4>
+                        <ul class="terms-list">
+                            <li><strong>3-Month Free Trial:</strong> Your listing is completely free for the first 3 months</li>
+                            <li><strong>After Trial:</strong> Stay listed by either paying $40/month OR referring 2 students to Ray's Video Analysis each month</li>
+                            <li><strong>Your Referral Code:</strong> You'll get a unique code to share. When students use it for video analysis, it counts toward your referrals</li>
+                            <li><strong>Dashboard Access:</strong> Track your referrals, profile views, and account status anytime</li>
+                        </ul>
+                        <div class="terms-checkbox">
+                            <input type="checkbox" id="termsAccepted" required>
+                            <label for="termsAccepted">I understand how the instructor network works and agree to the terms above <span class="required">*</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="submit-section">
+                        <button type="submit" class="btn btn-primary btn-large">Create My Profile</button>
+                    </div>
+                </form>
+
+                <!-- Success Message (hidden by default) -->
+                <div id="successMessage" class="success-message" style="display: none;">
+                    <div class="success-icon">🎉</div>
+                    <h2>Welcome to the Network!</h2>
+                    <p>Your profile is now live in our instructor directory. Here's your referral code:</p>
+                    <div class="referral-code-display">
+                        <div class="referral-code-label">Your Referral Code</div>
+                        <div id="newReferralCode" class="referral-code-value">INST00000</div>
+                    </div>
+                    <p>Share this code with students. When they use it for video analysis, it counts toward your monthly referrals.</p>
+                    <a href="instructor-dashboard.html" class="btn btn-primary btn-large">Go to Your Dashboard</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="how-it-works-section">
+            <h2>How It Works</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Create Your Profile</h3>
+                    <p>Fill out the form above with your info, specialties, and rates. It takes just a few minutes.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Get Listed</h3>
+                    <p>Your profile goes live immediately in our searchable instructor directory.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Connect with Students</h3>
+                    <p>Students find you, reach out, and book lessons. Share your referral code for video analysis.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
+    </footer>
+
+    <script src="js/email-service.js"></script>
+    <script>
+        // ============================================
+        // PHOTO PREVIEW
+        // ============================================
+        function previewPhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('photoPreview');
+                    preview.src = e.target.result;
+                    preview.classList.add('visible');
+                    document.getElementById('uploadPrompt').style.display = 'none';
+                    document.querySelector('.photo-upload-area').classList.add('has-photo');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // ============================================
+        // GENERATE INSTRUCTOR REFERRAL CODE
+        // ============================================
+        function generateInstructorReferralCode(email) {
+            let hash = 0;
+            for (let i = 0; i < email.length; i++) {
+                const char = email.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return 'INST' + Math.abs(hash).toString(36).toUpperCase().slice(0, 5);
+        }
+
+        // ============================================
+        // FORM SUBMISSION
+        // ============================================
+        document.getElementById('instructorSignupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Collect form data
+            const email = document.getElementById('instructorEmail').value.trim().toLowerCase();
+
+            // Check if email already exists
+            const existingInstructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+            if (existingInstructors.some(i => i.email.toLowerCase() === email)) {
+                alert('An instructor with this email already exists. Please log in to your dashboard instead.');
+                return;
+            }
+
+            // Collect specialties
+            const specialties = [];
+            document.querySelectorAll('#specialtiesGroup input[type="checkbox"]:checked').forEach(cb => {
+                specialties.push(cb.value);
+            });
+
+            if (specialties.length === 0) {
+                alert('Please select at least one specialty.');
+                return;
+            }
+
+            // Collect session types
+            const sessionTypes = [];
+            ['sessionPrivate', 'sessionGroup', 'sessionClinics', 'sessionCamps'].forEach(id => {
+                const cb = document.getElementById(id);
+                if (cb.checked) sessionTypes.push(cb.value);
+            });
+
+            if (sessionTypes.length === 0) {
+                alert('Please select at least one session type.');
+                return;
+            }
+
+            // Collect certifications
+            const certifications = [];
+            ['certPPR', 'certIPTPA', 'certUSAPA', 'certPCI'].forEach(id => {
+                const cb = document.getElementById(id);
+                if (cb.checked) certifications.push(cb.value);
+            });
+            const otherCerts = document.getElementById('otherCertifications').value.trim();
+            if (otherCerts) {
+                otherCerts.split(',').forEach(c => certifications.push(c.trim()));
+            }
+
+            // Get photo as base64
+            let photoData = '';
+            const photoInput = document.getElementById('photoInput');
+            if (photoInput.files && photoInput.files[0]) {
+                photoData = document.getElementById('photoPreview').src;
+            }
+
+            // Generate referral code
+            const referralCode = generateInstructorReferralCode(email);
+
+            // Create instructor object
+            const instructor = {
+                id: 'inst_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                name: document.getElementById('instructorName').value.trim(),
+                email: email,
+                phone: document.getElementById('instructorPhone').value.trim(),
+                city: document.getElementById('instructorCity').value.trim(),
+                state: document.getElementById('instructorState').value,
+                photo: photoData,
+                bio: document.getElementById('instructorBio').value.trim(),
+                specialties: specialties,
+                certifications: certifications,
+                hourlyRate: document.getElementById('instructorRate').value.trim(),
+                sessionTypes: sessionTypes,
+                website: document.getElementById('instructorWebsite').value.trim(),
+                instagram: document.getElementById('instructorInstagram').value.trim(),
+                facebook: document.getElementById('instructorFacebook').value.trim(),
+                status: 'active',
+                joinedAt: new Date().toISOString(),
+                gracePeriodEnds: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(), // 90 days
+                inGracePeriod: true,
+                referralCode: referralCode,
+                referrals: {
+                    total: 0,
+                    currentMonth: 0,
+                    history: []
+                },
+                paymentStatus: 'free'
+            };
+
+            // Save to localStorage
+            existingInstructors.push(instructor);
+            localStorage.setItem('instructors', JSON.stringify(existingInstructors));
+
+            // Store logged in instructor email
+            localStorage.setItem('instructorEmail', email);
+
+            // Send welcome email (if EmailService available)
+            if (typeof EmailService !== 'undefined' && EmailService.sendInstructorWelcome) {
+                try {
+                    await EmailService.sendInstructorWelcome({
+                        name: instructor.name,
+                        email: instructor.email,
+                        referralCode: referralCode,
+                        gracePeriodEnds: new Date(instructor.gracePeriodEnds).toLocaleDateString()
+                    });
+                } catch (err) {
+                    console.log('Email send attempted:', err);
+                }
+            }
+
+            // Show success message
+            document.getElementById('instructorSignupForm').style.display = 'none';
+            document.getElementById('newReferralCode').textContent = referralCode;
+            document.getElementById('successMessage').style.display = 'block';
+
+            // Scroll to success message
+            document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

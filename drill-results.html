@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Analysis Results - AI Drill Coach | Ray Paull Pickleball</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">Ray's Pickleball</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="membership.html">Membership</a></li>
+                <li><a href="contact.html">Submit Video</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header results-header">
+            <h1>Your Analysis Results</h1>
+            <p id="resultsSubtitle">Loading...</p>
+        </section>
+
+        <section class="results-content">
+            <div class="container">
+                <div class="results-grid">
+
+                    <!-- MAIN RESULTS -->
+                    <div class="results-main">
+                        <!-- Grade Card -->
+                        <div class="grade-card">
+                            <div class="grade-display">
+                                <span class="grade-label">Overall Grade</span>
+                                <span class="grade-value" id="gradeValue">--</span>
+                            </div>
+                            <div class="grade-context">
+                                <p id="gradeContext">Loading analysis...</p>
+                            </div>
+                        </div>
+
+                        <!-- Strengths -->
+                        <div class="results-section">
+                            <div class="section-header positive">
+                                <span class="section-icon">✓</span>
+                                <h3>What's Working</h3>
+                            </div>
+                            <ul class="results-list" id="strengthsList">
+                                <li>Loading...</li>
+                            </ul>
+                        </div>
+
+                        <!-- Primary Issue -->
+                        <div class="results-section">
+                            <div class="section-header warning">
+                                <span class="section-icon">!</span>
+                                <h3>Primary Issue</h3>
+                            </div>
+                            <div class="issue-card">
+                                <p id="primaryIssue">Loading...</p>
+                            </div>
+                        </div>
+
+                        <!-- How to Fix -->
+                        <div class="results-section">
+                            <div class="section-header fix">
+                                <span class="section-icon">🔧</span>
+                                <h3>How to Fix It</h3>
+                            </div>
+                            <div class="fix-card">
+                                <p id="howToFix">Loading...</p>
+                            </div>
+                        </div>
+
+                        <!-- Drill Recommendation -->
+                        <div class="results-section">
+                            <div class="section-header drill">
+                                <span class="section-icon">🎯</span>
+                                <h3>Recommended Drill</h3>
+                            </div>
+                            <div class="drill-card">
+                                <p id="drillRecommendation">Loading...</p>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="results-actions">
+                            <a href="drill-upload.html" class="btn btn-primary btn-large">Analyze Another Video</a>
+                            <button class="btn btn-secondary" id="shareBtn">Share Results</button>
+                        </div>
+                    </div>
+
+                    <!-- SIDEBAR -->
+                    <div class="results-sidebar">
+                        <!-- Analysis Details -->
+                        <div class="sidebar-card">
+                            <h4>Analysis Details</h4>
+                            <div class="detail-row">
+                                <span class="detail-label">Drill Type</span>
+                                <span class="detail-value" id="drillTypeValue">--</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Analyzed</span>
+                                <span class="detail-value" id="analyzedDate">--</span>
+                            </div>
+                            <div class="detail-row" id="focusAreaRow" style="display: none;">
+                                <span class="detail-label">Focus Area</span>
+                                <span class="detail-value" id="focusAreaValue">--</span>
+                            </div>
+                        </div>
+
+                        <!-- Progress Tracking -->
+                        <div class="sidebar-card">
+                            <h4>Track Your Progress</h4>
+                            <p class="sidebar-text">Re-film this drill in 1 week after practicing the recommended fix. Compare your grades over time!</p>
+                            <div class="progress-preview" id="progressPreview">
+                                <p class="no-history">This is your first analysis of this drill type.</p>
+                            </div>
+                        </div>
+
+                        <!-- Credits/Plan Upsell (Dynamic) -->
+                        <div class="sidebar-card upsell-card" id="upsellCard">
+                            <!-- Content populated by JavaScript based on user type -->
+                        </div>
+
+                        <!-- Upgrade to Full Analysis -->
+                        <div class="sidebar-card upgrade-card">
+                            <h4>Want Deeper Analysis?</h4>
+                            <p class="sidebar-text">Get a full 30-60 minute match analysis with personalized strategy recommendations from Ray.</p>
+                            <a href="contact.html" class="btn btn-secondary btn-full">Submit Match Video</a>
+                            <p class="upgrade-price"><a href="pricing.html#video-analysis">View Pricing</a></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <style>
+        /* Results Page Styles */
+        .results-header {
+            text-align: center;
+        }
+
+        .results-content {
+            padding: var(--section-padding) 20px;
+            background: var(--background-alt);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 900px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .results-main {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Grade Card */
+        .grade-card {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .grade-display {
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .grade-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .grade-value {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .grade-a { color: #10b981; }
+        .grade-b { color: #3b82f6; }
+        .grade-c { color: #f59e0b; }
+        .grade-d { color: #f97316; }
+        .grade-f { color: #ef4444; }
+
+        .grade-context {
+            flex: 1;
+            padding-left: 30px;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .grade-context p {
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+
+        /* Results Sections */
+        .results-section {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 25px;
+            font-weight: 600;
+        }
+
+        .section-header.positive {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .section-header.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .section-header.fix {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .section-header.drill {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .section-icon {
+            font-size: 1.2rem;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            font-size: 1.05rem;
+        }
+
+        .results-list {
+            list-style: none;
+            padding: 20px 25px;
+            margin: 0;
+        }
+
+        .results-list li {
+            padding: 10px 0 10px 28px;
+            position: relative;
+            color: var(--text-color);
+            border-bottom: 1px solid var(--background-alt);
+        }
+
+        .results-list li:last-child {
+            border-bottom: none;
+        }
+
+        .results-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .issue-card,
+        .fix-card,
+        .drill-card {
+            padding: 20px 25px;
+        }
+
+        .issue-card p,
+        .fix-card p,
+        .drill-card p {
+            color: var(--text-color);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .drill-card {
+            background: var(--background-alt);
+        }
+
+        .drill-card p {
+            font-style: italic;
+        }
+
+        /* Actions */
+        .results-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 500px) {
+            .results-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Sidebar */
+        .results-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-card h4 {
+            margin-bottom: 18px;
+            font-size: 1.1rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--background-alt);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .sidebar-text {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .progress-preview {
+            background: var(--background-alt);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .no-history {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin: 0;
+            font-style: italic;
+        }
+
+        .upsell-card {
+            border: 2px solid var(--secondary-color);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, white 100%);
+        }
+
+        .upsell-card.low-credits {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, white 100%);
+        }
+
+        .upsell-card.no-credits {
+            border-color: #ef4444;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, white 100%);
+        }
+
+        .upgrade-card {
+            border: 2px solid var(--primary-color);
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, white 100%);
+        }
+
+        .upgrade-price {
+            text-align: center;
+            margin-top: 12px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive grade card */
+        @media (max-width: 600px) {
+            .grade-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .grade-context {
+                padding-left: 0;
+                padding-top: 20px;
+                border-left: none;
+                border-top: 1px solid var(--border-color);
+            }
+        }
+    </style>
+
+    <script>
+        // ============================================
+        // LOAD ANALYSIS RESULTS
+        // ============================================
+
+        function loadResults() {
+            const analysisData = localStorage.getItem('lastAnalysis');
+
+            if (!analysisData) {
+                // No results found, redirect to upload
+                window.location.href = 'drill-upload.html';
+                return;
+            }
+
+            const analysis = JSON.parse(analysisData);
+
+            // Update subtitle
+            document.getElementById('resultsSubtitle').textContent =
+                `${getDrillName(analysis.drillType)} Analysis`;
+
+            // Update grade
+            const gradeValue = document.getElementById('gradeValue');
+            gradeValue.textContent = analysis.grade;
+            gradeValue.className = 'grade-value ' + getGradeClass(analysis.grade);
+
+            // Grade context
+            document.getElementById('gradeContext').textContent = getGradeContext(analysis.grade);
+
+            // Strengths
+            const strengthsList = document.getElementById('strengthsList');
+            strengthsList.innerHTML = analysis.strengths.map(s => `<li>${s}</li>`).join('');
+
+            // Primary Issue
+            document.getElementById('primaryIssue').textContent = analysis.primaryIssue;
+
+            // How to Fix
+            document.getElementById('howToFix').textContent = analysis.howToFix;
+
+            // Drill Recommendation
+            document.getElementById('drillRecommendation').textContent = analysis.drillRecommendation;
+
+            // Sidebar details
+            document.getElementById('drillTypeValue').textContent = getDrillName(analysis.drillType);
+            document.getElementById('analyzedDate').textContent = new Date(analysis.timestamp).toLocaleDateString();
+
+            // Focus area
+            if (analysis.focusArea) {
+                document.getElementById('focusAreaRow').style.display = 'flex';
+                document.getElementById('focusAreaValue').textContent = analysis.focusArea;
+            }
+
+            // Check for previous analyses of same drill type
+            loadProgressHistory(analysis.drillType);
+        }
+
+        function getDrillName(type) {
+            const names = {
+                'dinking': 'Dinking',
+                'third-shot-drop': 'Third Shot Drop',
+                'speed-up': 'Speed-up & Counter',
+                'reset': 'Reset',
+                'volley': 'Volley',
+                'serve': 'Serve',
+                'return': 'Return',
+                'transition': 'Transition Zone',
+                'other': 'General'
+            };
+            return names[type] || type;
+        }
+
+        function getGradeClass(grade) {
+            const letter = grade.charAt(0).toUpperCase();
+            if (letter === 'A') return 'grade-a';
+            if (letter === 'B') return 'grade-b';
+            if (letter === 'C') return 'grade-c';
+            if (letter === 'D') return 'grade-d';
+            return 'grade-f';
+        }
+
+        function getGradeContext(grade) {
+            const letter = grade.charAt(0).toUpperCase();
+            const contexts = {
+                'A': 'Excellent technique! You\'re executing this drill at a high level. Focus on maintaining consistency and adding subtle refinements.',
+                'B': 'Good technique with room for improvement. You have solid fundamentals - addressing the primary issue will take your game to the next level.',
+                'C': 'Developing technique. The fundamentals are there, but focused practice on the identified issues will make a significant difference.',
+                'D': 'Needs work. Focus on the basics first. The drill recommendation will help build a stronger foundation.',
+                'F': 'Significant technique issues to address. Consider working with a coach alongside this AI feedback for faster improvement.'
+            };
+            return contexts[letter] || contexts['C'];
+        }
+
+        function loadProgressHistory(drillType) {
+            const history = JSON.parse(localStorage.getItem('analysisHistory') || '[]');
+            const sameTypeHistory = history.filter(h => h.drillType === drillType);
+
+            if (sameTypeHistory.length > 1) {
+                const progressPreview = document.getElementById('progressPreview');
+                progressPreview.innerHTML = `
+                    <p style="margin: 0 0 10px 0; font-weight: 600;">Previous grades for ${getDrillName(drillType)}:</p>
+                    ${sameTypeHistory.slice(1, 4).map(h => {
+                        const date = new Date(h.timestamp).toLocaleDateString();
+                        return `<div style="display: flex; justify-content: space-between; padding: 5px 0;">
+                            <span>${date}</span>
+                            <span class="${getGradeClass(h.grade)}" style="font-weight: 600;">${h.grade}</span>
+                        </div>`;
+                    }).join('')}
+                `;
+            }
+        }
+
+        // Share functionality
+        document.getElementById('shareBtn').addEventListener('click', () => {
+            const analysis = JSON.parse(localStorage.getItem('lastAnalysis'));
+            const shareText = `I just got a ${analysis.grade} on my ${getDrillName(analysis.drillType)} drill! 🏓\n\nAnalyzed with Ray's AI Drill Coach - instant feedback on your pickleball practice.`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Pickleball Drill Analysis',
+                    text: shareText,
+                    url: window.location.origin + '/drill-feedback.html'
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('Results copied to clipboard!');
+                });
+            }
+        });
+
+        // Load upsell card based on user type
+        function loadUpsellCard() {
+            const userType = localStorage.getItem('userType') || 'credits';
+            const totalCredits = parseInt(localStorage.getItem('totalCredits') || '30');
+            const usedCredits = parseInt(localStorage.getItem('analysisUsage') || '0');
+            const remainingCredits = Math.max(0, totalCredits - usedCredits);
+
+            const upsellCard = document.getElementById('upsellCard');
+
+            if (userType === 'unlimited') {
+                // Subscriber - encourage continued use
+                upsellCard.innerHTML = `
+                    <h4>Keep Improving!</h4>
+                    <p class="sidebar-text">You have unlimited analyses this month. Film your drills regularly to track progress!</p>
+                    <a href="drill-upload.html" class="btn btn-primary btn-full">Analyze Another Drill</a>
+                `;
+            } else if (remainingCredits <= 5 && remainingCredits > 0) {
+                // Low on credits - upsell more credits or subscription
+                upsellCard.innerHTML = `
+                    <h4>Running Low on Credits</h4>
+                    <p class="sidebar-text">You have <strong>${remainingCredits} credits</strong> remaining. Get more to keep improving!</p>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <a href="drill-feedback.html#pricing" class="btn btn-primary btn-full">Buy More Credits</a>
+                        <a href="drill-feedback.html#pricing" class="btn btn-secondary btn-full">Go Unlimited</a>
+                    </div>
+                `;
+                upsellCard.classList.add('low-credits');
+            } else if (remainingCredits === 0) {
+                // Out of credits
+                upsellCard.innerHTML = `
+                    <h4>Out of Credits</h4>
+                    <p class="sidebar-text">Get more credits to continue improving your game!</p>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <a href="drill-feedback.html#pricing" class="btn btn-primary btn-full">Buy More Credits</a>
+                        <a href="drill-feedback.html#pricing" class="btn btn-secondary btn-full">Go Unlimited</a>
+                    </div>
+                `;
+                upsellCard.classList.add('no-credits');
+            } else {
+                // Has credits - show remaining
+                upsellCard.innerHTML = `
+                    <h4>Credits Remaining</h4>
+                    <p class="sidebar-text">You have <strong>${remainingCredits} of ${totalCredits}</strong> credits remaining.</p>
+                    <a href="drill-upload.html" class="btn btn-primary btn-full">Analyze Another Drill</a>
+                    <p style="text-align: center; margin-top: 12px; font-size: 0.85rem; color: var(--text-light);">
+                        <a href="drill-feedback.html#pricing" style="color: var(--primary-color);">Upgrade to Unlimited</a>
+                    </p>
+                `;
+            }
+        }
+
+        // Initialize
+        loadResults();
+        loadUpsellCard();
+    </script>
+</body>
+</html>

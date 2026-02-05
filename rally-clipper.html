@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rally Clipper - Ray Paull</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #10b981;
+            --text-color: #1f2937;
+            --text-light: #6b7280;
+            --background: #ffffff;
+            --background-alt: #f9fafb;
+            --border-color: #e5e7eb;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --success-color: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--background-alt);
+            color: var(--text-color);
+            line-height: 1.5;
+        }
+
+        .clipper-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .clipper-header h1 {
+            font-size: 1.25rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-actions button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .btn-copy {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .btn-reset {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Player Info */
+        .player-info {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .player-info h2 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .info-field label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .info-field input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        /* Add Clip Form */
+        .add-clip-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .add-clip-section h2 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .clip-form-grid {
+            display: grid;
+            grid-template-columns: 100px 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .clip-form-grid label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .clip-form-grid input,
+        .clip-form-grid select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .notes-field {
+            margin-bottom: 15px;
+        }
+
+        .notes-field label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .notes-field textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn-add-clip {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-add-clip:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Clips List */
+        .clips-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .clips-header {
+            background: var(--background-alt);
+            padding: 15px 20px;
+            font-weight: 600;
+            font-size: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .clip-count {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-weight: normal;
+        }
+
+        .clips-list {
+            padding: 0;
+        }
+
+        .clip-item {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .clip-item:last-child {
+            border-bottom: none;
+        }
+
+        .clip-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .clip-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .clip-timestamp {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .clip-category {
+            background: var(--background-alt);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--text-color);
+        }
+
+        .clip-rating {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .rating-good {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .rating-needs-work {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .rating-critical {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .clip-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .clip-actions button {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .clip-actions button:hover {
+            background: var(--background-alt);
+        }
+
+        .btn-delete {
+            color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+
+        .btn-delete:hover {
+            background: #fee2e2 !important;
+        }
+
+        .clip-notes {
+            color: var(--text-color);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            padding: 10px 15px;
+            background: var(--background-alt);
+            border-radius: 6px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .empty-state p {
+            font-size: 1rem;
+        }
+
+        /* Edit Mode */
+        .clip-item.editing {
+            background: #fef3c7;
+        }
+
+        .edit-form {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .edit-form .clip-form-grid {
+            margin-bottom: 10px;
+        }
+
+        .edit-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-save {
+            background: var(--secondary-color);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-cancel {
+            background: var(--background-alt);
+            color: var(--text-color);
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* Print Styles */
+        @media print {
+            .clipper-header,
+            .add-clip-section,
+            .clip-actions,
+            .btn-copy,
+            .btn-reset {
+                display: none !important;
+            }
+
+            .clips-section {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+
+            body {
+                background: white;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .clipper-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .clip-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .clip-item-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .clip-meta {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="clipper-header">
+        <h1>🎬 Rally Clipper</h1>
+        <div class="header-actions">
+            <button class="btn-copy" onclick="copyAllClips()">📋 Copy All</button>
+            <button class="btn-reset" onclick="resetAll()">🗑️ Reset All</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Player Info -->
+        <div class="player-info">
+            <h2>Session Info</h2>
+            <div class="info-grid">
+                <div class="info-field">
+                    <label>Player Name</label>
+                    <input type="text" id="playerName" placeholder="Enter player name" onchange="saveData()">
+                </div>
+                <div class="info-field">
+                    <label>Date</label>
+                    <input type="date" id="sessionDate" onchange="saveData()">
+                </div>
+                <div class="info-field">
+                    <label>Video Link (optional)</label>
+                    <input type="text" id="videoLink" placeholder="Paste video URL" onchange="saveData()">
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Clip Form -->
+        <div class="add-clip-section">
+            <h2>➕ Add New Clip</h2>
+            <div class="clip-form-grid">
+                <div>
+                    <label>Timestamp</label>
+                    <input type="text" id="newTimestamp" placeholder="4:32">
+                </div>
+                <div>
+                    <label>Category</label>
+                    <select id="newCategory">
+                        <option value="Serve/Return">Serve/Return</option>
+                        <option value="Third Shot">Third Shot</option>
+                        <option value="Transition/Reset">Transition/Reset</option>
+                        <option value="Dinking">Dinking</option>
+                        <option value="Speed-up/Counter">Speed-up/Counter</option>
+                        <option value="Net Play/Blocks">Net Play/Blocks</option>
+                        <option value="Overhead/Lob">Overhead/Lob</option>
+                        <option value="Positioning">Positioning</option>
+                        <option value="Hands Battle">Hands Battle</option>
+                        <option value="Decision Making">Decision Making</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Rating</label>
+                    <select id="newRating">
+                        <option value="good">✅ Good / Strength</option>
+                        <option value="needs-work">⚠️ Needs Work</option>
+                        <option value="critical">❌ Critical Error</option>
+                    </select>
+                </div>
+            </div>
+            <div class="notes-field">
+                <label>Notes</label>
+                <textarea id="newNotes" placeholder="Describe what happened and your feedback..."></textarea>
+            </div>
+            <button class="btn-add-clip" onclick="addClip()">
+                <span>+</span> Add Clip
+            </button>
+        </div>
+
+        <!-- Clips List -->
+        <div class="clips-section">
+            <div class="clips-header">
+                <span>📋 Saved Clips</span>
+                <span class="clip-count" id="clipCount">0 clips</span>
+            </div>
+            <div class="clips-list" id="clipsList">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🎬</div>
+                    <p>No clips yet. Add your first clip above!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize clips array
+        let clips = [];
+        let editingId = null;
+
+        // Load saved data
+        function loadData() {
+            const saved = localStorage.getItem('rallyClipperData');
+            if (saved) {
+                const data = JSON.parse(saved);
+
+                if (data.playerName) document.getElementById('playerName').value = data.playerName;
+                if (data.sessionDate) document.getElementById('sessionDate').value = data.sessionDate;
+                if (data.videoLink) document.getElementById('videoLink').value = data.videoLink;
+                if (data.clips) clips = data.clips;
+
+                renderClips();
+            }
+
+            // Set today's date if empty
+            if (!document.getElementById('sessionDate').value) {
+                document.getElementById('sessionDate').value = new Date().toISOString().split('T')[0];
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            const data = {
+                playerName: document.getElementById('playerName').value,
+                sessionDate: document.getElementById('sessionDate').value,
+                videoLink: document.getElementById('videoLink').value,
+                clips: clips
+            };
+            localStorage.setItem('rallyClipperData', JSON.stringify(data));
+        }
+
+        // Generate unique ID
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // Add new clip
+        function addClip() {
+            const timestamp = document.getElementById('newTimestamp').value.trim();
+            const category = document.getElementById('newCategory').value;
+            const rating = document.getElementById('newRating').value;
+            const notes = document.getElementById('newNotes').value.trim();
+
+            if (!timestamp) {
+                alert('Please enter a timestamp');
+                return;
+            }
+
+            if (!notes) {
+                alert('Please enter notes for this clip');
+                return;
+            }
+
+            const clip = {
+                id: generateId(),
+                timestamp: timestamp,
+                category: category,
+                rating: rating,
+                notes: notes,
+                createdAt: new Date().toISOString()
+            };
+
+            clips.push(clip);
+            saveData();
+            renderClips();
+
+            // Clear form
+            document.getElementById('newTimestamp').value = '';
+            document.getElementById('newNotes').value = '';
+            document.getElementById('newTimestamp').focus();
+        }
+
+        // Delete clip
+        function deleteClip(id) {
+            if (confirm('Delete this clip?')) {
+                clips = clips.filter(c => c.id !== id);
+                saveData();
+                renderClips();
+            }
+        }
+
+        // Start editing clip
+        function editClip(id) {
+            editingId = id;
+            renderClips();
+        }
+
+        // Save edited clip
+        function saveEdit(id) {
+            const clip = clips.find(c => c.id === id);
+            if (!clip) return;
+
+            const timestamp = document.getElementById('editTimestamp-' + id).value.trim();
+            const category = document.getElementById('editCategory-' + id).value;
+            const rating = document.getElementById('editRating-' + id).value;
+            const notes = document.getElementById('editNotes-' + id).value.trim();
+
+            if (!timestamp || !notes) {
+                alert('Timestamp and notes are required');
+                return;
+            }
+
+            clip.timestamp = timestamp;
+            clip.category = category;
+            clip.rating = rating;
+            clip.notes = notes;
+
+            editingId = null;
+            saveData();
+            renderClips();
+        }
+
+        // Cancel editing
+        function cancelEdit() {
+            editingId = null;
+            renderClips();
+        }
+
+        // Get rating display
+        function getRatingDisplay(rating) {
+            switch(rating) {
+                case 'good':
+                    return { text: '✅ Good', class: 'rating-good' };
+                case 'needs-work':
+                    return { text: '⚠️ Needs Work', class: 'rating-needs-work' };
+                case 'critical':
+                    return { text: '❌ Critical', class: 'rating-critical' };
+                default:
+                    return { text: rating, class: '' };
+            }
+        }
+
+        // Render clips list
+        function renderClips() {
+            const container = document.getElementById('clipsList');
+            const countEl = document.getElementById('clipCount');
+
+            if (clips.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎬</div>
+                        <p>No clips yet. Add your first clip above!</p>
+                    </div>
+                `;
+                countEl.textContent = '0 clips';
+                return;
+            }
+
+            countEl.textContent = clips.length + ' clip' + (clips.length === 1 ? '' : 's');
+
+            container.innerHTML = clips.map(clip => {
+                const ratingInfo = getRatingDisplay(clip.rating);
+                const isEditing = editingId === clip.id;
+
+                if (isEditing) {
+                    return `
+                        <div class="clip-item editing">
+                            <div class="edit-form">
+                                <div class="clip-form-grid">
+                                    <div>
+                                        <label>Timestamp</label>
+                                        <input type="text" id="editTimestamp-${clip.id}" value="${clip.timestamp}">
+                                    </div>
+                                    <div>
+                                        <label>Category</label>
+                                        <select id="editCategory-${clip.id}">
+                                            <option value="Serve/Return" ${clip.category === 'Serve/Return' ? 'selected' : ''}>Serve/Return</option>
+                                            <option value="Third Shot" ${clip.category === 'Third Shot' ? 'selected' : ''}>Third Shot</option>
+                                            <option value="Transition/Reset" ${clip.category === 'Transition/Reset' ? 'selected' : ''}>Transition/Reset</option>
+                                            <option value="Dinking" ${clip.category === 'Dinking' ? 'selected' : ''}>Dinking</option>
+                                            <option value="Speed-up/Counter" ${clip.category === 'Speed-up/Counter' ? 'selected' : ''}>Speed-up/Counter</option>
+                                            <option value="Net Play/Blocks" ${clip.category === 'Net Play/Blocks' ? 'selected' : ''}>Net Play/Blocks</option>
+                                            <option value="Overhead/Lob" ${clip.category === 'Overhead/Lob' ? 'selected' : ''}>Overhead/Lob</option>
+                                            <option value="Positioning" ${clip.category === 'Positioning' ? 'selected' : ''}>Positioning</option>
+                                            <option value="Hands Battle" ${clip.category === 'Hands Battle' ? 'selected' : ''}>Hands Battle</option>
+                                            <option value="Decision Making" ${clip.category === 'Decision Making' ? 'selected' : ''}>Decision Making</option>
+                                            <option value="Other" ${clip.category === 'Other' ? 'selected' : ''}>Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label>Rating</label>
+                                        <select id="editRating-${clip.id}">
+                                            <option value="good" ${clip.rating === 'good' ? 'selected' : ''}>✅ Good / Strength</option>
+                                            <option value="needs-work" ${clip.rating === 'needs-work' ? 'selected' : ''}>⚠️ Needs Work</option>
+                                            <option value="critical" ${clip.rating === 'critical' ? 'selected' : ''}>❌ Critical Error</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="notes-field">
+                                    <label>Notes</label>
+                                    <textarea id="editNotes-${clip.id}">${clip.notes}</textarea>
+                                </div>
+                                <div class="edit-actions">
+                                    <button class="btn-save" onclick="saveEdit('${clip.id}')">💾 Save</button>
+                                    <button class="btn-cancel" onclick="cancelEdit()">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="clip-item">
+                        <div class="clip-item-header">
+                            <div class="clip-meta">
+                                <span class="clip-timestamp">⏱️ ${clip.timestamp}</span>
+                                <span class="clip-category">${clip.category}</span>
+                                <span class="clip-rating ${ratingInfo.class}">${ratingInfo.text}</span>
+                            </div>
+                            <div class="clip-actions">
+                                <button onclick="editClip('${clip.id}')">✏️ Edit</button>
+                                <button class="btn-delete" onclick="deleteClip('${clip.id}')">🗑️ Delete</button>
+                            </div>
+                        </div>
+                        <div class="clip-notes">${clip.notes}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Copy all clips to clipboard
+        function copyAllClips() {
+            if (clips.length === 0) {
+                alert('No clips to copy');
+                return;
+            }
+
+            const playerName = document.getElementById('playerName').value || 'Unknown Player';
+            const sessionDate = document.getElementById('sessionDate').value || new Date().toISOString().split('T')[0];
+
+            // Count ratings
+            const goodCount = clips.filter(c => c.rating === 'good').length;
+            const needsWorkCount = clips.filter(c => c.rating === 'needs-work').length;
+            const criticalCount = clips.filter(c => c.rating === 'critical').length;
+
+            let output = `RALLY CLIPS - ${playerName} - ${sessionDate}\n`;
+            output += '=====================================\n\n';
+
+            clips.forEach(clip => {
+                const ratingSymbol = clip.rating === 'good' ? '✅' :
+                                     clip.rating === 'needs-work' ? '⚠️' : '❌';
+                output += `[${clip.timestamp}] ${clip.category.toUpperCase()} ${ratingSymbol}\n`;
+                output += `${clip.notes}\n\n`;
+            });
+
+            output += '=====================================\n';
+            output += `Total: ${clips.length} clips | Good: ${goodCount} | Needs Work: ${needsWorkCount} | Critical: ${criticalCount}\n`;
+            output += '=====================================\n';
+            output += 'Analyzed by Ray Paull | raypaull1010@gmail.com';
+
+            navigator.clipboard.writeText(output).then(() => {
+                alert('Clips copied to clipboard!');
+            }).catch(err => {
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = output;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Clips copied to clipboard!');
+            });
+        }
+
+        // Reset all data
+        function resetAll() {
+            if (confirm('Are you sure you want to reset all clips? This cannot be undone.')) {
+                clips = [];
+                document.getElementById('playerName').value = '';
+                document.getElementById('sessionDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('videoLink').value = '';
+                editingId = null;
+
+                localStorage.removeItem('rallyClipperData');
+                renderClips();
+            }
+        }
+
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!--
+  EMAIL TEMPLATE: Video Submission Admin Notification
+  RECIPIENT: Ray (admin)
+  TRIGGER: Immediately after form submission (Stage 1)
+
+  EMAILJS VARIABLES:
+  {{customer_name}} - Customer's full name
+  {{customer_email}} - Customer's email
+  {{customer_phone}} - Customer's phone (or "Not provided")
+  {{video_link}} - Link to the uploaded video
+  {{video_length}} - "30 minutes" or "60 minutes"
+  {{price}} - "$75" or "$120"
+  {{skill_level}} - Customer's DUPR level
+  {{focus_areas}} - Requested focus areas
+  {{submitted_at}} - Formatted submission date/time
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Video Submission</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #f3f4f6;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f3f4f6;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color: #10b981; padding: 25px; text-align: center;">
+                            <h1 style="color: #ffffff; margin: 0; font-size: 20px;">New Video Submission!</h1>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 30px;">
+
+                            <!-- Customer Info -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f9fafb; border-radius: 8px; margin-bottom: 20px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <h3 style="color: #1f2937; margin: 0 0 15px 0; font-size: 16px; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px;">Customer Info</h3>
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="color: #6b7280; font-size: 14px; padding: 5px 0; width: 100px;">Name:</td>
+                                                <td style="color: #1f2937; font-size: 14px; padding: 5px 0; font-weight: 600;">{{customer_name}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #6b7280; font-size: 14px; padding: 5px 0;">Email:</td>
+                                                <td style="padding: 5px 0;"><a href="mailto:{{customer_email}}" style="color: #2563eb; text-decoration: none; font-size: 14px;">{{customer_email}}</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #6b7280; font-size: 14px; padding: 5px 0;">Phone:</td>
+                                                <td style="color: #1f2937; font-size: 14px; padding: 5px 0;">{{customer_phone}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #6b7280; font-size: 14px; padding: 5px 0;">Skill Level:</td>
+                                                <td style="color: #1f2937; font-size: 14px; padding: 5px 0;">{{skill_level}}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Order Details -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #eff6ff; border-radius: 8px; margin-bottom: 20px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <h3 style="color: #1f2937; margin: 0 0 15px 0; font-size: 16px; border-bottom: 1px solid #bfdbfe; padding-bottom: 10px;">Order Details</h3>
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="color: #6b7280; font-size: 14px; padding: 5px 0; width: 100px;">Package:</td>
+                                                <td style="color: #1f2937; font-size: 14px; padding: 5px 0; font-weight: 600;">{{video_length}} Analysis</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #6b7280; font-size: 14px; padding: 5px 0;">Price:</td>
+                                                <td style="color: #2563eb; font-size: 16px; padding: 5px 0; font-weight: 700;">{{price}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #6b7280; font-size: 14px; padding: 5px 0;">Submitted:</td>
+                                                <td style="color: #1f2937; font-size: 14px; padding: 5px 0;">{{submitted_at}}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Video Link -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #fef3c7; border-radius: 8px; margin-bottom: 20px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <h3 style="color: #1f2937; margin: 0 0 10px 0; font-size: 16px;">Video Link</h3>
+                                        <p style="margin: 0; word-break: break-all;">
+                                            <a href="{{video_link}}" style="color: #2563eb; text-decoration: none; font-size: 14px;">{{video_link}}</a>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Focus Areas -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f9fafb; border-radius: 8px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <h3 style="color: #1f2937; margin: 0 0 10px 0; font-size: 16px;">Focus Areas Requested</h3>
+                                        <p style="color: #4b5563; font-size: 14px; margin: 0; line-height: 1.6;">{{focus_areas}}</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </td>
+                    </tr>
+
+                    <!-- Action Reminder -->
+                    <tr>
+                        <td style="background-color: #fef3c7; padding: 20px 30px; border-top: 1px solid #fcd34d;">
+                            <p style="color: #92400e; font-size: 14px; margin: 0; text-align: center;">
+                                <strong>Reminder:</strong> After verifying Venmo payment, send the payment confirmation email from the admin panel.
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

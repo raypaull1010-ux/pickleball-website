@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin - Payment Notification</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">Admin Panel</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Payment Notification</h1>
+            <p>Send yourself a text when a customer pays via Venmo</p>
+        </section>
+
+        <section class="contact-content">
+            <div class="container">
+                <div class="admin-form-container">
+
+                    <!-- Password Protection -->
+                    <div id="authSection">
+                        <p style="margin-bottom: 20px; color: var(--text-light);">Enter password to access admin panel</p>
+                        <div class="form-group">
+                            <label for="adminPassword">Password</label>
+                            <input type="password" id="adminPassword" class="admin-input">
+                        </div>
+                        <button class="btn btn-primary btn-full" onclick="checkPassword()">Access</button>
+                    </div>
+
+                    <!-- Notification Form (hidden by default) -->
+                    <div id="notifyForm" style="display: none;">
+                        <form id="paymentNotifyForm" class="contact-form">
+                            <div class="form-group">
+                                <label for="customerName">Customer Name *</label>
+                                <input type="text" id="customerName" required placeholder="Enter name from Venmo payment">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="packageType">Package *</label>
+                                <select id="packageType" required>
+                                    <option value="">Select package...</option>
+                                    <option value="30 min ($75)">30 Minute Analysis - $75</option>
+                                    <option value="60 min ($120)">60 Minute Analysis - $120</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-full">
+                                Send Text Notification
+                            </button>
+                        </form>
+
+                        <!-- Status Message -->
+                        <div id="statusMessage" class="status-message" style="display: none;"></div>
+
+                        <!-- Recent Notifications Log -->
+                        <div class="recent-notifications">
+                            <h3>Recent Notifications</h3>
+                            <ul id="notificationLog"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ray Paull Pickleball Analysis. Admin Panel.</p>
+        </div>
+    </footer>
+
+    <style>
+        /* Admin-specific styles */
+        .admin-form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .admin-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .status-message.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .status-message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        .recent-notifications {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .recent-notifications h3 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .recent-notifications ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recent-notifications li {
+            padding: 12px;
+            background: var(--background-alt);
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .recent-notifications li small {
+            color: var(--text-light);
+            display: block;
+            margin-top: 5px;
+        }
+
+        .empty-log {
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        #authSection {
+            text-align: center;
+        }
+
+        #authSection .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <script>
+        // ============================================
+        // CONFIGURATION - UPDATE THESE VALUES
+        // ============================================
+        // After creating your EmailJS account, replace these:
+        const EMAILJS_USER_ID = 'YOUR_USER_ID';       // From EmailJS Account > API Keys
+        const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID'; // From EmailJS Email Services
+        const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID'; // From EmailJS Templates
+
+        // Simple password (same as coach dashboard)
+        const ADMIN_PASSWORD = 'raycoach2025';
+
+        // Verizon SMS Gateway for (801) 205-9124
+        const SMS_GATEWAY_EMAIL = '8012059124@vtext.com';
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        (function() {
+            emailjs.init(EMAILJS_USER_ID);
+        })();
+
+        // ============================================
+        // PASSWORD PROTECTION
+        // ============================================
+        function checkPassword() {
+            const entered = document.getElementById('adminPassword').value;
+            if (entered === ADMIN_PASSWORD) {
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('notifyForm').style.display = 'block';
+                loadNotificationLog();
+            } else {
+                alert('Incorrect password');
+            }
+        }
+
+        // Allow Enter key to submit password
+        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkPassword();
+        });
+
+        // ============================================
+        // FORM SUBMISSION
+        // ============================================
+        document.getElementById('paymentNotifyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const customerName = document.getElementById('customerName').value.trim();
+            const packageType = document.getElementById('packageType').value;
+            const submitBtn = this.querySelector('button[type="submit"]');
+
+            // Disable button during send
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+
+            // Prepare template parameters
+            const templateParams = {
+                to_email: SMS_GATEWAY_EMAIL,
+                customer_name: customerName,
+                package_type: packageType
+            };
+
+            // Send via EmailJS
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+                .then(function(response) {
+                    showStatus('Text sent successfully!', 'success');
+                    logNotification(customerName, packageType);
+
+                    // Reset form
+                    document.getElementById('customerName').value = '';
+                    document.getElementById('packageType').value = '';
+                }, function(error) {
+                    showStatus('Failed to send: ' + (error.text || 'Check EmailJS configuration'), 'error');
+                    console.error('EmailJS error:', error);
+                })
+                .finally(function() {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Send Text Notification';
+                });
+        });
+
+        // ============================================
+        // STATUS MESSAGES
+        // ============================================
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = 'status-message ' + type;
+            statusEl.style.display = 'block';
+
+            // Auto-hide after 5 seconds
+            setTimeout(function() {
+                statusEl.style.display = 'none';
+            }, 5000);
+        }
+
+        // ============================================
+        // NOTIFICATION LOG (localStorage)
+        // ============================================
+        function logNotification(name, pkg) {
+            const logs = JSON.parse(localStorage.getItem('paymentNotifications') || '[]');
+            logs.unshift({
+                name: name,
+                package: pkg,
+                timestamp: new Date().toLocaleString()
+            });
+            // Keep only last 10
+            if (logs.length > 10) logs.pop();
+            localStorage.setItem('paymentNotifications', JSON.stringify(logs));
+            loadNotificationLog();
+        }
+
+        function loadNotificationLog() {
+            const logs = JSON.parse(localStorage.getItem('paymentNotifications') || '[]');
+            const listEl = document.getElementById('notificationLog');
+
+            if (logs.length === 0) {
+                listEl.innerHTML = '<li class="empty-log">No notifications sent yet</li>';
+                return;
+            }
+
+            listEl.innerHTML = logs.map(function(log) {
+                return '<li><strong>' + log.name + '</strong> - ' + log.package +
+                       '<small>' + log.timestamp + '</small></li>';
+            }).join('');
+        }
+    </script>
+</body>
+</html>

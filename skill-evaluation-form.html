@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit for Skill Evaluation - Ray's Pickleball</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        /* Form Container */
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            gap: 10px;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+        }
+
+        .progress-step.active {
+            color: var(--primary-color);
+        }
+
+        .progress-step.completed {
+            color: var(--secondary-color);
+        }
+
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .progress-step.active .step-circle {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .progress-step.completed .step-circle {
+            background: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .step-line {
+            width: 50px;
+            height: 2px;
+            background: var(--border-color);
+        }
+
+        .step-line.completed {
+            background: var(--secondary-color);
+        }
+
+        /* Form Sections */
+        .form-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .form-section h2 {
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            color: var(--text-color);
+        }
+
+        /* Form Fields */
+        .form-row {
+            margin-bottom: 20px;
+        }
+
+        .form-row label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-row label .optional {
+            font-weight: 400;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .form-row input,
+        .form-row textarea,
+        .form-row select {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+
+        .form-row input:focus,
+        .form-row textarea:focus,
+        .form-row select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-row textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row-half {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-hint {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 6px;
+        }
+
+        /* Video Upload */
+        .video-upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            background: var(--background-alt);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .video-upload-area:hover {
+            border-color: var(--primary-color);
+            background: #f0f4ff;
+        }
+
+        .video-upload-area.has-link {
+            border-color: var(--secondary-color);
+            background: #ecfdf5;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Level Selector */
+        .level-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .level-option {
+            padding: 15px;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .level-option:hover {
+            border-color: var(--primary-color);
+            background: #f0f4ff;
+        }
+
+        .level-option.selected {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .level-option .level-num {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .level-option .level-label {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        /* Payment Section */
+        .payment-summary {
+            background: var(--background-alt);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+
+        .summary-row.total {
+            border-top: 2px solid var(--border-color);
+            margin-top: 10px;
+            padding-top: 15px;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .payment-method {
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary-color);
+        }
+
+        .payment-method.selected {
+            border-color: var(--primary-color);
+            background: #f0f4ff;
+        }
+
+        .payment-method-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .payment-method-name {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .payment-method-desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        /* Venmo Instructions */
+        .venmo-instructions {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .venmo-instructions.show {
+            display: block;
+        }
+
+        .venmo-instructions h4 {
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .venmo-instructions ol {
+            margin: 0;
+            padding-left: 20px;
+            color: var(--text-color);
+        }
+
+        .venmo-instructions li {
+            margin-bottom: 10px;
+        }
+
+        .venmo-handle {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        /* Stripe Placeholder */
+        .stripe-form {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .stripe-form.show {
+            display: block;
+        }
+
+        .stripe-placeholder {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .stripe-placeholder p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        /* Navigation Buttons */
+        .form-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        .form-nav .btn {
+            min-width: 140px;
+        }
+
+        .btn-back {
+            background: white;
+            color: var(--text-color);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-back:hover {
+            background: var(--background-alt);
+            border-color: var(--text-color);
+        }
+
+        /* Success Section */
+        .success-section {
+            text-align: center;
+            padding: 60px 30px;
+            display: none;
+        }
+
+        .success-section.active {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .success-section h2 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .success-section p {
+            color: var(--text-light);
+            max-width: 500px;
+            margin: 0 auto 25px auto;
+            line-height: 1.7;
+        }
+
+        .success-details {
+            background: var(--background-alt);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto 25px auto;
+        }
+
+        .success-details p {
+            margin: 8px 0;
+            color: var(--text-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--text-color);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row-half {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+
+            .progress-steps {
+                flex-wrap: wrap;
+            }
+
+            .step-line {
+                display: none;
+            }
+
+            .level-options {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">🏓 Ray's Pickleball</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="services.html" class="active">Services</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="services.html">Video Analysis</a></li>
+                        <li><a href="skill-evaluation.html" class="active">Skill Evaluation</a></li>
+                        <li><a href="doubles-analysis.html">Doubles Analysis</a></li>
+                        <li><a href="level-up.html" class="dropdown-highlight">Level Up Program</a></li>
+                    </ul>
+                </li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="membership.html">Membership</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="btn btn-primary" style="padding: 8px 20px; color: white;">Submit Video</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Skill Level Evaluation</h1>
+            <p>Submit your video and find out your level</p>
+        </section>
+
+        <div class="form-container">
+            <!-- Progress Steps -->
+            <div class="progress-steps">
+                <div class="progress-step active" id="step1Indicator">
+                    <div class="step-circle">1</div>
+                    <span>Your Info</span>
+                </div>
+                <div class="step-line" id="line1"></div>
+                <div class="progress-step" id="step2Indicator">
+                    <div class="step-circle">2</div>
+                    <span>Video</span>
+                </div>
+                <div class="step-line" id="line2"></div>
+                <div class="progress-step" id="step3Indicator">
+                    <div class="step-circle">3</div>
+                    <span>Payment</span>
+                </div>
+            </div>
+
+            <!-- Step 1: Your Information -->
+            <div class="form-section active" id="step1">
+                <h2>Your Information</h2>
+
+                <div class="form-row-half">
+                    <div class="form-row">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" placeholder="John">
+                    </div>
+                    <div class="form-row">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" placeholder="Smith">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="john@example.com">
+                    <p class="form-hint">We'll send your evaluation results to this email</p>
+                </div>
+
+                <div class="form-row">
+                    <label>What level do you think you play at? <span class="optional">(optional)</span></label>
+                    <div class="level-options" id="levelOptions">
+                        <div class="level-option" data-level="2.5">
+                            <div class="level-num">2.5</div>
+                            <div class="level-label">Beginner</div>
+                        </div>
+                        <div class="level-option" data-level="3.0">
+                            <div class="level-num">3.0</div>
+                            <div class="level-label">Novice</div>
+                        </div>
+                        <div class="level-option" data-level="3.5">
+                            <div class="level-num">3.5</div>
+                            <div class="level-label">Intermediate</div>
+                        </div>
+                        <div class="level-option" data-level="4.0">
+                            <div class="level-num">4.0</div>
+                            <div class="level-label">Advanced</div>
+                        </div>
+                        <div class="level-option" data-level="4.5">
+                            <div class="level-num">4.5</div>
+                            <div class="level-label">Expert</div>
+                        </div>
+                        <div class="level-option" data-level="5.0+">
+                            <div class="level-num">5.0+</div>
+                            <div class="level-label">Pro</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-nav">
+                    <div></div>
+                    <button class="btn btn-primary" onclick="goToStep(2)">Next: Video →</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Video Submission -->
+            <div class="form-section" id="step2">
+                <h2>Submit Your Video</h2>
+
+                <div class="form-row">
+                    <label for="videoLink">Video Link</label>
+                    <input type="url" id="videoLink" placeholder="https://youtube.com/watch?v=... or Dropbox/Drive link">
+                    <p class="form-hint">Upload your video to YouTube (unlisted), Dropbox, or Google Drive and paste the link here</p>
+                </div>
+
+                <div class="form-row">
+                    <label>Video Requirements</label>
+                    <ul style="color: var(--text-light); margin-left: 20px; line-height: 1.8;">
+                        <li>2-5 minutes of competitive gameplay (not drilling)</li>
+                        <li>Show a variety of situations - serves, returns, dinks, drives</li>
+                        <li>Film from a position where your full body is visible</li>
+                        <li>Good lighting and stable camera preferred</li>
+                    </ul>
+                </div>
+
+                <div class="form-nav">
+                    <button class="btn btn-back" onclick="goToStep(1)">← Back</button>
+                    <button class="btn btn-primary" onclick="goToStep(3)">Next: Payment →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Payment -->
+            <div class="form-section" id="step3">
+                <h2>Complete Payment</h2>
+
+                <div class="payment-summary">
+                    <div class="summary-row">
+                        <span>Skill Level Evaluation</span>
+                        <span>$35.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span>$35.00</span>
+                    </div>
+                </div>
+
+                <label style="display: block; margin-bottom: 15px; font-weight: 600;">Select Payment Method</label>
+
+                <div class="payment-methods">
+                    <div class="payment-method" data-method="venmo" onclick="selectPaymentMethod('venmo')">
+                        <div class="payment-method-icon">📱</div>
+                        <div class="payment-method-name">Venmo</div>
+                        <div class="payment-method-desc">Pay via Venmo app</div>
+                    </div>
+                    <div class="payment-method" data-method="stripe" onclick="selectPaymentMethod('stripe')">
+                        <div class="payment-method-icon">💳</div>
+                        <div class="payment-method-name">Credit Card</div>
+                        <div class="payment-method-desc">Secure card payment</div>
+                    </div>
+                </div>
+
+                <!-- Venmo Instructions -->
+                <div class="venmo-instructions" id="venmoInstructions">
+                    <h4>📱 Pay via Venmo</h4>
+                    <ol>
+                        <li>Open the Venmo app on your phone</li>
+                        <li>Send <strong>$35</strong> to <span class="venmo-handle">@Ray-Paull</span></li>
+                        <li>In the note, include: <strong>"Skill Eval - <span id="venmoName">Your Name</span>"</strong></li>
+                        <li>Click "Submit Evaluation" below to complete your request</li>
+                    </ol>
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-light);">
+                        Your evaluation will begin once payment is confirmed (usually within a few hours).
+                    </p>
+                </div>
+
+                <!-- Stripe Form Placeholder -->
+                <div class="stripe-form" id="stripeForm">
+                    <div class="stripe-placeholder">
+                        <p>💳 Credit card payments coming soon!</p>
+                        <p style="font-size: 0.9rem;">For now, please use Venmo to complete your payment.</p>
+                    </div>
+                </div>
+
+                <div class="form-nav">
+                    <button class="btn btn-back" onclick="goToStep(2)">← Back</button>
+                    <button class="btn btn-primary" id="submitBtn" onclick="submitEvaluation()" disabled>Submit Evaluation</button>
+                </div>
+            </div>
+
+            <!-- Success Section -->
+            <div class="form-section success-section" id="successSection">
+                <div class="success-icon">✅</div>
+                <h2>Evaluation Request Submitted!</h2>
+                <p>Thank you for your submission. Ray will review your video and send your skill evaluation within 24-48 hours.</p>
+
+                <div class="success-details">
+                    <p><strong>Email:</strong> <span id="confirmEmail">-</span></p>
+                    <p><strong>Video:</strong> <span id="confirmVideo">-</span></p>
+                    <p><strong>Payment:</strong> <span id="confirmPayment">-</span></p>
+                </div>
+
+                <p style="font-size: 0.9rem;">If you paid via Venmo, your evaluation will begin once payment is confirmed. Questions? Email <a href="mailto:raypaull1010@gmail.com">raypaull1010@gmail.com</a></p>
+
+                <a href="index.html" class="btn btn-primary">Back to Home</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Form state
+        let currentStep = 1;
+        let selectedLevel = null;
+        let selectedPaymentMethod = null;
+
+        // Level selection
+        document.querySelectorAll('.level-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.level-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedLevel = this.dataset.level;
+            });
+        });
+
+        // Payment method selection
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+
+            document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+            document.querySelector(`[data-method="${method}"]`).classList.add('selected');
+
+            // Show appropriate instructions
+            document.getElementById('venmoInstructions').classList.toggle('show', method === 'venmo');
+            document.getElementById('stripeForm').classList.toggle('show', method === 'stripe');
+
+            // Update Venmo name
+            const firstName = document.getElementById('firstName').value || 'Your Name';
+            document.getElementById('venmoName').textContent = firstName;
+
+            // Enable submit button for Venmo
+            document.getElementById('submitBtn').disabled = method !== 'venmo';
+        }
+
+        // Step navigation
+        function goToStep(step) {
+            // Validate current step before proceeding
+            if (step > currentStep) {
+                if (!validateStep(currentStep)) {
+                    return;
+                }
+            }
+
+            // Update step indicators
+            for (let i = 1; i <= 3; i++) {
+                const indicator = document.getElementById(`step${i}Indicator`);
+                const line = document.getElementById(`line${i - 1}`);
+
+                indicator.classList.remove('active', 'completed');
+
+                if (i < step) {
+                    indicator.classList.add('completed');
+                    if (line) line.classList.add('completed');
+                } else if (i === step) {
+                    indicator.classList.add('active');
+                }
+            }
+
+            // Show/hide sections
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(`step${step}`).classList.add('active');
+
+            currentStep = step;
+        }
+
+        function validateStep(step) {
+            if (step === 1) {
+                const firstName = document.getElementById('firstName').value.trim();
+                const lastName = document.getElementById('lastName').value.trim();
+                const email = document.getElementById('email').value.trim();
+
+                if (!firstName || !lastName) {
+                    alert('Please enter your name.');
+                    return false;
+                }
+
+                if (!email || !email.includes('@')) {
+                    alert('Please enter a valid email address.');
+                    return false;
+                }
+            }
+
+            if (step === 2) {
+                const videoLink = document.getElementById('videoLink').value.trim();
+
+                if (!videoLink) {
+                    alert('Please provide a link to your video.');
+                    return false;
+                }
+
+                if (!videoLink.startsWith('http')) {
+                    alert('Please enter a valid video URL (starting with http:// or https://).');
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Submit evaluation
+        function submitEvaluation() {
+            if (!validateStep(2)) return;
+
+            if (selectedPaymentMethod !== 'venmo') {
+                alert('Please select Venmo as your payment method to continue.');
+                return;
+            }
+
+            // Gather form data
+            const evaluation = {
+                id: 'eval_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                customerName: `${document.getElementById('firstName').value.trim()} ${document.getElementById('lastName').value.trim()}`,
+                customerEmail: document.getElementById('email').value.trim(),
+                videoUrl: document.getElementById('videoLink').value.trim(),
+                selfAssessedLevel: selectedLevel || 'Not specified',
+                submittedAt: new Date().toISOString(),
+                amount: 35,
+                paymentMethod: 'venmo',
+                paymentStatus: 'pending',
+                status: 'pending',
+                results: null
+            };
+
+            // Save to localStorage
+            const evaluations = JSON.parse(localStorage.getItem('evaluations') || '[]');
+            evaluations.push(evaluation);
+            localStorage.setItem('evaluations', JSON.stringify(evaluations));
+
+            // Show success
+            document.getElementById('confirmEmail').textContent = evaluation.customerEmail;
+            document.getElementById('confirmVideo').textContent = evaluation.videoUrl.length > 50
+                ? evaluation.videoUrl.substring(0, 50) + '...'
+                : evaluation.videoUrl;
+            document.getElementById('confirmPayment').textContent = 'Venmo - $35 (pending confirmation)';
+
+            // Hide form sections, show success
+            document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('successSection').classList.add('active');
+            document.querySelector('.progress-steps').style.display = 'none';
+
+            // TODO: Send confirmation email via email service
+            console.log('Evaluation submitted:', evaluation);
+        }
+    </script>
+</body>
+</html>

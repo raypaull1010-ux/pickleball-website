@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Session Tracker - Full Drill Session Analytics | Ray Paull Pickleball</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">Ray's Pickleball</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="membership.html">Membership</a></li>
+                <li><a href="contact.html">Submit Video</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-content">
+                <p class="hero-eyebrow">NEW: Full Session Analytics</p>
+                <h1>Track Every Shot in Your Drill Session</h1>
+                <p class="hero-subtitle">Upload your 60-minute drill session and get comprehensive stats on every shot - serves, returns, drops, drives, dinks, and more. Track up to 4 players.</p>
+                <a href="session-upload.html" class="btn btn-primary btn-large">Upload Session</a>
+                <a href="drills-library.html" class="btn btn-secondary btn-large">Browse Drills</a>
+                <p class="hero-subtext">Starting at $12.99/session or $99.99 for 10-pack</p>
+            </div>
+        </section>
+
+        <!-- WHAT YOU GET -->
+        <section class="stats-tracked">
+            <div class="container">
+                <h2>What Gets Tracked</h2>
+                <p class="section-subtitle">Comprehensive analytics for every shot type</p>
+
+                <div class="stats-grid">
+                    <div class="stat-category">
+                        <h4>Serves</h4>
+                        <p>Placement zones, speed, depth, spin type, consistency %, error breakdown (net/out)</p>
+                    </div>
+                    <div class="stat-category">
+                        <h4>Returns</h4>
+                        <p>Depth tracking, speed, FH vs BH comparison, deep return %, placement accuracy</p>
+                    </div>
+                    <div class="stat-category">
+                        <h4>Third Shots</h4>
+                        <p>Drives vs drops ratio, speed, trajectory (high/ok/perfect), spin detection, landing zones</p>
+                    </div>
+                    <div class="stat-category">
+                        <h4>Volleys</h4>
+                        <p>Pop-up %, unattackable shots, speed, placement, punch vs swing analysis</p>
+                    </div>
+                    <div class="stat-category">
+                        <h4>Resets & Counters</h4>
+                        <p>Soft hands rating, reset success %, drop height, defensive effectiveness</p>
+                    </div>
+                    <div class="stat-category">
+                        <h4>Dinks</h4>
+                        <p>Attack %, pop-up %, dead dinks, cross-court L/R, straight ahead, position breakdown</p>
+                    </div>
+                    <div class="stat-category">
+                        <h4>Overheads</h4>
+                        <p>Put-away %, placement accuracy, speed, missed opportunities tracking</p>
+                    </div>
+                    <div class="stat-category">
+                        <h4>Lobs & Advanced</h4>
+                        <p>Lob success %, Erne attempts, ATP tracking, firefight win %, transition stats</p>
+                    </div>
+                </div>
+
+                <div class="tracking-note">
+                    <p><strong>All shots tracked separately for Forehand & Backhand</strong> - see where your game needs work</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section class="how-it-works">
+            <div class="container">
+                <h2>How It Works</h2>
+                <div class="steps-grid">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Record Your Session</h3>
+                        <p>Film up to 60 minutes of drilling. Position camera to capture the full court. Works with 1-4 players.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Upload & Tag Players</h3>
+                        <p>Upload your video, select drill type(s), and enter player names so we can track individual stats.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Get Full Stats Dashboard</h3>
+                        <p>Within 24 hours, receive a comprehensive breakdown of every player's performance with charts and insights.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SAMPLE DASHBOARD -->
+        <section class="sample-report">
+            <div class="container">
+                <h2>Sample Stats Dashboard</h2>
+                <p class="section-subtitle">Here's what your session report looks like</p>
+
+                <div class="dashboard-preview">
+                    <div class="dashboard-header">
+                        <span class="session-badge">Dinking Session - 45 min</span>
+                        <span class="player-count">2 Players</span>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="stat-block">
+                            <div class="stat-block-header">Player 1: Sarah</div>
+                            <div class="stat-row">
+                                <span>Total Dinks</span>
+                                <span class="stat-value">187</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Pop-up Rate</span>
+                                <span class="stat-value warning">18%</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Attack Dinks</span>
+                                <span class="stat-value good">23%</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Cross-court L→R</span>
+                                <span class="stat-value">94% consistent</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>BH vs FH Pop-ups</span>
+                                <span class="stat-value warning">BH: 24% | FH: 12%</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-block">
+                            <div class="stat-block-header">Player 2: Mike</div>
+                            <div class="stat-row">
+                                <span>Total Dinks</span>
+                                <span class="stat-value">192</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Pop-up Rate</span>
+                                <span class="stat-value good">11%</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Attack Dinks</span>
+                                <span class="stat-value">19%</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Cross-court R→L</span>
+                                <span class="stat-value warning">82% consistent</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>BH vs FH Pop-ups</span>
+                                <span class="stat-value">BH: 13% | FH: 9%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-insight">
+                        <strong>AI Insight:</strong> Sarah's backhand dinks are popping up twice as often as forehands. Recommend focusing on earlier contact point and softer grip pressure on BH side.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DRILL TYPES -->
+        <section class="drill-types-section">
+            <div class="container">
+                <h2>Supported Drill Types</h2>
+                <p class="section-subtitle">Full tracking for all major pickleball drills</p>
+
+                <div class="drill-types-grid">
+                    <div class="drill-type-card">
+                        <span class="drill-icon">🎾</span>
+                        <h4>Serve Practice</h4>
+                        <p>Placement, speed, depth, consistency</p>
+                    </div>
+                    <div class="drill-type-card">
+                        <span class="drill-icon">↩️</span>
+                        <h4>Return Practice</h4>
+                        <p>Depth, speed, FH/BH breakdown</p>
+                    </div>
+                    <div class="drill-type-card">
+                        <span class="drill-icon">3️⃣</span>
+                        <h4>Third Shot Drills</h4>
+                        <p>Drops, drives, placement, trajectory</p>
+                    </div>
+                    <div class="drill-type-card">
+                        <span class="drill-icon">⚡</span>
+                        <h4>Volley Drills</h4>
+                        <p>Speed, pop-ups, unattackable shots</p>
+                    </div>
+                    <div class="drill-type-card">
+                        <span class="drill-icon">🛡️</span>
+                        <h4>Reset Drills</h4>
+                        <p>Soft hands, counter-attacks, defense</p>
+                    </div>
+                    <div class="drill-type-card">
+                        <span class="drill-icon">🏓</span>
+                        <h4>Dinking</h4>
+                        <p>All positions, attacks, consistency</p>
+                    </div>
+                    <div class="drill-type-card">
+                        <span class="drill-icon">💥</span>
+                        <h4>Overheads</h4>
+                        <p>Put-aways, placement, power</p>
+                    </div>
+                    <div class="drill-type-card">
+                        <span class="drill-icon">🎯</span>
+                        <h4>Transition Zone</h4>
+                        <p>Movement, shot selection, timing</p>
+                    </div>
+                    <div class="drill-type-card">
+                        <span class="drill-icon">🌈</span>
+                        <h4>Lobs</h4>
+                        <p>Offensive/defensive, depth, success</p>
+                    </div>
+                    <div class="drill-type-card">
+                        <span class="drill-icon">🔥</span>
+                        <h4>Speed-ups / Firefights</h4>
+                        <p>Reaction time, hand speed, winners</p>
+                    </div>
+                    <div class="drill-type-card">
+                        <span class="drill-icon">🦅</span>
+                        <h4>Erne / ATP</h4>
+                        <p>Setup recognition, execution rate</p>
+                    </div>
+                    <div class="drill-type-card">
+                        <span class="drill-icon">🎮</span>
+                        <h4>Fun Games</h4>
+                        <p>Competitive drills with scoring</p>
+                    </div>
+                </div>
+
+                <div class="drill-cta">
+                    <a href="drills-library.html" class="btn btn-secondary">View Full Drill Library</a>
+                    <a href="games-library.html" class="btn btn-secondary">Browse Fun Games</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRICING -->
+        <section class="pricing-content">
+            <div class="container">
+                <h2>Session Tracker Pricing</h2>
+                <p class="section-subtitle">Choose based on your group size</p>
+
+                <div class="session-pricing-grid">
+                    <!-- 1-2 Players -->
+                    <div class="session-pricing-column">
+                        <h3>1-2 Players</h3>
+                        <p class="column-subtitle">Solo practice or partner drills</p>
+
+                        <div class="pricing-options">
+                            <div class="session-price-card">
+                                <h4>Single Session</h4>
+                                <div class="session-price">
+                                    <span class="amount">$12.99</span>
+                                    <span class="period">per session</span>
+                                </div>
+                                <ul>
+                                    <li>Up to 60 minutes</li>
+                                    <li>Full shot tracking</li>
+                                    <li>FH/BH breakdown</li>
+                                    <li>AI insights</li>
+                                </ul>
+                                <a href="session-upload.html" class="btn btn-secondary btn-full">Buy Single</a>
+                            </div>
+
+                            <div class="session-price-card featured">
+                                <div class="save-badge">Save $30</div>
+                                <h4>10-Session Pack</h4>
+                                <div class="session-price">
+                                    <span class="amount">$99.99</span>
+                                    <span class="period">$10/session</span>
+                                </div>
+                                <ul>
+                                    <li>10 sessions</li>
+                                    <li>Never expires</li>
+                                    <li>Progress tracking</li>
+                                    <li>Best value</li>
+                                </ul>
+                                <a href="session-upload.html" class="btn btn-primary btn-full">Buy 10-Pack</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3-4 Players -->
+                    <div class="session-pricing-column">
+                        <h3>3-4 Players</h3>
+                        <p class="column-subtitle">Group drills with full tracking for everyone</p>
+
+                        <div class="pricing-options">
+                            <div class="session-price-card">
+                                <h4>Single Session</h4>
+                                <div class="session-price">
+                                    <span class="amount">$19.99</span>
+                                    <span class="period">per session</span>
+                                </div>
+                                <ul>
+                                    <li>Track ALL players</li>
+                                    <li>Individual stats</li>
+                                    <li>Team insights</li>
+                                    <li>Comparison charts</li>
+                                </ul>
+                                <a href="session-upload.html" class="btn btn-secondary btn-full">Buy Single</a>
+                            </div>
+
+                            <div class="session-price-card featured">
+                                <div class="save-badge">Save $50</div>
+                                <h4>10-Session Pack</h4>
+                                <div class="session-price">
+                                    <span class="amount">$149.99</span>
+                                    <span class="period">$15/session</span>
+                                </div>
+                                <ul>
+                                    <li>10 sessions</li>
+                                    <li>Track 3-4 players each</li>
+                                    <li>Progress over time</li>
+                                    <li>Team chemistry insights</li>
+                                </ul>
+                                <a href="session-upload.html" class="btn btn-primary btn-full">Buy 10-Pack</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPARE WITH QUICK FEEDBACK -->
+        <section class="compare-section">
+            <div class="container">
+                <h2>Session Tracker vs. Quick Feedback</h2>
+                <p class="section-subtitle">Different tools for different needs</p>
+
+                <div class="compare-grid">
+                    <div class="compare-card">
+                        <h4>Quick Feedback</h4>
+                        <p class="compare-price">$19.99/mo or $29.99/30 credits</p>
+                        <ul class="compare-list">
+                            <li><strong>Best for:</strong> Technique checks</li>
+                            <li><strong>Video:</strong> 20-60 second clips</li>
+                            <li><strong>Turnaround:</strong> Under 60 seconds</li>
+                            <li><strong>Focus:</strong> Form & technique</li>
+                            <li><strong>Output:</strong> Grade + fixes</li>
+                        </ul>
+                        <a href="drill-feedback.html" class="btn btn-secondary">Try Quick Feedback</a>
+                    </div>
+
+                    <div class="compare-card featured">
+                        <div class="featured-badge">Full Analytics</div>
+                        <h4>Session Tracker</h4>
+                        <p class="compare-price">$12.99/session or $99.99/10-pack</p>
+                        <ul class="compare-list">
+                            <li><strong>Best for:</strong> Serious practice</li>
+                            <li><strong>Video:</strong> Up to 60 minutes</li>
+                            <li><strong>Turnaround:</strong> Within 24 hours</li>
+                            <li><strong>Focus:</strong> Stats & patterns</li>
+                            <li><strong>Output:</strong> Full dashboard</li>
+                        </ul>
+                        <a href="session-upload.html" class="btn btn-primary">Start Tracking</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta">
+            <div class="container">
+                <h2>Ready to Level Up Your Practice?</h2>
+                <p>Stop guessing. Start tracking. Know exactly what to work on.</p>
+                <a href="session-upload.html" class="btn btn-primary btn-large">Upload Your First Session</a>
+                <p class="cta-subtext">Full stats dashboard delivered within 24 hours</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <style>
+        /* Session Tracker Specific Styles */
+
+        /* Tracking Note */
+        .tracking-note {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+            border-radius: 12px;
+        }
+
+        .tracking-note p {
+            margin: 0;
+            color: var(--text-color);
+        }
+
+        /* Dashboard Preview */
+        .dashboard-preview {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #8b5cf6 100%);
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .session-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .player-count {
+            font-weight: 600;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 25px;
+        }
+
+        @media (max-width: 600px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-block {
+            background: var(--background-alt);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .stat-block-header {
+            background: var(--text-color);
+            color: white;
+            padding: 12px 15px;
+            font-weight: 600;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .stat-value.good {
+            color: var(--secondary-color);
+        }
+
+        .stat-value.warning {
+            color: #f59e0b;
+        }
+
+        .dashboard-insight {
+            background: #fef3c7;
+            padding: 20px 25px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.95rem;
+            color: #92400e;
+        }
+
+        /* Drill Types Grid */
+        .drill-types-section {
+            padding: var(--section-padding) 20px;
+            background: var(--background);
+        }
+
+        .drill-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto 40px auto;
+        }
+
+        .drill-type-card {
+            background: var(--background-alt);
+            padding: 25px 20px;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .drill-type-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .drill-icon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .drill-type-card h4 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .drill-type-card p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .drill-cta {
+            text-align: center;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Session Pricing */
+        .session-pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 900px;
+            margin: 40px auto 0;
+        }
+
+        @media (max-width: 768px) {
+            .session-pricing-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .session-pricing-column {
+            text-align: center;
+        }
+
+        .session-pricing-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .column-subtitle {
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+
+        .pricing-options {
+            display: flex;
+            gap: 20px;
+        }
+
+        @media (max-width: 500px) {
+            .pricing-options {
+                flex-direction: column;
+            }
+        }
+
+        .session-price-card {
+            flex: 1;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .session-price-card.featured {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+        }
+
+        .save-badge {
+            position: absolute;
+            top: -10px;
+            right: 15px;
+            background: var(--secondary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .session-price-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .session-price .amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .session-price .period {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        .session-price-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .session-price-card ul li {
+            padding: 8px 0;
+            padding-left: 22px;
+            position: relative;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .session-price-card ul li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        /* Compare Section Updates */
+        .compare-section {
+            padding: var(--section-padding) 20px;
+            background: var(--background-alt);
+        }
+
+        .compare-card.featured {
+            border: 2px solid var(--primary-color);
+            position: relative;
+        }
+
+        .compare-card .featured-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Gameplay Analysis Tracker - Ray Paull</title>
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        /* Login Screen Styles */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--background-alt);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .login-overlay.hidden {
+            display: none;
+        }
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+        .login-box h1 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        .login-box p {
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        .login-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        .login-box button {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .login-box button:hover {
+            background: var(--primary-dark);
+        }
+        .login-error {
+            color: var(--danger-color);
+            margin-top: 15px;
+            display: none;
+        }
+        .tracker-content {
+            display: none;
+        }
+        .tracker-content.active {
+            display: block;
+        }
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #10b981;
+            --text-color: #1f2937;
+            --text-light: #6b7280;
+            --background: #ffffff;
+            --background-alt: #f9fafb;
+            --border-color: #e5e7eb;
+            --danger-color: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--background-alt);
+            color: var(--text-color);
+            line-height: 1.5;
+        }
+
+        .tracker-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tracker-header h1 {
+            font-size: 1.25rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-actions button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .btn-copy {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .btn-reset {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-print {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-email {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Player Info */
+        .player-info {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .player-info h2 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .info-field label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .info-field input, .info-field select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        /* Stat Sections */
+        .stat-section {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .stat-section-header {
+            background: var(--background-alt);
+            padding: 15px 20px;
+            font-weight: 600;
+            font-size: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-section-header:hover {
+            background: #f3f4f6;
+        }
+
+        .stat-section-content {
+            padding: 20px;
+        }
+
+        .wing-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .wing-tab {
+            padding: 8px 20px;
+            border: 2px solid var(--border-color);
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .wing-tab.active {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .counters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .counter-item {
+            text-align: center;
+            padding: 15px;
+            background: var(--background-alt);
+            border-radius: 8px;
+        }
+
+        .counter-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .counter-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .counter-btn {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .counter-btn:active {
+            transform: scale(0.95);
+        }
+
+        .counter-btn.minus {
+            background: #fee2e2;
+            color: var(--danger-color);
+        }
+
+        .counter-btn.plus {
+            background: #d1fae5;
+            color: var(--secondary-color);
+        }
+
+        .counter-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            min-width: 40px;
+        }
+
+        .percentage-display {
+            margin-top: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Summary Section */
+        .summary-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .summary-section h2 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .summary-field label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .summary-field input,
+        .summary-field select,
+        .summary-field textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .summary-field textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Report Preview */
+        .report-preview {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 20px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        /* Print Styles */
+        @media print {
+            .tracker-header,
+            .counter-btn,
+            .wing-tabs,
+            .btn-copy,
+            .btn-reset,
+            .btn-print,
+            .btn-email {
+                display: none !important;
+            }
+
+            .stat-section,
+            .player-info,
+            .summary-section {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+
+            body {
+                background: white;
+            }
+
+            .report-preview {
+                background: white;
+                color: black;
+                border: 1px solid #ddd;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .tracker-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .counters-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Overlay -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <h1>Stat Tracker</h1>
+            <p>Enter password to access</p>
+            <input type="password" id="trackerPassword" placeholder="Password" autofocus>
+            <button onclick="checkTrackerPassword()">Access</button>
+            <p class="login-error" id="trackerLoginError">Incorrect password</p>
+        </div>
+    </div>
+
+    <div class="tracker-content" id="trackerContent">
+    <header class="tracker-header">
+        <h1>🏓 Gameplay Analysis Tracker</h1>
+        <div class="header-actions">
+            <button class="btn-email" onclick="emailReport()">📧 Email Report</button>
+            <button class="btn-copy" onclick="copyReport()">📋 Copy Report</button>
+            <button class="btn-print" onclick="window.print()">🖨️ Print</button>
+            <button class="btn-reset" onclick="resetAll()">🗑️ Reset All</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Player Info -->
+        <div class="player-info">
+            <h2>Player Information</h2>
+            <div class="info-grid">
+                <div class="info-field">
+                    <label>Player Name</label>
+                    <input type="text" id="playerName" placeholder="Enter player name" onchange="saveData()">
+                </div>
+                <div class="info-field">
+                    <label>Date</label>
+                    <input type="date" id="analysisDate" onchange="saveData()">
+                </div>
+                <div class="info-field">
+                    <label>Skill Level</label>
+                    <select id="skillLevel" onchange="saveData()">
+                        <option value="">Select level...</option>
+                        <option value="3.0-3.4">3.0 - 3.4</option>
+                        <option value="3.5-3.9">3.5 - 3.9</option>
+                        <option value="4.0-4.4">4.0 - 4.4</option>
+                        <option value="4.5-4.9">4.5 - 4.9</option>
+                        <option value="5.0+">5.0+</option>
+                    </select>
+                </div>
+                <div class="info-field">
+                    <label>Video Link (optional)</label>
+                    <input type="text" id="videoLink" placeholder="Paste video URL" onchange="saveData()">
+                </div>
+                <div class="info-field">
+                    <label>Customer Email</label>
+                    <input type="email" id="customerEmail" placeholder="customer@email.com" onchange="saveData()">
+                </div>
+            </div>
+        </div>
+
+        <!-- Kitchen Control -->
+        <div class="stat-section">
+            <div class="stat-section-header">🏃 Kitchen Control</div>
+            <div class="stat-section-content">
+                <div class="counters-grid">
+                    <div class="counter-item">
+                        <div class="counter-label">Serves Made</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('servesMade')">−</button>
+                            <span class="counter-value" id="servesMade">0</span>
+                            <button class="counter-btn plus" onclick="increment('servesMade')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">Got to Kitchen (after serve)</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('serveToKitchen')">−</button>
+                            <span class="counter-value" id="serveToKitchen">0</span>
+                            <button class="counter-btn plus" onclick="increment('serveToKitchen')">+</button>
+                        </div>
+                        <div class="percentage-display" id="serveToKitchenPct">0%</div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">Returns Made</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('returnsMade')">−</button>
+                            <span class="counter-value" id="returnsMade">0</span>
+                            <button class="counter-btn plus" onclick="increment('returnsMade')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">Opponent Kept Back</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('opponentKeptBack')">−</button>
+                            <span class="counter-value" id="opponentKeptBack">0</span>
+                            <button class="counter-btn plus" onclick="increment('opponentKeptBack')">+</button>
+                        </div>
+                        <div class="percentage-display" id="opponentKeptBackPct">0%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Serve Depth -->
+        <div class="stat-section">
+            <div class="stat-section-header">📍 Serve Depth</div>
+            <div class="stat-section-content">
+                <div class="counters-grid">
+                    <div class="counter-item">
+                        <div class="counter-label">Front Third</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('serveDepthFront')">−</button>
+                            <span class="counter-value" id="serveDepthFront">0</span>
+                            <button class="counter-btn plus" onclick="increment('serveDepthFront')">+</button>
+                        </div>
+                        <div class="percentage-display" id="serveDepthFrontPct">0%</div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">Middle Third</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('serveDepthMid')">−</button>
+                            <span class="counter-value" id="serveDepthMid">0</span>
+                            <button class="counter-btn plus" onclick="increment('serveDepthMid')">+</button>
+                        </div>
+                        <div class="percentage-display" id="serveDepthMidPct">0%</div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">Back Third</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('serveDepthBack')">−</button>
+                            <span class="counter-value" id="serveDepthBack">0</span>
+                            <button class="counter-btn plus" onclick="increment('serveDepthBack')">+</button>
+                        </div>
+                        <div class="percentage-display" id="serveDepthBackPct">0%</div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">Serve Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('serveErrors')">−</button>
+                            <span class="counter-value" id="serveErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('serveErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Return of Serve -->
+        <div class="stat-section">
+            <div class="stat-section-header">🎾 Return of Serve</div>
+            <div class="stat-section-content">
+                <div class="wing-tabs">
+                    <button class="wing-tab active" onclick="switchTab(this, 'ros')">Forehand</button>
+                    <button class="wing-tab" onclick="switchTab(this, 'ros')">Backhand</button>
+                </div>
+                <div class="counters-grid" id="ros-fh">
+                    <div class="counter-item">
+                        <div class="counter-label">FH Deep</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('rosFhDeep')">−</button>
+                            <span class="counter-value" id="rosFhDeep">0</span>
+                            <button class="counter-btn plus" onclick="increment('rosFhDeep')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Mid</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('rosFhMid')">−</button>
+                            <span class="counter-value" id="rosFhMid">0</span>
+                            <button class="counter-btn plus" onclick="increment('rosFhMid')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Short</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('rosFhShort')">−</button>
+                            <span class="counter-value" id="rosFhShort">0</span>
+                            <button class="counter-btn plus" onclick="increment('rosFhShort')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('rosFhErrors')">−</button>
+                            <span class="counter-value" id="rosFhErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('rosFhErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="counters-grid" id="ros-bh" style="display:none;">
+                    <div class="counter-item">
+                        <div class="counter-label">BH Deep</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('rosBhDeep')">−</button>
+                            <span class="counter-value" id="rosBhDeep">0</span>
+                            <button class="counter-btn plus" onclick="increment('rosBhDeep')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Mid</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('rosBhMid')">−</button>
+                            <span class="counter-value" id="rosBhMid">0</span>
+                            <button class="counter-btn plus" onclick="increment('rosBhMid')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Short</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('rosBhShort')">−</button>
+                            <span class="counter-value" id="rosBhShort">0</span>
+                            <button class="counter-btn plus" onclick="increment('rosBhShort')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('rosBhErrors')">−</button>
+                            <span class="counter-value" id="rosBhErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('rosBhErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Third Shot -->
+        <div class="stat-section">
+            <div class="stat-section-header">3️⃣ Third Shot Selection</div>
+            <div class="stat-section-content">
+                <div class="wing-tabs">
+                    <button class="wing-tab active" onclick="switchTab(this, 'third')">Forehand</button>
+                    <button class="wing-tab" onclick="switchTab(this, 'third')">Backhand</button>
+                </div>
+                <div class="counters-grid" id="third-fh">
+                    <div class="counter-item">
+                        <div class="counter-label">FH Drives</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('thirdFhDrives')">−</button>
+                            <span class="counter-value" id="thirdFhDrives">0</span>
+                            <button class="counter-btn plus" onclick="increment('thirdFhDrives')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Drives Won</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('thirdFhDrivesWon')">−</button>
+                            <span class="counter-value" id="thirdFhDrivesWon">0</span>
+                            <button class="counter-btn plus" onclick="increment('thirdFhDrivesWon')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Drive Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('thirdFhDriveErrors')">−</button>
+                            <span class="counter-value" id="thirdFhDriveErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('thirdFhDriveErrors')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Drops</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('thirdFhDrops')">−</button>
+                            <span class="counter-value" id="thirdFhDrops">0</span>
+                            <button class="counter-btn plus" onclick="increment('thirdFhDrops')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Drops Good</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('thirdFhDropsGood')">−</button>
+                            <span class="counter-value" id="thirdFhDropsGood">0</span>
+                            <button class="counter-btn plus" onclick="increment('thirdFhDropsGood')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Drop Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('thirdFhDropErrors')">−</button>
+                            <span class="counter-value" id="thirdFhDropErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('thirdFhDropErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="counters-grid" id="third-bh" style="display:none;">
+                    <div class="counter-item">
+                        <div class="counter-label">BH Drives</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('thirdBhDrives')">−</button>
+                            <span class="counter-value" id="thirdBhDrives">0</span>
+                            <button class="counter-btn plus" onclick="increment('thirdBhDrives')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Drives Won</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('thirdBhDrivesWon')">−</button>
+                            <span class="counter-value" id="thirdBhDrivesWon">0</span>
+                            <button class="counter-btn plus" onclick="increment('thirdBhDrivesWon')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Drive Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('thirdBhDriveErrors')">−</button>
+                            <span class="counter-value" id="thirdBhDriveErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('thirdBhDriveErrors')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Drops</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('thirdBhDrops')">−</button>
+                            <span class="counter-value" id="thirdBhDrops">0</span>
+                            <button class="counter-btn plus" onclick="increment('thirdBhDrops')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Drops Good</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('thirdBhDropsGood')">−</button>
+                            <span class="counter-value" id="thirdBhDropsGood">0</span>
+                            <button class="counter-btn plus" onclick="increment('thirdBhDropsGood')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Drop Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('thirdBhDropErrors')">−</button>
+                            <span class="counter-value" id="thirdBhDropErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('thirdBhDropErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Net Blocks -->
+        <div class="stat-section">
+            <div class="stat-section-header">🛡️ Net Blocks vs Drives</div>
+            <div class="stat-section-content">
+                <div class="wing-tabs">
+                    <button class="wing-tab active" onclick="switchTab(this, 'net')">Forehand</button>
+                    <button class="wing-tab" onclick="switchTab(this, 'net')">Backhand</button>
+                </div>
+                <div class="counters-grid" id="net-fh">
+                    <div class="counter-item">
+                        <div class="counter-label">FH Blocks</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('netFhBlocks')">−</button>
+                            <span class="counter-value" id="netFhBlocks">0</span>
+                            <button class="counter-btn plus" onclick="increment('netFhBlocks')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Block Success</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('netFhBlockSuccess')">−</button>
+                            <span class="counter-value" id="netFhBlockSuccess">0</span>
+                            <button class="counter-btn plus" onclick="increment('netFhBlockSuccess')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Block Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('netFhBlockErrors')">−</button>
+                            <span class="counter-value" id="netFhBlockErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('netFhBlockErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="counters-grid" id="net-bh" style="display:none;">
+                    <div class="counter-item">
+                        <div class="counter-label">BH Blocks</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('netBhBlocks')">−</button>
+                            <span class="counter-value" id="netBhBlocks">0</span>
+                            <button class="counter-btn plus" onclick="increment('netBhBlocks')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Block Success</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('netBhBlockSuccess')">−</button>
+                            <span class="counter-value" id="netBhBlockSuccess">0</span>
+                            <button class="counter-btn plus" onclick="increment('netBhBlockSuccess')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Block Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('netBhBlockErrors')">−</button>
+                            <span class="counter-value" id="netBhBlockErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('netBhBlockErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transition Resets -->
+        <div class="stat-section">
+            <div class="stat-section-header">↩️ Transition Zone Resets</div>
+            <div class="stat-section-content">
+                <div class="wing-tabs">
+                    <button class="wing-tab active" onclick="switchTab(this, 'reset')">Forehand</button>
+                    <button class="wing-tab" onclick="switchTab(this, 'reset')">Backhand</button>
+                </div>
+                <div class="counters-grid" id="reset-fh">
+                    <div class="counter-item">
+                        <div class="counter-label">FH Resets</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('resetFhTotal')">−</button>
+                            <span class="counter-value" id="resetFhTotal">0</span>
+                            <button class="counter-btn plus" onclick="increment('resetFhTotal')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Successful</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('resetFhSuccess')">−</button>
+                            <span class="counter-value" id="resetFhSuccess">0</span>
+                            <button class="counter-btn plus" onclick="increment('resetFhSuccess')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Attackable</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('resetFhAttackable')">−</button>
+                            <span class="counter-value" id="resetFhAttackable">0</span>
+                            <button class="counter-btn plus" onclick="increment('resetFhAttackable')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('resetFhErrors')">−</button>
+                            <span class="counter-value" id="resetFhErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('resetFhErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="counters-grid" id="reset-bh" style="display:none;">
+                    <div class="counter-item">
+                        <div class="counter-label">BH Resets</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('resetBhTotal')">−</button>
+                            <span class="counter-value" id="resetBhTotal">0</span>
+                            <button class="counter-btn plus" onclick="increment('resetBhTotal')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Successful</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('resetBhSuccess')">−</button>
+                            <span class="counter-value" id="resetBhSuccess">0</span>
+                            <button class="counter-btn plus" onclick="increment('resetBhSuccess')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Attackable</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('resetBhAttackable')">−</button>
+                            <span class="counter-value" id="resetBhAttackable">0</span>
+                            <button class="counter-btn plus" onclick="increment('resetBhAttackable')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('resetBhErrors')">−</button>
+                            <span class="counter-value" id="resetBhErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('resetBhErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dinking -->
+        <div class="stat-section">
+            <div class="stat-section-header">🏓 Dinking Performance</div>
+            <div class="stat-section-content">
+                <div class="wing-tabs">
+                    <button class="wing-tab active" onclick="switchTab(this, 'dink')">Forehand</button>
+                    <button class="wing-tab" onclick="switchTab(this, 'dink')">Backhand</button>
+                </div>
+                <div class="counters-grid" id="dink-fh">
+                    <div class="counter-item">
+                        <div class="counter-label">FH Dinks</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('dinkFhTotal')">−</button>
+                            <span class="counter-value" id="dinkFhTotal">0</span>
+                            <button class="counter-btn plus" onclick="increment('dinkFhTotal')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Solid</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('dinkFhSolid')">−</button>
+                            <span class="counter-value" id="dinkFhSolid">0</span>
+                            <button class="counter-btn plus" onclick="increment('dinkFhSolid')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Attackable</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('dinkFhAttackable')">−</button>
+                            <span class="counter-value" id="dinkFhAttackable">0</span>
+                            <button class="counter-btn plus" onclick="increment('dinkFhAttackable')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('dinkFhErrors')">−</button>
+                            <span class="counter-value" id="dinkFhErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('dinkFhErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="counters-grid" id="dink-bh" style="display:none;">
+                    <div class="counter-item">
+                        <div class="counter-label">BH Dinks</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('dinkBhTotal')">−</button>
+                            <span class="counter-value" id="dinkBhTotal">0</span>
+                            <button class="counter-btn plus" onclick="increment('dinkBhTotal')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Solid</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('dinkBhSolid')">−</button>
+                            <span class="counter-value" id="dinkBhSolid">0</span>
+                            <button class="counter-btn plus" onclick="increment('dinkBhSolid')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Attackable</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('dinkBhAttackable')">−</button>
+                            <span class="counter-value" id="dinkBhAttackable">0</span>
+                            <button class="counter-btn plus" onclick="increment('dinkBhAttackable')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('dinkBhErrors')">−</button>
+                            <span class="counter-value" id="dinkBhErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('dinkBhErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Speed-Ups -->
+        <div class="stat-section">
+            <div class="stat-section-header">⚡ Speed-Ups</div>
+            <div class="stat-section-content">
+                <div class="wing-tabs">
+                    <button class="wing-tab active" onclick="switchTab(this, 'speed')">Forehand</button>
+                    <button class="wing-tab" onclick="switchTab(this, 'speed')">Backhand</button>
+                </div>
+                <div class="counters-grid" id="speed-fh">
+                    <div class="counter-item">
+                        <div class="counter-label">FH Speed-Ups</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('speedFhTotal')">−</button>
+                            <span class="counter-value" id="speedFhTotal">0</span>
+                            <button class="counter-btn plus" onclick="increment('speedFhTotal')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Won</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('speedFhWon')">−</button>
+                            <span class="counter-value" id="speedFhWon">0</span>
+                            <button class="counter-btn plus" onclick="increment('speedFhWon')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('speedFhErrors')">−</button>
+                            <span class="counter-value" id="speedFhErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('speedFhErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="counters-grid" id="speed-bh" style="display:none;">
+                    <div class="counter-item">
+                        <div class="counter-label">BH Speed-Ups</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('speedBhTotal')">−</button>
+                            <span class="counter-value" id="speedBhTotal">0</span>
+                            <button class="counter-btn plus" onclick="increment('speedBhTotal')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Won</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('speedBhWon')">−</button>
+                            <span class="counter-value" id="speedBhWon">0</span>
+                            <button class="counter-btn plus" onclick="increment('speedBhWon')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('speedBhErrors')">−</button>
+                            <span class="counter-value" id="speedBhErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('speedBhErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Counters -->
+        <div class="stat-section">
+            <div class="stat-section-header">🔄 Counters</div>
+            <div class="stat-section-content">
+                <div class="wing-tabs">
+                    <button class="wing-tab active" onclick="switchTab(this, 'counter')">Forehand</button>
+                    <button class="wing-tab" onclick="switchTab(this, 'counter')">Backhand</button>
+                </div>
+                <div class="counters-grid" id="counter-fh">
+                    <div class="counter-item">
+                        <div class="counter-label">FH Using Counters</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('counterFhTotal')">−</button>
+                            <span class="counter-value" id="counterFhTotal">0</span>
+                            <button class="counter-btn plus" onclick="increment('counterFhTotal')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Successful</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('counterFhSuccess')">−</button>
+                            <span class="counter-value" id="counterFhSuccess">0</span>
+                            <button class="counter-btn plus" onclick="increment('counterFhSuccess')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('counterFhErrors')">−</button>
+                            <span class="counter-value" id="counterFhErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('counterFhErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="counters-grid" id="counter-bh" style="display:none;">
+                    <div class="counter-item">
+                        <div class="counter-label">BH Using Counters</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('counterBhTotal')">−</button>
+                            <span class="counter-value" id="counterBhTotal">0</span>
+                            <button class="counter-btn plus" onclick="increment('counterBhTotal')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Successful</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('counterBhSuccess')">−</button>
+                            <span class="counter-value" id="counterBhSuccess">0</span>
+                            <button class="counter-btn plus" onclick="increment('counterBhSuccess')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('counterBhErrors')">−</button>
+                            <span class="counter-value" id="counterBhErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('counterBhErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overheads -->
+        <div class="stat-section">
+            <div class="stat-section-header">💪 Overheads</div>
+            <div class="stat-section-content">
+                <div class="wing-tabs">
+                    <button class="wing-tab active" onclick="switchTab(this, 'oh')">Forehand</button>
+                    <button class="wing-tab" onclick="switchTab(this, 'oh')">Backhand</button>
+                </div>
+                <div class="counters-grid" id="oh-fh">
+                    <div class="counter-item">
+                        <div class="counter-label">FH Overheads</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('ohFhTotal')">−</button>
+                            <span class="counter-value" id="ohFhTotal">0</span>
+                            <button class="counter-btn plus" onclick="increment('ohFhTotal')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Winners</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('ohFhWinners')">−</button>
+                            <span class="counter-value" id="ohFhWinners">0</span>
+                            <button class="counter-btn plus" onclick="increment('ohFhWinners')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">FH Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('ohFhErrors')">−</button>
+                            <span class="counter-value" id="ohFhErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('ohFhErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="counters-grid" id="oh-bh" style="display:none;">
+                    <div class="counter-item">
+                        <div class="counter-label">BH Overheads</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('ohBhTotal')">−</button>
+                            <span class="counter-value" id="ohBhTotal">0</span>
+                            <button class="counter-btn plus" onclick="increment('ohBhTotal')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Winners</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('ohBhWinners')">−</button>
+                            <span class="counter-value" id="ohBhWinners">0</span>
+                            <button class="counter-btn plus" onclick="increment('ohBhWinners')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">BH Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('ohBhErrors')">−</button>
+                            <span class="counter-value" id="ohBhErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('ohBhErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hands Battle -->
+        <div class="stat-section">
+            <div class="stat-section-header">🥊 Hands Battle</div>
+            <div class="stat-section-content">
+                <div class="counters-grid">
+                    <div class="counter-item">
+                        <div class="counter-label">Hands Battles Won</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('handsBattleWon')">−</button>
+                            <span class="counter-value" id="handsBattleWon">0</span>
+                            <button class="counter-btn plus" onclick="increment('handsBattleWon')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">Hands Battles Lost</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('handsBattleLost')">−</button>
+                            <span class="counter-value" id="handsBattleLost">0</span>
+                            <button class="counter-btn plus" onclick="increment('handsBattleLost')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lobs -->
+        <div class="stat-section">
+            <div class="stat-section-header">🎯 Lobs</div>
+            <div class="stat-section-content">
+                <div class="counters-grid">
+                    <div class="counter-item">
+                        <div class="counter-label">Lobs Rundown</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('lobsRundown')">−</button>
+                            <span class="counter-value" id="lobsRundown">0</span>
+                            <button class="counter-btn plus" onclick="increment('lobsRundown')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">Got Lobbed</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('gotLobbed')">−</button>
+                            <span class="counter-value" id="gotLobbed">0</span>
+                            <button class="counter-btn plus" onclick="increment('gotLobbed')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">Successful Lobs</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('lobsSuccessful')">−</button>
+                            <span class="counter-value" id="lobsSuccessful">0</span>
+                            <button class="counter-btn plus" onclick="increment('lobsSuccessful')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">Lob Errors</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('lobErrors')">−</button>
+                            <span class="counter-value" id="lobErrors">0</span>
+                            <button class="counter-btn plus" onclick="increment('lobErrors')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Getting Caught Out of Position -->
+        <div class="stat-section">
+            <div class="stat-section-header">📍 Getting Caught Out of Position</div>
+            <div class="stat-section-content">
+                <div class="counters-grid">
+                    <div class="counter-item">
+                        <div class="counter-label">Beat Left Sideline</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('beatLeftSideline')">−</button>
+                            <span class="counter-value" id="beatLeftSideline">0</span>
+                            <button class="counter-btn plus" onclick="increment('beatLeftSideline')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">Beat Middle</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('beatMiddle')">−</button>
+                            <span class="counter-value" id="beatMiddle">0</span>
+                            <button class="counter-btn plus" onclick="increment('beatMiddle')">+</button>
+                        </div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-label">Beat Right Sideline</div>
+                        <div class="counter-controls">
+                            <button class="counter-btn minus" onclick="decrement('beatRightSideline')">−</button>
+                            <span class="counter-value" id="beatRightSideline">0</span>
+                            <button class="counter-btn plus" onclick="increment('beatRightSideline')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="summary-section">
+            <h2>📋 Player Summary — Action Plan</h2>
+            <div class="summary-grid">
+                <div class="summary-field">
+                    <label>Biggest Strength</label>
+                    <textarea id="biggestStrength" placeholder="What's working well?" onchange="saveData()"></textarea>
+                </div>
+                <div class="summary-field">
+                    <label>Biggest Weakness</label>
+                    <textarea id="biggestWeakness" placeholder="What's their biggest weakness?" onchange="saveData()"></textarea>
+                </div>
+                <div class="summary-field">
+                    <label>Decision Quality</label>
+                    <select id="decisionQuality" onchange="saveData()">
+                        <option value="">Select grade...</option>
+                        <option value="A">A</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B">B</option>
+                        <option value="B-">B-</option>
+                        <option value="C+">C+</option>
+                        <option value="C">C</option>
+                        <option value="C-">C-</option>
+                        <option value="D">D</option>
+                        <option value="F">F</option>
+                    </select>
+                </div>
+                <div class="summary-field">
+                    <label>Court Positioning</label>
+                    <select id="bodyPositioning" onchange="saveData()">
+                        <option value="">Select grade...</option>
+                        <option value="A">A</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B">B</option>
+                        <option value="B-">B-</option>
+                        <option value="C+">C+</option>
+                        <option value="C">C</option>
+                        <option value="C-">C-</option>
+                        <option value="D">D</option>
+                        <option value="F">F</option>
+                    </select>
+                </div>
+                <div class="summary-field" style="grid-column: 1 / -1;">
+                    <label>Top Fix</label>
+                    <textarea id="topFix" placeholder="The #1 thing to work on..." onchange="saveData()"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Preview -->
+        <div class="summary-section">
+            <h2>📄 Report Preview</h2>
+            <div class="report-preview" id="reportPreview">
+Click "Copy Report" to generate the formatted report.
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ============================================
+        // EMAILJS CONFIGURATION
+        // ============================================
+        const EMAILJS_PUBLIC_KEY = 'ZNybZzCj9oYiFl2L8';
+        const EMAILJS_SERVICE_ID = 'service_rkvpu6q';
+        const EMAILJS_TEMPLATE_ID = 'analysis_report';  // You need to create this template!
+
+        // Initialize EmailJS
+        (function() {
+            emailjs.init(EMAILJS_PUBLIC_KEY);
+        })();
+
+        // Initialize counters
+        const counters = {};
+
+        // All counter IDs
+        const counterIds = [
+            // Kitchen Control
+            'servesMade', 'serveToKitchen', 'returnsMade', 'opponentKeptBack',
+            // Serve Depth
+            'serveDepthFront', 'serveDepthMid', 'serveDepthBack', 'serveErrors',
+            // Return of Serve
+            'rosFhDeep', 'rosFhMid', 'rosFhShort', 'rosFhErrors',
+            'rosBhDeep', 'rosBhMid', 'rosBhShort', 'rosBhErrors',
+            // Third Shot
+            'thirdFhDrives', 'thirdFhDrivesWon', 'thirdFhDriveErrors', 'thirdFhDrops', 'thirdFhDropsGood', 'thirdFhDropErrors',
+            'thirdBhDrives', 'thirdBhDrivesWon', 'thirdBhDriveErrors', 'thirdBhDrops', 'thirdBhDropsGood', 'thirdBhDropErrors',
+            // Net Blocks
+            'netFhBlocks', 'netFhBlockSuccess', 'netFhBlockErrors',
+            'netBhBlocks', 'netBhBlockSuccess', 'netBhBlockErrors',
+            // Transition Resets
+            'resetFhTotal', 'resetFhSuccess', 'resetFhAttackable', 'resetFhErrors',
+            'resetBhTotal', 'resetBhSuccess', 'resetBhAttackable', 'resetBhErrors',
+            // Dinking
+            'dinkFhTotal', 'dinkFhSolid', 'dinkFhAttackable', 'dinkFhErrors',
+            'dinkBhTotal', 'dinkBhSolid', 'dinkBhAttackable', 'dinkBhErrors',
+            // Speed-Ups
+            'speedFhTotal', 'speedFhWon', 'speedFhErrors',
+            'speedBhTotal', 'speedBhWon', 'speedBhErrors',
+            // Counters
+            'counterFhTotal', 'counterFhSuccess', 'counterFhErrors',
+            'counterBhTotal', 'counterBhSuccess', 'counterBhErrors',
+            // Overheads
+            'ohFhTotal', 'ohFhWinners', 'ohFhErrors',
+            'ohBhTotal', 'ohBhWinners', 'ohBhErrors',
+            // Hands Battle
+            'handsBattleWon', 'handsBattleLost',
+            // Lobs
+            'lobsRundown', 'gotLobbed', 'lobsSuccessful', 'lobErrors',
+            // Getting Caught Out of Position
+            'beatLeftSideline', 'beatMiddle', 'beatRightSideline'
+        ];
+
+        // Initialize all counters to 0
+        counterIds.forEach(id => counters[id] = 0);
+
+        // Load saved data
+        function loadData() {
+            const saved = localStorage.getItem('pickleballAnalysis');
+            if (saved) {
+                const data = JSON.parse(saved);
+
+                // Load counters
+                counterIds.forEach(id => {
+                    if (data.counters && data.counters[id] !== undefined) {
+                        counters[id] = data.counters[id];
+                        document.getElementById(id).textContent = counters[id];
+                    }
+                });
+
+                // Load form fields
+                if (data.playerName) document.getElementById('playerName').value = data.playerName;
+                if (data.analysisDate) document.getElementById('analysisDate').value = data.analysisDate;
+                if (data.skillLevel) document.getElementById('skillLevel').value = data.skillLevel;
+                if (data.videoLink) document.getElementById('videoLink').value = data.videoLink;
+                if (data.customerEmail) document.getElementById('customerEmail').value = data.customerEmail;
+                if (data.biggestStrength) document.getElementById('biggestStrength').value = data.biggestStrength;
+                if (data.biggestWeakness) document.getElementById('biggestWeakness').value = data.biggestWeakness;
+                if (data.decisionQuality) document.getElementById('decisionQuality').value = data.decisionQuality;
+                if (data.bodyPositioning) document.getElementById('bodyPositioning').value = data.bodyPositioning;
+                if (data.topFix) document.getElementById('topFix').value = data.topFix;
+
+                updatePercentages();
+            }
+
+            // Set today's date if empty
+            if (!document.getElementById('analysisDate').value) {
+                document.getElementById('analysisDate').value = new Date().toISOString().split('T')[0];
+            }
+
+            // Try to load email from coach dashboard session (if not already set)
+            if (!document.getElementById('customerEmail').value) {
+                const coachSession = localStorage.getItem('coachSession');
+                if (coachSession) {
+                    try {
+                        const session = JSON.parse(coachSession);
+                        if (session.customerEmail) {
+                            document.getElementById('customerEmail').value = session.customerEmail;
+                        }
+                        // Also sync player name if empty
+                        if (!document.getElementById('playerName').value && session.customerName) {
+                            document.getElementById('playerName').value = session.customerName;
+                        }
+                    } catch (e) {
+                        console.log('Could not parse coach session');
+                    }
+                }
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            const data = {
+                counters: counters,
+                playerName: document.getElementById('playerName').value,
+                analysisDate: document.getElementById('analysisDate').value,
+                skillLevel: document.getElementById('skillLevel').value,
+                videoLink: document.getElementById('videoLink').value,
+                customerEmail: document.getElementById('customerEmail').value,
+                biggestStrength: document.getElementById('biggestStrength').value,
+                biggestWeakness: document.getElementById('biggestWeakness').value,
+                decisionQuality: document.getElementById('decisionQuality').value,
+                bodyPositioning: document.getElementById('bodyPositioning').value,
+                topFix: document.getElementById('topFix').value
+            };
+            localStorage.setItem('pickleballAnalysis', JSON.stringify(data));
+        }
+
+        // Increment counter
+        function increment(id) {
+            counters[id]++;
+            document.getElementById(id).textContent = counters[id];
+            updatePercentages();
+            saveData();
+        }
+
+        // Decrement counter
+        function decrement(id) {
+            if (counters[id] > 0) {
+                counters[id]--;
+                document.getElementById(id).textContent = counters[id];
+                updatePercentages();
+                saveData();
+            }
+        }
+
+        // Calculate percentage
+        function pct(num, denom) {
+            if (denom === 0) return 0;
+            return Math.round((num / denom) * 100);
+        }
+
+        // Update percentage displays
+        function updatePercentages() {
+            // Kitchen Control
+            document.getElementById('serveToKitchenPct').textContent =
+                pct(counters.serveToKitchen, counters.servesMade) + '%';
+            document.getElementById('opponentKeptBackPct').textContent =
+                pct(counters.opponentKeptBack, counters.returnsMade) + '%';
+
+            // Serve Depth
+            const serveDepthTotal = counters.serveDepthFront + counters.serveDepthMid + counters.serveDepthBack;
+            document.getElementById('serveDepthFrontPct').textContent =
+                pct(counters.serveDepthFront, serveDepthTotal) + '%';
+            document.getElementById('serveDepthMidPct').textContent =
+                pct(counters.serveDepthMid, serveDepthTotal) + '%';
+            document.getElementById('serveDepthBackPct').textContent =
+                pct(counters.serveDepthBack, serveDepthTotal) + '%';
+        }
+
+        // Switch tabs
+        function switchTab(btn, section) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.wing-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+
+            const isForehand = btn.textContent === 'Forehand';
+            document.getElementById(section + '-fh').style.display = isForehand ? 'grid' : 'none';
+            document.getElementById(section + '-bh').style.display = isForehand ? 'none' : 'grid';
+        }
+
+        // Generate report
+        function generateReport() {
+            const name = document.getElementById('playerName').value || 'Unknown Player';
+            const date = document.getElementById('analysisDate').value || new Date().toISOString().split('T')[0];
+            const level = document.getElementById('skillLevel').value || 'N/A';
+
+            // Calculate percentages
+            const rosFhTotal = counters.rosFhDeep + counters.rosFhMid + counters.rosFhShort;
+            const rosBhTotal = counters.rosBhDeep + counters.rosBhMid + counters.rosBhShort;
+            const serveDepthTotal = counters.serveDepthFront + counters.serveDepthMid + counters.serveDepthBack;
+
+            // Hands Battle total
+            const handsBattleTotal = counters.handsBattleWon + counters.handsBattleLost;
+
+            let report = `============================================
+VIDEO GAMEPLAY ANALYSIS REPORT
+============================================
+Player: ${name} | Skill Level: ${level}
+Date Analyzed: ${date}
+
+--------------------------------------------
+KITCHEN CONTROL
+--------------------------------------------
+Serves Made: ${counters.servesMade}
+Serve → Kitchen: ${pct(counters.serveToKitchen, counters.servesMade)}% (${counters.serveToKitchen}/${counters.servesMade})
+Return → Opponent Kept Back: ${pct(counters.opponentKeptBack, counters.returnsMade)}% (${counters.opponentKeptBack}/${counters.returnsMade})
+
+--------------------------------------------
+SERVE DEPTH
+--------------------------------------------
+Front Third: ${pct(counters.serveDepthFront, serveDepthTotal)}% (${counters.serveDepthFront})
+Middle Third: ${pct(counters.serveDepthMid, serveDepthTotal)}% (${counters.serveDepthMid})
+Back Third: ${pct(counters.serveDepthBack, serveDepthTotal)}% (${counters.serveDepthBack})
+Serve Errors: ${counters.serveErrors}
+
+--------------------------------------------
+RETURN OF SERVE
+--------------------------------------------
+Forehand: Deep ${pct(counters.rosFhDeep, rosFhTotal)}% | Mid ${pct(counters.rosFhMid, rosFhTotal)}% | Short ${pct(counters.rosFhShort, rosFhTotal)}% | Errors: ${counters.rosFhErrors}
+Backhand: Deep ${pct(counters.rosBhDeep, rosBhTotal)}% | Mid ${pct(counters.rosBhMid, rosBhTotal)}% | Short ${pct(counters.rosBhShort, rosBhTotal)}% | Errors: ${counters.rosBhErrors}
+
+--------------------------------------------
+THIRD SHOT SELECTION
+--------------------------------------------
+FH Drives: ${counters.thirdFhDrives} (${pct(counters.thirdFhDrivesWon, counters.thirdFhDrives)}% won, Errors: ${counters.thirdFhDriveErrors})
+FH Drops: ${counters.thirdFhDrops} (${pct(counters.thirdFhDropsGood, counters.thirdFhDrops)}% good, Errors: ${counters.thirdFhDropErrors})
+BH Drives: ${counters.thirdBhDrives} (${pct(counters.thirdBhDrivesWon, counters.thirdBhDrives)}% won, Errors: ${counters.thirdBhDriveErrors})
+BH Drops: ${counters.thirdBhDrops} (${pct(counters.thirdBhDropsGood, counters.thirdBhDrops)}% good, Errors: ${counters.thirdBhDropErrors})
+
+--------------------------------------------
+NET BLOCKS
+--------------------------------------------
+FH Blocks: ${counters.netFhBlocks} (${pct(counters.netFhBlockSuccess, counters.netFhBlocks)}% success, ${pct(counters.netFhBlockErrors, counters.netFhBlocks)}% errors)
+BH Blocks: ${counters.netBhBlocks} (${pct(counters.netBhBlockSuccess, counters.netBhBlocks)}% success, ${pct(counters.netBhBlockErrors, counters.netBhBlocks)}% errors)
+
+--------------------------------------------
+TRANSITION ZONE RESETS
+--------------------------------------------
+FH Resets: ${counters.resetFhTotal} (${pct(counters.resetFhSuccess, counters.resetFhTotal)}% success, ${pct(counters.resetFhAttackable, counters.resetFhTotal)}% attackable, Errors: ${counters.resetFhErrors})
+BH Resets: ${counters.resetBhTotal} (${pct(counters.resetBhSuccess, counters.resetBhTotal)}% success, ${pct(counters.resetBhAttackable, counters.resetBhTotal)}% attackable, Errors: ${counters.resetBhErrors})
+
+--------------------------------------------
+DINKING PERFORMANCE
+--------------------------------------------
+FH Dinks: ${counters.dinkFhTotal} (${pct(counters.dinkFhSolid, counters.dinkFhTotal)}% solid, ${pct(counters.dinkFhAttackable, counters.dinkFhTotal)}% attackable, Errors: ${counters.dinkFhErrors})
+BH Dinks: ${counters.dinkBhTotal} (${pct(counters.dinkBhSolid, counters.dinkBhTotal)}% solid, ${pct(counters.dinkBhAttackable, counters.dinkBhTotal)}% attackable, Errors: ${counters.dinkBhErrors})
+
+--------------------------------------------
+SPEED-UPS
+--------------------------------------------
+FH Speed-Ups: ${counters.speedFhTotal} (${pct(counters.speedFhWon, counters.speedFhTotal)}% won, ${pct(counters.speedFhErrors, counters.speedFhTotal)}% errors)
+BH Speed-Ups: ${counters.speedBhTotal} (${pct(counters.speedBhWon, counters.speedBhTotal)}% won, ${pct(counters.speedBhErrors, counters.speedBhTotal)}% errors)
+
+--------------------------------------------
+COUNTERS
+--------------------------------------------
+FH Counters: ${counters.counterFhTotal} (${pct(counters.counterFhSuccess, counters.counterFhTotal)}% successful, ${pct(counters.counterFhErrors, counters.counterFhTotal)}% errors)
+BH Counters: ${counters.counterBhTotal} (${pct(counters.counterBhSuccess, counters.counterBhTotal)}% successful, ${pct(counters.counterBhErrors, counters.counterBhTotal)}% errors)
+
+--------------------------------------------
+OVERHEADS
+--------------------------------------------
+FH Overheads: ${counters.ohFhTotal} (${pct(counters.ohFhWinners, counters.ohFhTotal)}% winners, ${pct(counters.ohFhErrors, counters.ohFhTotal)}% errors)
+BH Overheads: ${counters.ohBhTotal} (${pct(counters.ohBhWinners, counters.ohBhTotal)}% winners, ${pct(counters.ohBhErrors, counters.ohBhTotal)}% errors)
+
+--------------------------------------------
+HANDS BATTLE
+--------------------------------------------
+Won: ${counters.handsBattleWon} (${pct(counters.handsBattleWon, handsBattleTotal)}%)
+Lost: ${counters.handsBattleLost} (${pct(counters.handsBattleLost, handsBattleTotal)}%)
+
+--------------------------------------------
+LOBS
+--------------------------------------------
+Lobs Rundown: ${counters.lobsRundown}
+Got Lobbed: ${counters.gotLobbed}
+Successful Lobs: ${counters.lobsSuccessful}
+Lob Errors: ${counters.lobErrors}
+
+--------------------------------------------
+GETTING CAUGHT OUT OF POSITION
+--------------------------------------------
+Beat Left Sideline: ${counters.beatLeftSideline}
+Beat Middle: ${counters.beatMiddle}
+Beat Right Sideline: ${counters.beatRightSideline}
+
+--------------------------------------------
+PLAYER SUMMARY — ACTION PLAN
+--------------------------------------------
+Biggest Strength: ${document.getElementById('biggestStrength').value || 'N/A'}
+Biggest Weakness: ${document.getElementById('biggestWeakness').value || 'N/A'}
+Decision Quality: ${document.getElementById('decisionQuality').value || 'N/A'}
+Court Positioning: ${document.getElementById('bodyPositioning').value || 'N/A'}
+Top Fix: ${document.getElementById('topFix').value || 'N/A'}
+
+============================================
+Analyzed by Ray Paull | 5.1 DUPR
+raypaull1010@gmail.com
+============================================`;
+
+            return report;
+        }
+
+        // Copy report to clipboard
+        function copyReport() {
+            const report = generateReport();
+            document.getElementById('reportPreview').textContent = report;
+
+            navigator.clipboard.writeText(report).then(() => {
+                alert('Report copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = report;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Report copied to clipboard!');
+            });
+        }
+
+        // Email report to customer
+        function emailReport() {
+            const email = document.getElementById('customerEmail').value.trim();
+
+            if (!email) {
+                alert('Please enter customer email first!');
+                document.getElementById('customerEmail').focus();
+                return;
+            }
+
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address');
+                document.getElementById('customerEmail').focus();
+                return;
+            }
+
+            const report = generateReport();
+            const playerName = document.getElementById('playerName').value || 'Player';
+            const analysisDate = document.getElementById('analysisDate').value;
+
+            // Update preview
+            document.getElementById('reportPreview').textContent = report;
+
+            // Confirm before sending
+            if (!confirm(`Send report to ${email}?`)) {
+                return;
+            }
+
+            // Show sending state
+            const emailBtn = document.querySelector('.btn-email');
+            const originalText = emailBtn.textContent;
+            emailBtn.textContent = 'Sending...';
+            emailBtn.disabled = true;
+
+            // Send via EmailJS
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                to_email: email,
+                player_name: playerName,
+                report_content: report,
+                analysis_date: analysisDate
+            }).then(function(response) {
+                alert('Report sent successfully to ' + email + '!');
+                emailBtn.textContent = originalText;
+                emailBtn.disabled = false;
+            }).catch(function(error) {
+                console.error('EmailJS error:', error);
+                alert('Failed to send email. Make sure the "analysis_report" template exists in your EmailJS dashboard.\n\nError: ' + (error.text || error.message || 'Unknown error'));
+                emailBtn.textContent = originalText;
+                emailBtn.disabled = false;
+            });
+        }
+
+        // Reset all data
+        function resetAll() {
+            if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {
+                counterIds.forEach(id => {
+                    counters[id] = 0;
+                    document.getElementById(id).textContent = '0';
+                });
+
+                document.getElementById('playerName').value = '';
+                document.getElementById('analysisDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('skillLevel').value = '';
+                document.getElementById('videoLink').value = '';
+                document.getElementById('customerEmail').value = '';
+                document.getElementById('biggestStrength').value = '';
+                document.getElementById('biggestWeakness').value = '';
+                document.getElementById('decisionQuality').value = '';
+                document.getElementById('bodyPositioning').value = '';
+                document.getElementById('topFix').value = '';
+                document.getElementById('reportPreview').textContent = 'Click "Copy Report" to generate the formatted report.';
+
+                updatePercentages();
+                localStorage.removeItem('pickleballAnalysis');
+            }
+        }
+
+        // Load data on page load
+        loadData();
+    </script>
+    </div><!-- End tracker-content -->
+
+    <!-- Password Protection Script -->
+    <script>
+        const TRACKER_PASSWORD = 'raycoach2025';  // Same as coach dashboard
+
+        function checkTrackerPassword() {
+            const entered = document.getElementById('trackerPassword').value;
+            if (entered === TRACKER_PASSWORD) {
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('trackerContent').classList.add('active');
+                localStorage.setItem('trackerLoggedIn', 'true');
+            } else {
+                document.getElementById('trackerLoginError').style.display = 'block';
+                document.getElementById('trackerPassword').value = '';
+            }
+        }
+
+        // Check if already logged in (from coach dashboard or previous session)
+        if (localStorage.getItem('trackerLoggedIn') === 'true' || localStorage.getItem('coachLoggedIn') === 'true') {
+            document.getElementById('loginOverlay').classList.add('hidden');
+            document.getElementById('trackerContent').classList.add('active');
+        }
+
+        // Enter key to submit
+        document.getElementById('trackerPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkTrackerPassword();
+        });
+    </script>
+</body>
+</html>

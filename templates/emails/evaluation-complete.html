@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Skill Level Evaluation Results</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f3f4f6; padding: 40px 20px;">
+        <tr>
+            <td align="center">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px 30px; text-align: center;">
+                            <h1 style="color: #ffffff; margin: 0; font-size: 28px;">🏓 Your Evaluation is Ready!</h1>
+                        </td>
+                    </tr>
+
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <p style="font-size: 18px; color: #1f2937; margin: 0 0 25px 0;">
+                                Hi {{customer_name}},
+                            </p>
+
+                            <p style="font-size: 16px; color: #4b5563; line-height: 1.6; margin: 0 0 30px 0;">
+                                Great news! Ray has completed your skill level evaluation. Here are your results:
+                            </p>
+
+                            <!-- Skill Level Display -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border-radius: 12px; margin-bottom: 30px;">
+                                <tr>
+                                    <td style="padding: 30px; text-align: center;">
+                                        <p style="color: rgba(255,255,255,0.8); font-size: 14px; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 2px;">Your Skill Level</p>
+                                        <p style="color: #ffffff; font-size: 64px; font-weight: 700; margin: 0; line-height: 1;">{{skill_level}}</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Evaluation Summary -->
+                            <h3 style="font-size: 18px; color: #1f2937; margin: 0 0 15px 0;">Ray's Evaluation</h3>
+
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f9fafb; border-radius: 8px; border-left: 4px solid #2563eb; margin-bottom: 30px;">
+                                <tr>
+                                    <td style="padding: 25px;">
+                                        <p style="font-size: 16px; color: #1f2937; line-height: 1.8; margin: 0; white-space: pre-wrap;">{{evaluation_summary}}</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- What's Next -->
+                            <h3 style="font-size: 18px; color: #1f2937; margin: 0 0 15px 0;">Want to Improve?</h3>
+
+                            <p style="font-size: 16px; color: #4b5563; line-height: 1.6; margin: 0 0 20px 0;">
+                                Now that you know where you stand, here are some ways to level up:
+                            </p>
+
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-bottom: 30px;">
+                                <tr>
+                                    <td style="padding: 15px; background: #f3f4f6; border-radius: 8px; margin-bottom: 10px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td style="width: 40px; vertical-align: top; font-size: 24px;">📹</td>
+                                                <td style="padding-left: 10px;">
+                                                    <p style="margin: 0 0 5px 0; font-weight: 600; color: #1f2937;">Get Detailed Video Analysis</p>
+                                                    <p style="margin: 0; color: #6b7280; font-size: 14px;">Receive specific coaching tips on how to improve your technique</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr><td style="height: 10px;"></td></tr>
+                                <tr>
+                                    <td style="padding: 15px; background: #f3f4f6; border-radius: 8px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td style="width: 40px; vertical-align: top; font-size: 24px;">👨‍🏫</td>
+                                                <td style="padding-left: 10px;">
+                                                    <p style="margin: 0 0 5px 0; font-weight: 600; color: #1f2937;">Find a Local Instructor</p>
+                                                    <p style="margin: 0; color: #6b7280; font-size: 14px;">Browse our directory of certified instructors in your area</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- CTA Button -->
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-bottom: 25px;">
+                                <tr>
+                                    <td align="center">
+                                        <a href="https://rayspickleball.com/contact.html" style="display: inline-block; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: #ffffff; text-decoration: none; padding: 15px 30px; border-radius: 8px; font-weight: 600; font-size: 16px;">Submit Video for Analysis</a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="font-size: 14px; color: #6b7280; line-height: 1.6; margin: 0; text-align: center;">
+                                Want another evaluation in a few months to track your progress? We'd love to see how you improve!
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #1f2937; padding: 30px; text-align: center;">
+                            <p style="color: #9ca3af; font-size: 14px; margin: 0;">
+                                Ray's Pickleball Analysis<br>
+                                <a href="https://rayspickleball.com" style="color: #60a5fa;">rayspickleball.com</a>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

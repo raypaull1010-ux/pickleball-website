@@ -1,0 +1,108 @@
+# Netlify configuration file
+
+[build]
+  # No build command needed for static HTML site
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  # Use Node.js for serverless functions
+  node_bundler = "esbuild"
+  # Include dependencies for functions
+  included_files = ["netlify/functions/**"]
+
+# Redirect www to non-www
+[[redirects]]
+  from = "https://www.rayspickleball.com/*"
+  to = "https://rayspickleball.com/:splat"
+  status = 301
+  force = true
+
+# API Routes - map clean URLs to Netlify functions
+[[redirects]]
+  from = "/api/video-submission"
+  to = "/.netlify/functions/api/video-submission"
+  status = 200
+
+[[redirects]]
+  from = "/api/video-submission/*"
+  to = "/.netlify/functions/api/video-submission"
+  status = 200
+
+[[redirects]]
+  from = "/api/membership"
+  to = "/.netlify/functions/api/membership"
+  status = 200
+
+[[redirects]]
+  from = "/api/membership/*"
+  to = "/.netlify/functions/api/membership"
+  status = 200
+
+[[redirects]]
+  from = "/api/instructor"
+  to = "/.netlify/functions/api/instructor"
+  status = 200
+
+[[redirects]]
+  from = "/api/instructor/*"
+  to = "/.netlify/functions/api/instructor"
+  status = 200
+
+[[redirects]]
+  from = "/api/checkout"
+  to = "/.netlify/functions/create-checkout"
+  status = 200
+
+[[redirects]]
+  from = "/api/analyze-video"
+  to = "/.netlify/functions/analyze-video"
+  status = 200
+
+# Stripe webhook
+[[redirects]]
+  from = "/webhook/stripe"
+  to = "/.netlify/functions/stripe-webhook"
+  status = 200
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Cache static assets
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Prevent caching of HTML pages
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# Admin pages - prevent search engine indexing
+[[headers]]
+  for = "/admin-panel.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/admin-notify.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

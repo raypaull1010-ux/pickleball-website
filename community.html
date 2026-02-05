@@ -1,0 +1,3621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Contests - Ray Paull Pickleball</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">Ray's Pickleball</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="services.html">Services</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="services.html">Video Analysis</a></li>
+                        <li><a href="skill-evaluation.html">Skill Evaluation</a></li>
+                        <li><a href="doubles-analysis.html">Doubles Analysis</a></li>
+                        <li><a href="level-up.html" class="dropdown-highlight">Level Up Program</a></li>
+                    </ul>
+                </li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="membership.html">Membership</a></li>
+                <li><a href="community.html" class="active">Community</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="btn btn-primary" style="padding: 8px 20px; color: white;">Submit Video</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- CONTEST HEADER -->
+        <section class="contest-header">
+            <div class="container">
+                <div class="contest-badge">This Week's Challenge</div>
+                <h1 id="contestTitle">Best Trick Shot</h1>
+                <p id="contestDescription">Show us your most creative, flashy, or unexpected shot! Behind-the-back, tweener, no-look — anything goes. The community votes on the winner!</p>
+
+                <div class="contest-prize">
+                    <span class="prize-label">This Week's Prize:</span>
+                    <span class="prize-value" id="contestPrize">Free 1-Hour Drill Session (2 people)</span>
+                </div>
+
+                <div class="countdown-container">
+                    <span class="countdown-label">Voting closes:</span>
+                    <div class="countdown" id="countdown">
+                        <div class="countdown-item">
+                            <span class="countdown-value" id="days">0</span>
+                            <span class="countdown-unit">days</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-value" id="hours">0</span>
+                            <span class="countdown-unit">hours</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-value" id="minutes">0</span>
+                            <span class="countdown-unit">min</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-value" id="seconds">0</span>
+                            <span class="countdown-unit">sec</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MEMBER STATUS BAR -->
+        <div class="member-bar" id="memberBar">
+            <div class="container">
+                <div class="member-bar-content" id="memberBarContent">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <section class="community-content">
+            <div class="container">
+                <div class="community-grid">
+
+                    <!-- MAIN CONTENT -->
+                    <div class="community-main">
+
+                        <!-- SUBMIT VIDEO (Members Only) -->
+                        <div class="submit-section" id="submitSection">
+                            <h2>Submit Your Video</h2>
+                            <p class="submit-note" id="submitNote">Members can submit one video per contest.</p>
+
+                            <form id="submitForm" class="submit-form">
+                                <div class="form-group">
+                                    <label for="videoLink">Video Link</label>
+                                    <input type="url" id="videoLink" placeholder="Google Drive, Dropbox, YouTube, or WeTransfer link" required>
+                                    <p class="form-help">Share your video via Google Drive, Dropbox, WeTransfer, or paste a YouTube/Instagram link.</p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="videoTitle">Title (optional)</label>
+                                    <input type="text" id="videoTitle" placeholder="Give your shot a name!" maxlength="50">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-full" id="submitBtn">Submit Video</button>
+                            </form>
+                        </div>
+
+                        <!-- VIDEO GALLERY -->
+                        <div class="video-gallery">
+                            <div class="gallery-header">
+                                <h2>Submissions</h2>
+                                <div class="sort-options">
+                                    <button class="sort-btn active" data-sort="votes">Most Votes</button>
+                                    <button class="sort-btn" data-sort="recent">Most Recent</button>
+                                </div>
+                            </div>
+
+                            <div class="videos-grid" id="videosGrid">
+                                <!-- Videos populated by JavaScript -->
+                                <div class="no-videos" id="noVideos">
+                                    <p>No submissions yet. Be the first to enter!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SIDEBAR - Simplified & Organized -->
+                    <div class="community-sidebar">
+
+                        <!-- THIS WEEK'S ACTIONS - Always on top for members -->
+                        <div class="sidebar-card actions-card" id="weeklyActions" style="display: none;">
+                            <h3>📋 This Week's To-Do</h3>
+                            <div class="action-checklist">
+                                <div class="action-item" id="actionVote">
+                                    <span class="action-check">○</span>
+                                    <span class="action-text">Vote for your favorite video</span>
+                                    <span class="action-pts">+2 pts</span>
+                                </div>
+                                <div class="action-item" id="actionSubmit">
+                                    <span class="action-check">○</span>
+                                    <span class="action-text">Submit a contest video</span>
+                                    <span class="action-pts">+20 pts</span>
+                                </div>
+                                <div class="action-item" id="actionChallenge">
+                                    <span class="action-check">○</span>
+                                    <span class="action-text">Complete drill challenge</span>
+                                    <span class="action-pts">+15 pts</span>
+                                </div>
+                            </div>
+                            <p class="action-note">Complete all 3 for bonus points!</p>
+                        </div>
+
+                        <!-- Join CTA - For non-members -->
+                        <div class="sidebar-card join-cta" id="joinCta">
+                            <h3>🎉 Join the Fun!</h3>
+                            <p>Members can vote, submit videos, and win prizes every week.</p>
+                            <div class="join-benefits">
+                                <span>✓ Weekly contests</span>
+                                <span>✓ Earn points & badges</span>
+                                <span>✓ Win real prizes</span>
+                            </div>
+                            <a href="membership.html" class="btn btn-primary btn-full">Join for $19.99/mo</a>
+                        </div>
+
+                        <!-- Tip of the Week - Simple & Always Visible -->
+                        <div class="sidebar-card tip-card">
+                            <h3>💡 Tip of the Week</h3>
+                            <p class="tip-content" id="tipContent">Focus on your ready position between shots. Get low, paddle up, and stay on the balls of your feet!</p>
+                        </div>
+
+                        <!-- Member Hub Link -->
+                        <div class="sidebar-card member-hub-link" id="memberHubLink" style="display: none;">
+                            <a href="members.html" class="btn btn-secondary btn-full">📊 Go to Member Hub</a>
+                        </div>
+
+                        <!-- Collapsible Sections -->
+                        <div class="sidebar-accordion">
+                            <!-- Shoutouts -->
+                            <div class="accordion-item">
+                                <button class="accordion-header" onclick="toggleAccordion(this)">
+                                    <span>🎉 Community Shoutouts</span>
+                                    <span class="accordion-icon">+</span>
+                                </button>
+                                <div class="accordion-content">
+                                    <div class="shoutouts-list" id="shoutoutsList">
+                                        <p class="no-shoutouts">Achievements will appear here!</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Drill Voting -->
+                            <div class="accordion-item" id="drillVoteCard">
+                                <button class="accordion-header" onclick="toggleAccordion(this)">
+                                    <span>🗳️ Vote: Next Drill Demo</span>
+                                    <span class="accordion-icon">+</span>
+                                </button>
+                                <div class="accordion-content">
+                                    <p class="drill-vote-desc">What drill should Ray demo next week?</p>
+                                    <div class="drill-options" id="drillOptions">
+                                        <!-- Populated by JavaScript -->
+                                    </div>
+                                    <p class="vote-note" id="drillVoteNote"></p>
+                                </div>
+                            </div>
+
+                            <!-- Leaderboard -->
+                            <div class="accordion-item">
+                                <button class="accordion-header" onclick="toggleAccordion(this)">
+                                    <span>🏆 All-Time Winners</span>
+                                    <span class="accordion-icon">+</span>
+                                </button>
+                                <div class="accordion-content">
+                                    <div class="leaderboard" id="leaderboard">
+                                        <p class="no-winners">No winners yet. Win this week's contest!</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Milestone Rewards -->
+                            <div class="accordion-item">
+                                <button class="accordion-header" onclick="toggleAccordion(this)">
+                                    <span>🎁 Milestone Rewards</span>
+                                    <span class="accordion-icon">+</span>
+                                </button>
+                                <div class="accordion-content">
+                                    <div class="milestones-list">
+                                        <div class="milestone-item">
+                                            <span class="milestone-wins">5 Wins</span>
+                                            <span class="milestone-prize">Free AI Drill Credit</span>
+                                        </div>
+                                        <div class="milestone-item">
+                                            <span class="milestone-wins gold">10 Wins</span>
+                                            <span class="milestone-prize">$10 Off Any Service</span>
+                                        </div>
+                                        <div class="milestone-item">
+                                            <span class="milestone-wins platinum">15 Wins</span>
+                                            <span class="milestone-prize">Free 30-Min Analysis</span>
+                                        </div>
+                                        <div class="milestone-item">
+                                            <span class="milestone-wins diamond">20 Wins</span>
+                                            <span class="milestone-prize">Free 60-Min Analysis</span>
+                                        </div>
+                                    </div>
+                                    <p class="milestones-note">🚀 Launch Phase Rewards — prizes level up as our community grows!</p>
+                                </div>
+                            </div>
+
+                            <!-- Recent Winners -->
+                            <div class="accordion-item">
+                                <button class="accordion-header" onclick="toggleAccordion(this)">
+                                    <span>📜 Recent Winners</span>
+                                    <span class="accordion-icon">+</span>
+                                </button>
+                                <div class="accordion-content">
+                                    <div class="past-winners" id="pastWinners">
+                                        <p class="no-past-winners">Contest history will appear here.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMIN PANEL - SIMPLIFIED FOR RAY -->
+        <div class="admin-panel" id="adminPanel" style="display: none;">
+            <div class="container">
+                <!-- Admin Header -->
+                <div class="admin-header">
+                    <h2>🎯 Coach Dashboard</h2>
+                    <p class="admin-subtitle">Everything you need to run your community</p>
+                    <button onclick="hideAdminPanel()" class="btn btn-text admin-close">✕ Close</button>
+                </div>
+
+                <!-- AUTOMATION STATUS BAR -->
+                <div class="automation-bar">
+                    <div class="auto-status">
+                        <span class="auto-icon">🤖</span>
+                        <span class="auto-text"><strong>Auto-Pilot Mode:</strong> <span id="autoPilotStatus">OFF</span></span>
+                    </div>
+                    <div class="auto-actions">
+                        <button class="btn btn-small btn-secondary" onclick="showQuickAction('autopilot')">⚙️ Settings</button>
+                        <button class="btn btn-small btn-primary" onclick="window.print()">🖨️ Print Checklist</button>
+                    </div>
+                </div>
+
+                <!-- WEEKLY WORKFLOW - What to do each week -->
+                <div class="admin-workflow">
+                    <div class="workflow-header">
+                        <h3>📋 Your Weekly To-Do</h3>
+                        <span class="workflow-date" id="workflowDate">Week of Jan 1</span>
+                    </div>
+                    <div class="workflow-steps">
+                        <div class="workflow-step" id="stepSunday">
+                            <div class="step-day">Sunday</div>
+                            <div class="step-tasks">
+                                <label class="task-check">
+                                    <input type="checkbox" id="checkWinner">
+                                    <span>Pick last week's winner</span>
+                                </label>
+                                <label class="task-check">
+                                    <input type="checkbox" id="checkNewContest">
+                                    <span>Start new contest</span>
+                                </label>
+                            </div>
+                            <button class="btn btn-small btn-primary" onclick="showQuickAction('sunday')">Do This →</button>
+                        </div>
+                        <div class="workflow-step" id="stepMonday">
+                            <div class="step-day">Monday</div>
+                            <div class="step-tasks">
+                                <label class="task-check">
+                                    <input type="checkbox" id="checkTip">
+                                    <span>Post tip of the week</span>
+                                </label>
+                                <label class="task-check">
+                                    <input type="checkbox" id="checkChallenge">
+                                    <span>Set drill challenge</span>
+                                </label>
+                            </div>
+                            <button class="btn btn-small btn-primary" onclick="showQuickAction('monday')">Do This →</button>
+                        </div>
+                        <div class="workflow-step" id="stepAnytime">
+                            <div class="step-day">Anytime</div>
+                            <div class="step-tasks">
+                                <label class="task-check">
+                                    <input type="checkbox" id="checkMembers">
+                                    <span>Approve new members</span>
+                                </label>
+                            </div>
+                            <button class="btn btn-small btn-secondary" onclick="showQuickAction('members')">Check →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUICK ACTIONS PANELS -->
+                <div class="quick-action-panels">
+
+                    <!-- Sunday Actions: Close Contest & Start New One -->
+                    <div class="quick-action-panel" id="sundayPanel" style="display: none;">
+                        <div class="panel-header">
+                            <h3>🏆 Sunday: Contest Transition</h3>
+                            <button class="btn btn-text" onclick="hideQuickAction()">← Back</button>
+                        </div>
+
+                        <div class="action-step">
+                            <div class="action-number">1</div>
+                            <div class="action-content">
+                                <h4>Close Last Week's Contest</h4>
+                                <p>This picks the winner (most votes) and saves to history.</p>
+                                <button id="closeContestBtn" class="btn btn-secondary">Close Contest & Pick Winner</button>
+                                <p class="action-result" id="winnerResult"></p>
+                            </div>
+                        </div>
+
+                        <div class="action-step">
+                            <div class="action-number">2</div>
+                            <div class="action-content">
+                                <h4>Start New Contest</h4>
+                                <p>Choose a theme or use a template:</p>
+                                <div class="template-buttons">
+                                    <button class="template-btn" onclick="useContestTemplate('trickshot')">🎯 Best Trick Shot</button>
+                                    <button class="template-btn" onclick="useContestTemplate('dink')">🏓 Best Dink Rally</button>
+                                    <button class="template-btn" onclick="useContestTemplate('serve')">🚀 Best Serve</button>
+                                    <button class="template-btn" onclick="useContestTemplate('rally')">🔥 Best Rally Point</button>
+                                </div>
+                                <p style="margin: 10px 0; color: #6b7280;">— or custom —</p>
+                                <form id="contestSettingsForm" class="compact-form">
+                                    <input type="text" id="adminContestTitle" placeholder="Contest title...">
+                                    <textarea id="adminContestDesc" rows="2" placeholder="Short description..."></textarea>
+                                    <input type="text" id="adminContestPrize" placeholder="Prize (e.g., Free 1-Hour Session)">
+                                    <button type="submit" class="btn btn-primary">Start Contest</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monday Actions: Tip & Challenge -->
+                    <div class="quick-action-panel" id="mondayPanel" style="display: none;">
+                        <div class="panel-header">
+                            <h3>📝 Monday: Weekly Content</h3>
+                            <button class="btn btn-text" onclick="hideQuickAction()">← Back</button>
+                        </div>
+
+                        <div class="action-step">
+                            <div class="action-number">1</div>
+                            <div class="action-content">
+                                <h4>💡 Tip of the Week</h4>
+                                <p>Share a quick coaching tip:</p>
+                                <div class="template-buttons">
+                                    <button class="template-btn small" onclick="useTipTemplate('ready')">Ready Position</button>
+                                    <button class="template-btn small" onclick="useTipTemplate('footwork')">Footwork</button>
+                                    <button class="template-btn small" onclick="useTipTemplate('patience')">Kitchen Patience</button>
+                                    <button class="template-btn small" onclick="useTipTemplate('serve')">Serve Deep</button>
+                                </div>
+                                <form id="tipForm" class="compact-form">
+                                    <textarea id="adminTip" rows="2" placeholder="Your tip..."></textarea>
+                                    <button type="submit" class="btn btn-primary">Post Tip</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="action-step">
+                            <div class="action-number">2</div>
+                            <div class="action-content">
+                                <h4>🎯 Drill Challenge</h4>
+                                <p>What should members practice this week?</p>
+                                <div class="template-buttons">
+                                    <button class="template-btn" onclick="useChallengeTemplate('drops')">Third Shot Drops</button>
+                                    <button class="template-btn" onclick="useChallengeTemplate('dinks')">Dinking Practice</button>
+                                    <button class="template-btn" onclick="useChallengeTemplate('serves')">Serve Accuracy</button>
+                                    <button class="template-btn" onclick="useChallengeTemplate('resets')">Reset Shots</button>
+                                </div>
+                                <p style="margin: 10px 0; color: #6b7280;">— or custom —</p>
+                                <form id="drillChallengeForm" class="compact-form">
+                                    <input type="text" id="adminChallengeTitle" placeholder="Challenge title...">
+                                    <textarea id="adminChallengeDesc" rows="2" placeholder="Instructions..."></textarea>
+                                    <input type="text" id="adminChallengeGoal" placeholder="Goal (e.g., 100 reps)">
+                                    <button type="submit" class="btn btn-primary">Set Challenge</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Member Management -->
+                    <div class="quick-action-panel" id="membersPanel" style="display: none;">
+                        <div class="panel-header">
+                            <h3>👥 Member Management</h3>
+                            <button class="btn btn-text" onclick="hideQuickAction()">← Back</button>
+                        </div>
+
+                        <div class="member-section">
+                            <h4>🔔 Pending Requests <span class="pending-count" id="pendingCount">0</span></h4>
+                            <div id="pendingRequests" class="member-list">
+                                <p class="no-items">No pending requests!</p>
+                            </div>
+                        </div>
+
+                        <div class="member-section">
+                            <h4>➕ Add Member Manually</h4>
+                            <form id="addMemberForm" class="compact-form">
+                                <input type="text" id="newMemberName" placeholder="Name">
+                                <input type="email" id="newMemberEmail" placeholder="Email">
+                                <select id="newMemberPlan">
+                                    <option value="monthly">Monthly ($19.99)</option>
+                                    <option value="annual">Annual ($199)</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary">Add Member</button>
+                            </form>
+                        </div>
+
+                        <div class="member-section">
+                            <h4>✅ Active Members <span class="member-count" id="memberCount">0</span></h4>
+                            <div id="membersList" class="member-list" style="max-height: 300px; overflow-y: auto;">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AUTO-PILOT SETTINGS -->
+                    <div class="quick-action-panel" id="autopilotPanel" style="display: none;">
+                        <div class="panel-header">
+                            <h3>🤖 Auto-Pilot Settings</h3>
+                            <button class="btn btn-text" onclick="hideQuickAction()">← Back</button>
+                        </div>
+
+                        <div class="autopilot-intro">
+                            <p>Let the system handle routine tasks automatically so you can focus on coaching!</p>
+                        </div>
+
+                        <!-- Auto-Rotating Contests -->
+                        <div class="autopilot-section">
+                            <div class="autopilot-header">
+                                <h4>🔄 Auto-Rotating Contests</h4>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="autoContestToggle" onchange="toggleAutoContest()">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <p class="autopilot-desc">Contests automatically rotate through these themes every Sunday:</p>
+                            <div class="rotation-schedule" id="rotationSchedule">
+                                <div class="rotation-item">
+                                    <span class="rotation-week">Week 1</span>
+                                    <select class="rotation-select" id="rotation1">
+                                        <option value="trickshot">🎯 Best Trick Shot</option>
+                                        <option value="dink">🏓 Best Dink Rally</option>
+                                        <option value="serve">🚀 Best Serve</option>
+                                        <option value="rally">🔥 Best Rally Point</option>
+                                    </select>
+                                </div>
+                                <div class="rotation-item">
+                                    <span class="rotation-week">Week 2</span>
+                                    <select class="rotation-select" id="rotation2">
+                                        <option value="dink">🏓 Best Dink Rally</option>
+                                        <option value="trickshot">🎯 Best Trick Shot</option>
+                                        <option value="serve">🚀 Best Serve</option>
+                                        <option value="rally">🔥 Best Rally Point</option>
+                                    </select>
+                                </div>
+                                <div class="rotation-item">
+                                    <span class="rotation-week">Week 3</span>
+                                    <select class="rotation-select" id="rotation3">
+                                        <option value="serve">🚀 Best Serve</option>
+                                        <option value="trickshot">🎯 Best Trick Shot</option>
+                                        <option value="dink">🏓 Best Dink Rally</option>
+                                        <option value="rally">🔥 Best Rally Point</option>
+                                    </select>
+                                </div>
+                                <div class="rotation-item">
+                                    <span class="rotation-week">Week 4</span>
+                                    <select class="rotation-select" id="rotation4">
+                                        <option value="rally">🔥 Best Rally Point</option>
+                                        <option value="trickshot">🎯 Best Trick Shot</option>
+                                        <option value="dink">🏓 Best Dink Rally</option>
+                                        <option value="serve">🚀 Best Serve</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" onclick="saveRotationSchedule()">Save Schedule</button>
+                        </div>
+
+                        <!-- Auto-Rotating Challenges -->
+                        <div class="autopilot-section">
+                            <div class="autopilot-header">
+                                <h4>🎯 Auto-Rotating Challenges</h4>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="autoChallengeToggle" onchange="toggleAutoChallenge()">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <p class="autopilot-desc">Drill challenges automatically rotate every Monday:</p>
+                            <div class="rotation-schedule" id="challengeSchedule">
+                                <div class="rotation-item">
+                                    <span class="rotation-week">Week 1</span>
+                                    <select class="rotation-select" id="challenge1">
+                                        <option value="drops">Third Shot Drops</option>
+                                        <option value="dinks">Dinking Practice</option>
+                                        <option value="serves">Serve Accuracy</option>
+                                        <option value="resets">Reset Shots</option>
+                                    </select>
+                                </div>
+                                <div class="rotation-item">
+                                    <span class="rotation-week">Week 2</span>
+                                    <select class="rotation-select" id="challenge2">
+                                        <option value="dinks">Dinking Practice</option>
+                                        <option value="drops">Third Shot Drops</option>
+                                        <option value="serves">Serve Accuracy</option>
+                                        <option value="resets">Reset Shots</option>
+                                    </select>
+                                </div>
+                                <div class="rotation-item">
+                                    <span class="rotation-week">Week 3</span>
+                                    <select class="rotation-select" id="challenge3">
+                                        <option value="serves">Serve Accuracy</option>
+                                        <option value="drops">Third Shot Drops</option>
+                                        <option value="dinks">Dinking Practice</option>
+                                        <option value="resets">Reset Shots</option>
+                                    </select>
+                                </div>
+                                <div class="rotation-item">
+                                    <span class="rotation-week">Week 4</span>
+                                    <select class="rotation-select" id="challenge4">
+                                        <option value="resets">Reset Shots</option>
+                                        <option value="drops">Third Shot Drops</option>
+                                        <option value="dinks">Dinking Practice</option>
+                                        <option value="serves">Serve Accuracy</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" onclick="saveChallengeSchedule()">Save Schedule</button>
+                        </div>
+
+                        <!-- Email Reminders -->
+                        <div class="autopilot-section">
+                            <div class="autopilot-header">
+                                <h4>📧 Email Reminders (for You)</h4>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="emailRemindersToggle" onchange="toggleEmailReminders()">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <p class="autopilot-desc">Get reminded of your weekly tasks:</p>
+                            <div class="reminder-options">
+                                <label class="reminder-check">
+                                    <input type="checkbox" id="reminderSunday" checked>
+                                    <span>Sunday morning: "Time to pick winner & start new contest"</span>
+                                </label>
+                                <label class="reminder-check">
+                                    <input type="checkbox" id="reminderMonday" checked>
+                                    <span>Monday morning: "Time to post tip & set challenge"</span>
+                                </label>
+                                <label class="reminder-check">
+                                    <input type="checkbox" id="reminderPending" checked>
+                                    <span>When new member requests come in</span>
+                                </label>
+                            </div>
+                            <div class="form-group" style="margin-top: 15px;">
+                                <label>Your Email for Reminders:</label>
+                                <input type="email" id="adminEmail" placeholder="your@email.com" class="reminder-email">
+                            </div>
+                            <button class="btn btn-secondary" onclick="saveEmailSettings()">Save Email Settings</button>
+                        </div>
+
+                        <!-- Auto-Approve Members -->
+                        <div class="autopilot-section">
+                            <div class="autopilot-header">
+                                <h4>✅ Auto-Approve Members</h4>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="autoApproveToggle" onchange="toggleAutoApprove()">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <p class="autopilot-desc">Automatically approve new member requests (they still need to pay first)</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- PRINTABLE WEEKLY CHECKLIST -->
+                <div class="printable-checklist" id="printableChecklist">
+                    <div class="print-header">
+                        <h2>📋 Weekly Checklist</h2>
+                        <p class="print-date" id="printDate">Week of January 1, 2024</p>
+                    </div>
+                    <div class="print-section">
+                        <h3>☐ Sunday Tasks</h3>
+                        <div class="print-task">☐ Close last week's contest & announce winner</div>
+                        <div class="print-task">☐ Start new contest (Theme: ________________)</div>
+                        <div class="print-task">☐ Share winner announcement on social media</div>
+                    </div>
+                    <div class="print-section">
+                        <h3>☐ Monday Tasks</h3>
+                        <div class="print-task">☐ Post Tip of the Week</div>
+                        <div class="print-task">☐ Set Drill Challenge for the week</div>
+                    </div>
+                    <div class="print-section">
+                        <h3>☐ Throughout the Week</h3>
+                        <div class="print-task">☐ Approve new member requests</div>
+                        <div class="print-task">☐ Respond to any member questions</div>
+                        <div class="print-task">☐ Give shoutouts to active members</div>
+                    </div>
+                    <div class="print-section">
+                        <h3>📝 Notes</h3>
+                        <div class="print-notes"></div>
+                    </div>
+                </div>
+
+                <!-- STATS DASHBOARD -->
+                <div class="admin-stats">
+                    <h3>📊 Quick Stats</h3>
+                    <div class="stats-row">
+                        <div class="admin-stat">
+                            <span class="stat-num" id="statTotalMembers">0</span>
+                            <span class="stat-label">Members</span>
+                        </div>
+                        <div class="admin-stat">
+                            <span class="stat-num" id="statThisWeek">0</span>
+                            <span class="stat-label">Submissions</span>
+                        </div>
+                        <div class="admin-stat">
+                            <span class="stat-num" id="statVotes">0</span>
+                            <span class="stat-label">Votes Cast</span>
+                        </div>
+                        <div class="admin-stat">
+                            <span class="stat-num" id="statChallenges">0</span>
+                            <span class="stat-label">Challenges Done</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADVANCED SECTION (Collapsed) -->
+                <details class="advanced-section">
+                    <summary>⚙️ Advanced Options</summary>
+                    <div class="advanced-content">
+                        <!-- Quick Poll -->
+                        <div class="admin-section">
+                            <h4>📊 Create Poll</h4>
+                            <form id="pollForm" class="compact-form">
+                                <input type="text" id="adminPollQuestion" placeholder="Poll question...">
+                                <input type="text" id="pollOption1" placeholder="Option 1">
+                                <input type="text" id="pollOption2" placeholder="Option 2">
+                                <input type="text" id="pollOption3" placeholder="Option 3 (optional)">
+                                <input type="text" id="pollOption4" placeholder="Option 4 (optional)">
+                                <button type="submit" class="btn btn-primary">Create Poll</button>
+                            </form>
+                        </div>
+
+                        <!-- Drill Voting -->
+                        <div class="admin-section">
+                            <h4>🗳️ Drill Demo Voting</h4>
+                            <form id="drillVoteForm" class="compact-form">
+                                <input type="text" id="drillOption1" placeholder="Drill option 1">
+                                <input type="text" id="drillOption2" placeholder="Drill option 2">
+                                <input type="text" id="drillOption3" placeholder="Drill option 3">
+                                <input type="text" id="drillOption4" placeholder="Drill option 4 (optional)">
+                                <button type="submit" class="btn btn-primary">Update Options</button>
+                            </form>
+                        </div>
+
+                        <!-- Challenge Submissions Review -->
+                        <div class="admin-section">
+                            <h4>📹 Challenge Submissions</h4>
+                            <div id="challengeSubmissionsList" class="member-list" style="max-height: 200px; overflow-y: auto;"></div>
+                        </div>
+                    </div>
+                </details>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <style>
+        /* Contest Header */
+        .contest-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .contest-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contest-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .contest-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 25px;
+            line-height: 1.6;
+        }
+
+        .contest-prize {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 25px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        .prize-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .prize-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .countdown-container {
+            margin-top: 20px;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .countdown-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px 20px;
+            border-radius: 10px;
+            min-width: 70px;
+        }
+
+        .countdown-value {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .countdown-unit {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* Member Bar */
+        .member-bar {
+            background: var(--background-alt);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .member-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .member-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .member-status-badge {
+            background: var(--secondary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .member-status-badge.guest {
+            background: var(--text-light);
+        }
+
+        .vote-status {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Community Grid */
+        .community-content {
+            padding: 40px 20px;
+        }
+
+        .community-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+        }
+
+        @media (max-width: 900px) {
+            .community-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Submit Section */
+        .submit-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .submit-section h2 {
+            margin-bottom: 10px;
+        }
+
+        .submit-note {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .submit-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .submit-form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .submit-form input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .submit-form input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-help {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        .submit-locked {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .submit-locked p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        /* Video Gallery */
+        .video-gallery {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .gallery-header h2 {
+            margin: 0;
+        }
+
+        .sort-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .sort-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            background: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sort-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .videos-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .video-card {
+            background: var(--background-alt);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .video-thumbnail {
+            width: 120px;
+            height: 80px;
+            background: var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 2rem;
+            color: var(--text-light);
+        }
+
+        .video-info {
+            flex: 1;
+        }
+
+        .video-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .video-author {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .video-link {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+
+        .video-votes {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .vote-count {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .vote-btn {
+            padding: 8px 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 20px;
+            background: white;
+            color: var(--primary-color);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .vote-btn:hover:not(:disabled) {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .vote-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .vote-btn.voted {
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: white;
+        }
+
+        .no-videos {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+        }
+
+        /* Sidebar */
+        .community-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .sidebar-card h3 {
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        /* Weekly Actions Card */
+        .actions-card {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border: 2px solid #10b981;
+        }
+
+        .action-checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: white;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        .action-item.done {
+            background: #d1fae5;
+        }
+
+        .action-item.done .action-check {
+            color: #10b981;
+        }
+
+        .action-check {
+            font-size: 1.1rem;
+            color: #9ca3af;
+        }
+
+        .action-text {
+            flex: 1;
+        }
+
+        .action-pts {
+            color: #10b981;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .action-note {
+            margin: 12px 0 0 0;
+            font-size: 0.8rem;
+            color: #065f46;
+            text-align: center;
+        }
+
+        /* Join CTA Improved */
+        .join-cta {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+        }
+
+        .join-cta h3 {
+            color: white;
+        }
+
+        .join-cta p {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        .join-benefits {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+        }
+
+        .join-benefits span {
+            color: rgba(255,255,255,0.95);
+        }
+
+        .join-cta .btn-primary {
+            background: white;
+            color: #1d4ed8;
+        }
+
+        .join-cta .btn-primary:hover {
+            background: #f3f4f6;
+        }
+
+        /* Accordion Sidebar */
+        .sidebar-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .accordion-item {
+            background: white;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #374151;
+            transition: background 0.2s;
+        }
+
+        .accordion-header:hover {
+            background: #f9fafb;
+        }
+
+        .accordion-icon {
+            font-size: 1.2rem;
+            color: #9ca3af;
+            transition: transform 0.3s;
+        }
+
+        .accordion-item.open .accordion-icon {
+            transform: rotate(45deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 15px;
+        }
+
+        .accordion-item.open .accordion-content {
+            max-height: 500px;
+            padding: 0 15px 15px 15px;
+        }
+
+        /* Simplified Milestones */
+        .milestones-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .milestone-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .milestone-item:last-child {
+            border-bottom: none;
+        }
+
+        .milestone-wins {
+            background: var(--secondary-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .milestone-wins.gold {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .milestone-wins.platinum {
+            background: linear-gradient(135deg, #a3e635, #65a30d);
+        }
+
+        .milestone-wins.diamond {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+        }
+
+        .milestone-prize {
+            font-size: 0.85rem;
+            color: #374151;
+        }
+
+        .milestones-note {
+            margin: 12px 0 0 0;
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-align: center;
+        }
+
+        /* Old styles for backwards compatibility */
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--background-alt);
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .leaderboard-rank {
+            font-weight: 700;
+            color: var(--text-light);
+            width: 30px;
+        }
+
+        .leaderboard-name {
+            flex: 1;
+        }
+
+        .leaderboard-wins {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .no-winners,
+        .no-past-winners,
+        .no-shoutouts {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        /* Keep old milestone styles for any backwards compat */
+        .milestones-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-color: transparent;
+        }
+
+        .milestone {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 0;
+        }
+
+        .milestone-badge {
+            background: var(--secondary-color);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .milestone-badge.gold {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .milestone-badge.platinum {
+            background: linear-gradient(135deg, #a3e635, #65a30d);
+        }
+
+        .milestone-badge.diamond {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+        }
+
+        .milestone p {
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .milestones-note {
+            font-size: 0.8rem;
+            color: #92400e;
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px dashed #d97706;
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* Past Winners */
+        .past-winner-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--background-alt);
+        }
+
+        .past-winner-item:last-child {
+            border-bottom: none;
+        }
+
+        .past-winner-contest {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .past-winner-name {
+            font-weight: 600;
+        }
+
+        /* Join CTA */
+        .join-cta {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 2px solid var(--primary-color);
+        }
+
+        .join-cta h3 {
+            color: var(--primary-color);
+        }
+
+        .join-cta p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        /* Admin Panel - Simplified */
+        .admin-panel {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            padding: 30px 20px;
+            border-top: 4px solid #ef4444;
+            margin-top: 40px;
+        }
+
+        .admin-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .admin-header h2 {
+            margin: 0;
+            color: #dc2626;
+        }
+
+        .admin-subtitle {
+            color: #991b1b;
+            flex: 1;
+            margin: 0;
+        }
+
+        .admin-close {
+            color: #6b7280;
+        }
+
+        /* Weekly Workflow */
+        .admin-workflow {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 2px solid #fca5a5;
+        }
+
+        .workflow-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .workflow-header h3 {
+            margin: 0;
+        }
+
+        .workflow-date {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .workflow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .workflow-step {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+        }
+
+        .workflow-step.done {
+            background: #ecfdf5;
+            border-color: #10b981;
+        }
+
+        .step-day {
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .step-tasks {
+            margin-bottom: 12px;
+        }
+
+        .task-check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: #4b5563;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        .task-check input {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Quick Action Panels */
+        .quick-action-panels {
+            margin-bottom: 25px;
+        }
+
+        .quick-action-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            border: 2px solid #e5e7eb;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .panel-header h3 {
+            margin: 0;
+        }
+
+        .action-step {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .action-step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .action-number {
+            width: 32px;
+            height: 32px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .action-content {
+            flex: 1;
+        }
+
+        .action-content h4 {
+            margin: 0 0 8px 0;
+        }
+
+        .action-content p {
+            margin: 0 0 12px 0;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .action-result {
+            background: #ecfdf5;
+            color: #065f46;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        /* Template Buttons */
+        .template-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .template-btn {
+            padding: 10px 16px;
+            background: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .template-btn:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .template-btn.small {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+
+        /* Compact Form */
+        .compact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .compact-form input,
+        .compact-form textarea,
+        .compact-form select {
+            padding: 10px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .compact-form input:focus,
+        .compact-form textarea:focus,
+        .compact-form select:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+
+        /* Member Section */
+        .member-section {
+            margin-bottom: 25px;
+        }
+
+        .member-section h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .pending-count,
+        .member-count {
+            background: #3b82f6;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        .member-list {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .no-items {
+            color: #6b7280;
+            font-style: italic;
+            margin: 0;
+        }
+
+        /* Admin Stats */
+        .admin-stats {
+            background: white;
+            border-radius: 16px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+        }
+
+        .admin-stats h3 {
+            margin: 0 0 15px 0;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .admin-stat {
+            text-align: center;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 10px;
+        }
+
+        .stat-num {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+
+        .admin-stat .stat-label {
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        /* Advanced Section */
+        .advanced-section {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .advanced-section summary {
+            padding: 15px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .advanced-section summary:hover {
+            color: #374151;
+        }
+
+        .advanced-content {
+            padding: 0 20px 20px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .admin-section {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .admin-section h4 {
+            margin: 0 0 15px 0;
+            font-size: 0.95rem;
+        }
+
+        /* Automation Bar */
+        .automation-bar {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .auto-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .auto-icon {
+            font-size: 1.5rem;
+        }
+
+        .auto-text {
+            color: #1e40af;
+        }
+
+        #autoPilotStatus {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+
+        #autoPilotStatus.on {
+            background: #10b981;
+            color: white;
+        }
+
+        #autoPilotStatus.off {
+            background: #6b7280;
+            color: white;
+        }
+
+        .auto-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Autopilot Panel */
+        .autopilot-intro {
+            background: #f0fdf4;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .autopilot-intro p {
+            margin: 0;
+            color: #065f46;
+        }
+
+        .autopilot-section {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .autopilot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .autopilot-header h4 {
+            margin: 0;
+        }
+
+        .autopilot-desc {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: #10b981;
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Rotation Schedule */
+        .rotation-schedule {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .rotation-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .rotation-week {
+            font-weight: 600;
+            color: #374151;
+            min-width: 60px;
+        }
+
+        .rotation-select {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Reminder Options */
+        .reminder-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .reminder-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: #374151;
+            cursor: pointer;
+        }
+
+        .reminder-check input {
+            margin-top: 3px;
+        }
+
+        .reminder-email {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        /* Printable Checklist */
+        .printable-checklist {
+            display: none;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            .printable-checklist,
+            .printable-checklist * {
+                visibility: visible;
+            }
+
+            .printable-checklist {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 40px;
+                background: white;
+            }
+
+            .print-header {
+                text-align: center;
+                margin-bottom: 30px;
+                padding-bottom: 20px;
+                border-bottom: 2px solid #000;
+            }
+
+            .print-header h2 {
+                margin: 0 0 10px 0;
+                font-size: 24px;
+            }
+
+            .print-date {
+                color: #666;
+                margin: 0;
+            }
+
+            .print-section {
+                margin-bottom: 25px;
+            }
+
+            .print-section h3 {
+                font-size: 16px;
+                margin-bottom: 15px;
+                padding-bottom: 5px;
+                border-bottom: 1px solid #ccc;
+            }
+
+            .print-task {
+                padding: 8px 0;
+                font-size: 14px;
+                border-bottom: 1px dotted #ddd;
+            }
+
+            .print-notes {
+                height: 150px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+            }
+        }
+
+        /* Old admin section styles for backwards compat */
+        .admin-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .admin-section h3 {
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .admin-section .form-group {
+            margin-bottom: 15px;
+        }
+
+        .admin-section label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .admin-section input,
+        .admin-section textarea,
+        .admin-section select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .pending-request,
+        .member-item {
+            background: var(--background-alt);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pending-request button,
+        .member-item button {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+
+        /* Shoutouts Card */
+        .shoutouts-card {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border-color: #10b981;
+        }
+
+        .shoutout-item {
+            padding: 10px 0;
+            border-bottom: 1px dashed #a7f3d0;
+            font-size: 0.9rem;
+        }
+
+        .shoutout-item:last-child {
+            border-bottom: none;
+        }
+
+        .shoutout-icon {
+            margin-right: 8px;
+        }
+
+        .shoutout-name {
+            font-weight: 600;
+            color: #065f46;
+        }
+
+        .shoutout-action {
+            color: #047857;
+        }
+
+        .no-shoutouts {
+            color: #047857;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        /* Tip of the Week */
+        .tip-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-color: #f59e0b;
+        }
+
+        .tip-card h3 {
+            color: #92400e;
+        }
+
+        .tip-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #78350f;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .tip-date {
+            font-size: 0.8rem;
+            color: #b45309;
+        }
+
+        /* Drill Vote Card */
+        .drill-vote-card {
+            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+            border-color: #8b5cf6;
+        }
+
+        .drill-vote-card h3 {
+            color: #5b21b6;
+        }
+
+        .drill-vote-desc {
+            font-size: 0.9rem;
+            color: #6d28d9;
+            margin-bottom: 15px;
+        }
+
+        .drill-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .drill-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .drill-option:hover {
+            border-color: #8b5cf6;
+        }
+
+        .drill-option.voted {
+            border-color: #8b5cf6;
+            background: #f5f3ff;
+        }
+
+        .drill-option-name {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .drill-option-votes {
+            background: #8b5cf6;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .vote-note {
+            font-size: 0.8rem;
+            color: #7c3aed;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* Video Reactions */
+        .video-reactions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .reaction-btn {
+            background: var(--background-alt);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .reaction-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .reaction-btn.reacted {
+            background: #dbeafe;
+            border-color: var(--primary-color);
+        }
+
+        .reaction-count {
+            margin-left: 3px;
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* First Win Badge */
+        .first-win-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 8px;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { box-shadow: 0 0 5px rgba(251, 191, 36, 0.5); }
+            50% { box-shadow: 0 0 15px rgba(251, 191, 36, 0.8); }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .contest-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .countdown {
+                gap: 10px;
+            }
+
+            .countdown-item {
+                padding: 10px 15px;
+                min-width: 55px;
+            }
+
+            .countdown-value {
+                font-size: 1.5rem;
+            }
+
+            .video-card {
+                flex-direction: column;
+            }
+
+            .video-thumbnail {
+                width: 100%;
+                height: 150px;
+            }
+        }
+    </style>
+
+    <script>
+        // ============================================
+        // COMMUNITY CONTEST SYSTEM
+        // ============================================
+
+        const ADMIN_KEY = 'rayspickleball2025'; // Secret admin key
+
+        // Default contest if none exists
+        const DEFAULT_CONTEST = {
+            title: 'Best Trick Shot',
+            description: 'Show us your most creative, flashy, or unexpected shot! Behind-the-back, tweener, no-look — anything goes. The community votes on the winner!',
+            prize: 'Free 1-Hour Drill Session (2 people)',
+            deadline: getNextSaturday(),
+            submissions: []
+        };
+
+        function getNextSaturday() {
+            const now = new Date();
+            const saturday = new Date(now);
+            saturday.setDate(now.getDate() + (6 - now.getDay() + 7) % 7);
+            saturday.setHours(23, 59, 59, 999);
+            if (saturday <= now) {
+                saturday.setDate(saturday.getDate() + 7);
+            }
+            return saturday.toISOString();
+        }
+
+        // Initialize or load contest
+        function getContest() {
+            let contest = JSON.parse(localStorage.getItem('currentContest'));
+            if (!contest) {
+                contest = DEFAULT_CONTEST;
+                localStorage.setItem('currentContest', JSON.stringify(contest));
+            }
+            return contest;
+        }
+
+        // Check if user is a member
+        function getMemberStatus() {
+            const memberEmail = localStorage.getItem('memberEmail');
+            if (!memberEmail) return { isMember: false };
+
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const member = members.find(m => m.email.toLowerCase() === memberEmail.toLowerCase() && m.active);
+
+            return {
+                isMember: !!member,
+                member: member,
+                email: memberEmail
+            };
+        }
+
+        // Check if user is admin
+        function isAdmin() {
+            return localStorage.getItem('isAdmin') === 'true';
+        }
+
+        // Update UI based on member status
+        function updateMemberBar() {
+            const { isMember, member } = getMemberStatus();
+            const contest = getContest();
+            const memberBarContent = document.getElementById('memberBarContent');
+            const hasVoted = localStorage.getItem('votedThisWeek_' + contest.deadline);
+
+            if (isMember) {
+                memberBarContent.innerHTML = `
+                    <div class="member-status">
+                        <span class="member-status-badge">Member</span>
+                        <span>Welcome, ${member.name}!</span>
+                        <span class="vote-status">${hasVoted ? '✓ You\'ve voted this week' : 'You have 1 vote'}</span>
+                    </div>
+                    <div>
+                        <span style="color: var(--text-light); margin-right: 10px;">Wins: ${member.wins || 0}</span>
+                        <button onclick="logoutMember()" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem;">Log Out</button>
+                    </div>
+                `;
+
+                // Show submit section and member hub link
+                document.getElementById('submitSection').style.display = 'block';
+                document.getElementById('joinCta').style.display = 'none';
+                document.getElementById('memberHubLink').style.display = 'block';
+
+                // Check if already submitted
+                const hasSubmitted = contest.submissions.some(s => s.email === member.email);
+                if (hasSubmitted) {
+                    document.getElementById('submitForm').innerHTML = `
+                        <div class="submit-locked">
+                            <p>✓ You've already submitted a video this week!</p>
+                        </div>
+                    `;
+                }
+            } else {
+                memberBarContent.innerHTML = `
+                    <div class="member-status">
+                        <span class="member-status-badge guest">Guest</span>
+                        <span>Viewing only</span>
+                    </div>
+                    <a href="membership.html" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">Join to Vote & Submit</a>
+                `;
+
+                // Hide submit section for non-members
+                document.getElementById('submitSection').innerHTML = `
+                    <div class="submit-locked">
+                        <h2>Submit Your Video</h2>
+                        <p>Members can submit videos and vote in weekly contests.</p>
+                        <a href="membership.html" class="btn btn-primary">Join for $19.99/mo</a>
+                    </div>
+                `;
+            }
+
+            // Show admin panel if admin
+            if (isAdmin()) {
+                document.getElementById('adminPanel').style.display = 'block';
+
+                // Check for auto-pilot and run if needed
+                checkAndRunAutoPilot();
+                loadAdminData();
+                updateAdminStats();
+            }
+        }
+
+        // Accordion toggle for sidebar
+        function toggleAccordion(header) {
+            const item = header.parentElement;
+            const isOpen = item.classList.contains('open');
+
+            // Close all accordions first
+            document.querySelectorAll('.accordion-item').forEach(acc => {
+                acc.classList.remove('open');
+            });
+
+            // Open this one if it wasn't already open
+            if (!isOpen) {
+                item.classList.add('open');
+            }
+        }
+
+        // Update weekly actions checklist
+        function updateWeeklyActions() {
+            const memberEmail = localStorage.getItem('memberEmail');
+            if (!memberEmail) return;
+
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const member = members.find(m => m.email.toLowerCase() === memberEmail.toLowerCase());
+            if (!member) return;
+
+            // Show actions card for members
+            document.getElementById('weeklyActions').style.display = 'block';
+            document.getElementById('joinCta').style.display = 'none';
+
+            // Check what they've done this week
+            const thisWeek = getWeekNumber(new Date());
+
+            // Voted this week?
+            if (member.lastVoteWeek === thisWeek) {
+                const actionVote = document.getElementById('actionVote');
+                actionVote.classList.add('done');
+                actionVote.querySelector('.action-check').textContent = '✓';
+            }
+
+            // Submitted this week?
+            const contest = getContest();
+            const hasSubmitted = contest.submissions?.some(s => s.email?.toLowerCase() === memberEmail.toLowerCase());
+            if (hasSubmitted) {
+                const actionSubmit = document.getElementById('actionSubmit');
+                actionSubmit.classList.add('done');
+                actionSubmit.querySelector('.action-check').textContent = '✓';
+            }
+
+            // Completed challenge this week?
+            if (member.lastChallengeWeek === thisWeek) {
+                const actionChallenge = document.getElementById('actionChallenge');
+                actionChallenge.classList.add('done');
+                actionChallenge.querySelector('.action-check').textContent = '✓';
+            }
+        }
+
+        function getWeekNumber(date) {
+            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+            const dayNum = d.getUTCDay() || 7;
+            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+        }
+
+        // Load and display contest
+        function loadContest() {
+            const contest = getContest();
+
+            document.getElementById('contestTitle').textContent = contest.title;
+            document.getElementById('contestDescription').textContent = contest.description;
+            document.getElementById('contestPrize').textContent = contest.prize;
+
+            // Update countdown
+            updateCountdown(contest.deadline);
+        }
+
+        // Countdown timer
+        function updateCountdown(deadline) {
+            const deadlineDate = new Date(deadline);
+
+            function update() {
+                const now = new Date();
+                const diff = deadlineDate - now;
+
+                if (diff <= 0) {
+                    document.getElementById('days').textContent = '0';
+                    document.getElementById('hours').textContent = '0';
+                    document.getElementById('minutes').textContent = '0';
+                    document.getElementById('seconds').textContent = '0';
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours;
+                document.getElementById('minutes').textContent = minutes;
+                document.getElementById('seconds').textContent = seconds;
+            }
+
+            update();
+            setInterval(update, 1000);
+        }
+
+        // ============================================
+        // AUTO-PILOT SYSTEM
+        // ============================================
+
+        // Toggle functions for each auto-pilot feature
+        function toggleAutoContest() {
+            const isOn = document.getElementById('autoContestToggle').checked;
+            const settings = getAutoPilotSettings();
+            settings.autoContest = isOn;
+            saveAutoPilotSettings(settings);
+            updateAutoPilotStatus();
+        }
+
+        function toggleAutoChallenge() {
+            const isOn = document.getElementById('autoChallengeToggle').checked;
+            const settings = getAutoPilotSettings();
+            settings.autoChallenge = isOn;
+            saveAutoPilotSettings(settings);
+            updateAutoPilotStatus();
+        }
+
+        function toggleEmailReminders() {
+            const isOn = document.getElementById('emailRemindersToggle').checked;
+            const settings = getAutoPilotSettings();
+            settings.emailReminders = isOn;
+            saveAutoPilotSettings(settings);
+            updateAutoPilotStatus();
+        }
+
+        function toggleAutoApprove() {
+            const isOn = document.getElementById('autoApproveToggle').checked;
+            const settings = getAutoPilotSettings();
+            settings.autoApprove = isOn;
+            saveAutoPilotSettings(settings);
+            updateAutoPilotStatus();
+
+            // If turning on, approve all pending
+            if (isOn) {
+                autoApproveAllPending();
+            }
+        }
+
+        // Get/Save auto-pilot settings
+        function getAutoPilotSettings() {
+            return JSON.parse(localStorage.getItem('autoPilotSettings') || JSON.stringify({
+                autoContest: false,
+                autoChallenge: false,
+                emailReminders: false,
+                autoApprove: false,
+                adminEmail: '',
+                contestRotation: ['trickshot', 'dink', 'serve', 'rally'],
+                challengeRotation: ['drops', 'dinks', 'serves', 'resets'],
+                lastAutoRun: null
+            }));
+        }
+
+        function saveAutoPilotSettings(settings) {
+            localStorage.setItem('autoPilotSettings', JSON.stringify(settings));
+        }
+
+        // Save rotation schedules
+        function saveRotationSchedule() {
+            const settings = getAutoPilotSettings();
+            settings.contestRotation = [
+                document.getElementById('rotation1').value,
+                document.getElementById('rotation2').value,
+                document.getElementById('rotation3').value,
+                document.getElementById('rotation4').value
+            ];
+            saveAutoPilotSettings(settings);
+            alert('✅ Contest rotation schedule saved!');
+        }
+
+        function saveChallengeSchedule() {
+            const settings = getAutoPilotSettings();
+            settings.challengeRotation = [
+                document.getElementById('challenge1').value,
+                document.getElementById('challenge2').value,
+                document.getElementById('challenge3').value,
+                document.getElementById('challenge4').value
+            ];
+            saveAutoPilotSettings(settings);
+            alert('✅ Challenge rotation schedule saved!');
+        }
+
+        function saveEmailSettings() {
+            const settings = getAutoPilotSettings();
+            settings.adminEmail = document.getElementById('adminEmail').value;
+            settings.reminderSunday = document.getElementById('reminderSunday').checked;
+            settings.reminderMonday = document.getElementById('reminderMonday').checked;
+            settings.reminderPending = document.getElementById('reminderPending').checked;
+            saveAutoPilotSettings(settings);
+            alert('✅ Email settings saved! You\'ll receive reminders at: ' + settings.adminEmail);
+        }
+
+        // Update the auto-pilot status display
+        function updateAutoPilotStatus() {
+            const settings = getAutoPilotSettings();
+            const anyOn = settings.autoContest || settings.autoChallenge || settings.emailReminders || settings.autoApprove;
+
+            const statusEl = document.getElementById('autoPilotStatus');
+            if (anyOn) {
+                statusEl.textContent = 'ON';
+                statusEl.className = 'on';
+            } else {
+                statusEl.textContent = 'OFF';
+                statusEl.className = 'off';
+            }
+
+            // Update toggles to match saved state
+            document.getElementById('autoContestToggle').checked = settings.autoContest;
+            document.getElementById('autoChallengeToggle').checked = settings.autoChallenge;
+            document.getElementById('emailRemindersToggle').checked = settings.emailReminders;
+            document.getElementById('autoApproveToggle').checked = settings.autoApprove;
+
+            if (settings.adminEmail) {
+                document.getElementById('adminEmail').value = settings.adminEmail;
+            }
+        }
+
+        // Check and run auto-pilot tasks
+        function checkAndRunAutoPilot() {
+            const settings = getAutoPilotSettings();
+            const now = new Date();
+            const dayOfWeek = now.getDay(); // 0 = Sunday, 1 = Monday
+            const weekNum = getWeekNumber(now);
+            const rotationIndex = (weekNum - 1) % 4; // 0-3 rotation
+
+            // Check if we already ran today
+            const today = now.toDateString();
+            if (settings.lastAutoRun === today) {
+                updateAutoPilotStatus();
+                return;
+            }
+
+            let didSomething = false;
+
+            // Sunday = Auto contest rotation
+            if (dayOfWeek === 0 && settings.autoContest) {
+                const contestType = settings.contestRotation[rotationIndex];
+                useContestTemplate(contestType);
+                // Auto-submit the contest form
+                document.getElementById('contestSettingsForm').dispatchEvent(new Event('submit'));
+                didSomething = true;
+            }
+
+            // Monday = Auto challenge rotation
+            if (dayOfWeek === 1 && settings.autoChallenge) {
+                const challengeType = settings.challengeRotation[rotationIndex];
+                useChallengeTemplate(challengeType);
+                // Auto-submit the challenge form
+                document.getElementById('drillChallengeForm').dispatchEvent(new Event('submit'));
+                didSomething = true;
+            }
+
+            // Auto-approve pending members
+            if (settings.autoApprove) {
+                autoApproveAllPending();
+            }
+
+            // Update last run time
+            if (didSomething) {
+                settings.lastAutoRun = today;
+                saveAutoPilotSettings(settings);
+            }
+
+            updateAutoPilotStatus();
+            updatePrintDate();
+        }
+
+        // Auto-approve all pending members
+        function autoApproveAllPending() {
+            const pending = JSON.parse(localStorage.getItem('pendingMemberRequests') || '[]');
+            if (pending.length === 0) return;
+
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+
+            pending.forEach(p => {
+                members.push({
+                    name: p.name,
+                    email: p.email,
+                    plan: p.plan,
+                    active: true,
+                    joined: new Date().toISOString(),
+                    points: 0,
+                    contestWins: 0
+                });
+            });
+
+            localStorage.setItem('members', JSON.stringify(members));
+            localStorage.setItem('pendingMemberRequests', '[]');
+
+            // Refresh the admin display
+            loadAdminData();
+            updateAdminStats();
+        }
+
+        // Update print date
+        function updatePrintDate() {
+            const now = new Date();
+            const options = { month: 'long', day: 'numeric', year: 'numeric' };
+            const printDateEl = document.getElementById('printDate');
+            if (printDateEl) {
+                printDateEl.textContent = 'Week of ' + now.toLocaleDateString('en-US', options);
+            }
+        }
+
+        // Load video submissions
+        function loadSubmissions(sortBy = 'votes') {
+            const contest = getContest();
+            const videosGrid = document.getElementById('videosGrid');
+            const { isMember, member } = getMemberStatus();
+
+            if (!contest.submissions || contest.submissions.length === 0) {
+                videosGrid.innerHTML = '<div class="no-videos"><p>No submissions yet. Be the first to enter!</p></div>';
+                return;
+            }
+
+            let submissions = [...contest.submissions];
+
+            if (sortBy === 'votes') {
+                submissions.sort((a, b) => b.votes - a.votes);
+            } else {
+                submissions.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+            }
+
+            const hasVoted = localStorage.getItem('votedThisWeek_' + contest.deadline);
+            const votedFor = localStorage.getItem('votedForSubmission_' + contest.deadline);
+
+            videosGrid.innerHTML = submissions.map((sub, index) => `
+                <div class="video-card">
+                    <div class="video-thumbnail">🎬</div>
+                    <div class="video-info">
+                        <div class="video-title">${sub.title || 'Untitled'}</div>
+                        <div class="video-author">by ${sub.name}</div>
+                        <a href="${sub.link}" target="_blank" class="video-link">View Video →</a>
+                    </div>
+                    <div class="video-votes">
+                        <span class="vote-count">${sub.votes}</span>
+                        <span style="font-size: 0.8rem; color: var(--text-light);">votes</span>
+                        ${isMember ? `
+                            <button class="vote-btn ${votedFor === sub.id ? 'voted' : ''}"
+                                    onclick="voteForSubmission('${sub.id}')"
+                                    ${hasVoted && !isAdmin() ? 'disabled' : ''}>
+                                ${votedFor === sub.id ? 'Voted!' : 'Vote'}
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Submit video
+        document.getElementById('submitForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const { isMember, member } = getMemberStatus();
+            if (!isMember) {
+                alert('Please log in as a member to submit.');
+                return;
+            }
+
+            const contest = getContest();
+            const link = document.getElementById('videoLink').value;
+            const title = document.getElementById('videoTitle').value || 'Untitled';
+
+            // Check if already submitted
+            if (contest.submissions.some(s => s.email === member.email)) {
+                alert('You\'ve already submitted a video this week!');
+                return;
+            }
+
+            const submission = {
+                id: Date.now().toString(),
+                name: member.name,
+                email: member.email,
+                link: link,
+                title: title,
+                votes: 0,
+                submittedAt: new Date().toISOString()
+            };
+
+            contest.submissions.push(submission);
+            localStorage.setItem('currentContest', JSON.stringify(contest));
+
+            // Award points for submission
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const memberIndex = members.findIndex(m => m.email.toLowerCase() === member.email.toLowerCase());
+            if (memberIndex > -1) {
+                members[memberIndex].points = (members[memberIndex].points || 0) + 20;
+                members[memberIndex].pointsHistory = members[memberIndex].pointsHistory || [];
+                members[memberIndex].pointsHistory.unshift({
+                    amount: 20,
+                    reason: 'Submitted video to contest',
+                    date: new Date().toISOString()
+                });
+                localStorage.setItem('members', JSON.stringify(members));
+            }
+
+            // Refresh
+            this.innerHTML = `
+                <div class="submit-locked">
+                    <p>✓ Video submitted successfully! +20 points earned</p>
+                </div>
+            `;
+            loadSubmissions();
+        });
+
+        // Vote for submission
+        function voteForSubmission(submissionId) {
+            const { isMember, member } = getMemberStatus();
+            const contest = getContest();
+
+            if (!isMember && !isAdmin()) {
+                alert('Please log in as a member to vote.');
+                return;
+            }
+
+            // Check if already voted (unless admin)
+            const hasVoted = localStorage.getItem('votedThisWeek_' + contest.deadline);
+            if (hasVoted && !isAdmin()) {
+                alert('You\'ve already voted this week!');
+                return;
+            }
+
+            // Find and update submission
+            const submission = contest.submissions.find(s => s.id === submissionId);
+            if (submission) {
+                submission.votes++;
+                localStorage.setItem('currentContest', JSON.stringify(contest));
+
+                // Mark as voted (unless admin) and award points
+                if (!isAdmin()) {
+                    localStorage.setItem('votedThisWeek_' + contest.deadline, 'true');
+                    localStorage.setItem('votedForSubmission_' + contest.deadline, submissionId);
+
+                    // Award 2 points for voting
+                    const members = JSON.parse(localStorage.getItem('members') || '[]');
+                    const memberIndex = members.findIndex(m => m.email.toLowerCase() === member.email.toLowerCase());
+                    if (memberIndex > -1) {
+                        members[memberIndex].points = (members[memberIndex].points || 0) + 2;
+                        members[memberIndex].pointsHistory = members[memberIndex].pointsHistory || [];
+                        members[memberIndex].pointsHistory.unshift({
+                            amount: 2,
+                            reason: 'Voted in weekly contest',
+                            date: new Date().toISOString()
+                        });
+                        localStorage.setItem('members', JSON.stringify(members));
+                    }
+                }
+
+                loadSubmissions();
+                updateMemberBar();
+            }
+        }
+
+        // Load leaderboard
+        function loadLeaderboard() {
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const leaderboard = document.getElementById('leaderboard');
+
+            const winners = members.filter(m => (m.wins || 0) > 0).sort((a, b) => b.wins - a.wins);
+
+            if (winners.length === 0) {
+                leaderboard.innerHTML = '<p class="no-winners">No winners yet. Win this week\'s contest!</p>';
+                return;
+            }
+
+            leaderboard.innerHTML = winners.slice(0, 5).map((w, i) => `
+                <div class="leaderboard-item">
+                    <span class="leaderboard-rank">#${i + 1}</span>
+                    <span class="leaderboard-name">${w.name}</span>
+                    <span class="leaderboard-wins">${w.wins} win${w.wins > 1 ? 's' : ''}</span>
+                </div>
+            `).join('');
+        }
+
+        // Load past winners
+        function loadPastWinners() {
+            const history = JSON.parse(localStorage.getItem('contestHistory') || '[]');
+            const pastWinners = document.getElementById('pastWinners');
+
+            if (history.length === 0) {
+                pastWinners.innerHTML = '<p class="no-past-winners">Contest history will appear here.</p>';
+                return;
+            }
+
+            pastWinners.innerHTML = history.slice(0, 3).map(h => `
+                <div class="past-winner-item">
+                    <div class="past-winner-contest">${h.title}</div>
+                    <div class="past-winner-name">🏆 ${h.winnerName}</div>
+                </div>
+            `).join('');
+        }
+
+        // Sort buttons
+        document.querySelectorAll('.sort-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                loadSubmissions(this.dataset.sort);
+            });
+        });
+
+        // Logout
+        function logoutMember() {
+            localStorage.removeItem('memberEmail');
+            location.reload();
+        }
+
+        // ============================================
+        // ADMIN FUNCTIONS
+        // ============================================
+
+        // Check for admin key in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('admin') === ADMIN_KEY) {
+            localStorage.setItem('isAdmin', 'true');
+        }
+
+        function hideAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'none';
+        }
+
+        // Quick Action Panel Navigation
+        function showQuickAction(panel) {
+            // Hide all panels
+            document.querySelectorAll('.quick-action-panel').forEach(p => p.style.display = 'none');
+            // Show selected panel
+            const panelId = panel + 'Panel';
+            document.getElementById(panelId).style.display = 'block';
+        }
+
+        function hideQuickAction() {
+            document.querySelectorAll('.quick-action-panel').forEach(p => p.style.display = 'none');
+        }
+
+        // Contest Templates - One Click Setup!
+        function useContestTemplate(type) {
+            const templates = {
+                trickshot: {
+                    title: 'Best Trick Shot',
+                    desc: 'Show us your most creative trick shot! Get creative with spins, around-the-post shots, or any fancy move.',
+                    prize: 'Bragging rights + Featured on our page!'
+                },
+                dink: {
+                    title: 'Best Dink Rally',
+                    desc: 'Show us your longest or most impressive dink rally. Soft hands win!',
+                    prize: 'Free AI Drill Analysis Credit'
+                },
+                serve: {
+                    title: 'Best Serve',
+                    desc: 'Show us your best serve - power, spin, or placement. Make it count!',
+                    prize: 'Featured on our social media!'
+                },
+                rally: {
+                    title: 'Best Rally Point',
+                    desc: 'Capture your most exciting rally! Long points, great defense, amazing winners - show us what you got!',
+                    prize: '$10 off any coaching service'
+                }
+            };
+
+            const t = templates[type];
+            document.getElementById('adminContestTitle').value = t.title;
+            document.getElementById('adminContestDesc').value = t.desc;
+            document.getElementById('adminContestPrize').value = t.prize;
+        }
+
+        // Tip Templates - One Click!
+        function useTipTemplate(type) {
+            const tips = {
+                ready: 'Always return to ready position between shots. Paddle up, knees bent, weight on the balls of your feet. This small habit will improve your reaction time dramatically!',
+                footwork: 'Move your feet BEFORE the ball gets to you. Good footwork = better balance = better shots. Shuffle, don\'t cross your feet!',
+                patience: 'At the kitchen line, patience wins. Wait for a high ball before speeding up. The player who attacks the wrong ball usually loses the point.',
+                serve: 'Serve deep! A serve that lands within 2 feet of the baseline gives your opponent less time and a harder return. Consistency beats power.'
+            };
+
+            document.getElementById('adminTip').value = tips[type];
+        }
+
+        // Challenge Templates - One Click!
+        function useChallengeTemplate(type) {
+            const challenges = {
+                drops: {
+                    title: 'Practice 100 Third Shot Drops',
+                    desc: 'Focus on soft, controlled drops that land in the kitchen. Quality over speed - make sure each drop would be unattackable!',
+                    goal: '100 drops'
+                },
+                dinks: {
+                    title: 'Dinking Practice - 50 Crosscourt',
+                    desc: 'Practice crosscourt dinks, focusing on keeping them low over the net. Alternate forehand and backhand.',
+                    goal: '50 crosscourt dinks'
+                },
+                serves: {
+                    title: 'Serve Accuracy Challenge',
+                    desc: 'Hit 20 serves trying to land within 3 feet of the baseline. Deep serves put pressure on your opponent!',
+                    goal: '20 deep serves'
+                },
+                resets: {
+                    title: 'Reset Shot Practice',
+                    desc: 'Practice blocking and resetting hard shots back into the kitchen. Soft hands, paddle face open, absorb the pace.',
+                    goal: '30 reset shots'
+                }
+            };
+
+            const c = challenges[type];
+            document.getElementById('adminChallengeTitle').value = c.title;
+            document.getElementById('adminChallengeDesc').value = c.desc;
+            document.getElementById('adminChallengeGoal').value = c.goal;
+        }
+
+        // Update admin stats
+        function updateAdminStats() {
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const activeMembers = members.filter(m => m.active);
+            const contest = getContest();
+            const submissions = contest.submissions || [];
+
+            // Count votes
+            let totalVotes = 0;
+            submissions.forEach(s => totalVotes += (s.votes || 0));
+
+            // Count challenge completions this week
+            const thisWeek = getWeekNumber(new Date());
+            const challengesDone = activeMembers.filter(m => m.lastChallengeWeek === thisWeek).length;
+
+            document.getElementById('statTotalMembers').textContent = activeMembers.length;
+            document.getElementById('statThisWeek').textContent = submissions.length;
+            document.getElementById('statVotes').textContent = totalVotes;
+            document.getElementById('statChallenges').textContent = challengesDone;
+
+            // Update pending count
+            const pending = JSON.parse(localStorage.getItem('pendingMemberRequests') || '[]');
+            document.getElementById('pendingCount').textContent = pending.length;
+            document.getElementById('memberCount').textContent = activeMembers.length;
+
+            // Update workflow date
+            const now = new Date();
+            const options = { month: 'short', day: 'numeric' };
+            document.getElementById('workflowDate').textContent = 'Week of ' + now.toLocaleDateString('en-US', options);
+        }
+
+        function loadAdminData() {
+            const contest = getContest();
+
+            // Load contest settings
+            document.getElementById('adminContestTitle').value = contest.title;
+            document.getElementById('adminContestDesc').value = contest.description;
+            document.getElementById('adminContestPrize').value = contest.prize;
+
+            // Load pending requests
+            const pending = JSON.parse(localStorage.getItem('pendingMemberRequests') || '[]');
+            const pendingDiv = document.getElementById('pendingRequests');
+            pendingDiv.innerHTML = pending.length ? pending.map((p, i) => `
+                <div class="pending-request">
+                    <span>${p.name} (${p.email}) - ${p.plan}</span>
+                    <div>
+                        <button onclick="approveMember(${i})" class="btn btn-primary">Approve</button>
+                        <button onclick="denyMember(${i})" class="btn btn-secondary">Deny</button>
+                    </div>
+                </div>
+            `).join('') : '<p style="color: var(--text-light);">No pending requests</p>';
+
+            // Load members list
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const membersDiv = document.getElementById('membersList');
+            membersDiv.innerHTML = members.length ? members.map((m, i) => `
+                <div class="member-item">
+                    <span>${m.name} (${m.email}) - ${m.plan} - Wins: ${m.wins || 0}</span>
+                    <button onclick="removeMember(${i})" class="btn btn-secondary">Remove</button>
+                </div>
+            `).join('') : '<p style="color: var(--text-light);">No members yet</p>';
+        }
+
+        // Contest settings form
+        document.getElementById('contestSettingsForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const contest = getContest();
+            contest.title = document.getElementById('adminContestTitle').value;
+            contest.description = document.getElementById('adminContestDesc').value;
+            contest.prize = document.getElementById('adminContestPrize').value;
+
+            localStorage.setItem('currentContest', JSON.stringify(contest));
+            loadContest();
+            alert('Contest updated!');
+        });
+
+        // Add member form
+        document.getElementById('addMemberForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            members.push({
+                name: document.getElementById('newMemberName').value,
+                email: document.getElementById('newMemberEmail').value.toLowerCase(),
+                plan: document.getElementById('newMemberPlan').value,
+                active: true,
+                wins: 0,
+                joinedAt: new Date().toISOString()
+            });
+
+            localStorage.setItem('members', JSON.stringify(members));
+            this.reset();
+            loadAdminData();
+            alert('Member added!');
+        });
+
+        // Approve pending member
+        function approveMember(index) {
+            const pending = JSON.parse(localStorage.getItem('pendingMemberRequests') || '[]');
+            const request = pending[index];
+
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            members.push({
+                name: request.name,
+                email: request.email.toLowerCase(),
+                plan: request.plan,
+                active: true,
+                wins: 0,
+                joinedAt: new Date().toISOString()
+            });
+
+            pending.splice(index, 1);
+
+            localStorage.setItem('members', JSON.stringify(members));
+            localStorage.setItem('pendingMemberRequests', JSON.stringify(pending));
+            loadAdminData();
+            alert('Member approved!');
+        }
+
+        // Deny pending member
+        function denyMember(index) {
+            const pending = JSON.parse(localStorage.getItem('pendingMemberRequests') || '[]');
+            pending.splice(index, 1);
+            localStorage.setItem('pendingMemberRequests', JSON.stringify(pending));
+            loadAdminData();
+        }
+
+        // Remove member
+        function removeMember(index) {
+            if (!confirm('Remove this member?')) return;
+
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            members.splice(index, 1);
+            localStorage.setItem('members', JSON.stringify(members));
+            loadAdminData();
+        }
+
+        // Close contest and declare winner
+        document.getElementById('closeContestBtn')?.addEventListener('click', function() {
+            const contest = getContest();
+
+            if (!contest.submissions || contest.submissions.length === 0) {
+                alert('No submissions to pick a winner from!');
+                return;
+            }
+
+            // Find winner (most votes)
+            const winner = contest.submissions.reduce((a, b) => a.votes > b.votes ? a : b);
+
+            if (!confirm(`Declare ${winner.name} as the winner with ${winner.votes} votes?`)) {
+                return;
+            }
+
+            // Update winner's win count and award points
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const winnerIndex = members.findIndex(m => m.email.toLowerCase() === winner.email.toLowerCase());
+            if (winnerIndex > -1) {
+                members[winnerIndex].wins = (members[winnerIndex].wins || 0) + 1;
+
+                // Award 50 points for winning
+                members[winnerIndex].points = (members[winnerIndex].points || 0) + 50;
+                members[winnerIndex].pointsHistory = members[winnerIndex].pointsHistory || [];
+                members[winnerIndex].pointsHistory.unshift({
+                    amount: 50,
+                    reason: 'Won weekly contest: ' + contest.title,
+                    date: new Date().toISOString()
+                });
+
+                localStorage.setItem('members', JSON.stringify(members));
+            }
+
+            // Save to history
+            const history = JSON.parse(localStorage.getItem('contestHistory') || '[]');
+            history.unshift({
+                title: contest.title,
+                winnerName: winner.name,
+                winnerEmail: winner.email,
+                votes: winner.votes,
+                endedAt: new Date().toISOString()
+            });
+            localStorage.setItem('contestHistory', JSON.stringify(history));
+
+            // Reset contest
+            const newContest = {
+                ...DEFAULT_CONTEST,
+                deadline: getNextSaturday(),
+                submissions: []
+            };
+            localStorage.setItem('currentContest', JSON.stringify(newContest));
+
+            alert(`🏆 ${winner.name} wins with ${winner.votes} votes!`);
+            location.reload();
+        });
+
+        // Quick Poll form
+        document.getElementById('pollForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const question = document.getElementById('adminPollQuestion').value.trim();
+            const options = [];
+
+            for (let i = 1; i <= 4; i++) {
+                const val = document.getElementById('pollOption' + i).value.trim();
+                if (val) options.push({ name: val, votes: 0 });
+            }
+
+            if (!question || options.length < 2) {
+                alert('Please enter a question and at least 2 options.');
+                return;
+            }
+
+            localStorage.setItem('quickPoll', JSON.stringify({
+                id: Date.now().toString(),
+                question: question,
+                options: options,
+                createdAt: new Date().toISOString()
+            }));
+
+            alert('Poll created!');
+            this.reset();
+        });
+
+        // Tip of the Week form
+        document.getElementById('tipForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const tip = document.getElementById('adminTip').value;
+            if (!tip) {
+                alert('Please enter a tip.');
+                return;
+            }
+
+            localStorage.setItem('tipOfWeek', JSON.stringify({
+                content: tip,
+                date: new Date().toISOString()
+            }));
+
+            alert('Tip updated!');
+            loadTipOfWeek();
+        });
+
+        // Drill voting form
+        document.getElementById('drillVoteForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const options = [];
+
+            for (let i = 1; i <= 4; i++) {
+                const val = document.getElementById('drillOption' + i).value.trim();
+                if (val) {
+                    options.push({ name: val, votes: 0 });
+                }
+            }
+
+            if (options.length < 2) {
+                alert('Please enter at least 2 options.');
+                return;
+            }
+
+            const now = new Date();
+            const saturday = new Date(now);
+            saturday.setDate(now.getDate() + (6 - now.getDay() + 7) % 7);
+            saturday.setHours(23, 59, 59, 999);
+            if (saturday <= now) saturday.setDate(saturday.getDate() + 7);
+
+            localStorage.setItem('drillVote', JSON.stringify({
+                options: options,
+                weekEnding: saturday.toISOString()
+            }));
+
+            alert('Drill voting options updated!');
+            loadDrillVoting();
+        });
+
+        // Drill challenge form
+        document.getElementById('drillChallengeForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('adminChallengeTitle').value;
+            const description = document.getElementById('adminChallengeDesc').value;
+            const goal = document.getElementById('adminChallengeGoal').value;
+
+            if (!title || !description || !goal) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            // Get current week ending
+            const now = new Date();
+            const saturday = new Date(now);
+            saturday.setDate(now.getDate() + (6 - now.getDay() + 7) % 7);
+            saturday.setHours(23, 59, 59, 999);
+            if (saturday <= now) saturday.setDate(saturday.getDate() + 7);
+
+            const challenge = {
+                title: title,
+                description: description,
+                goal: goal,
+                weekEnding: saturday.toISOString()
+            };
+
+            localStorage.setItem('currentDrillChallenge', JSON.stringify(challenge));
+            alert('Drill challenge updated!');
+        });
+
+        // Load challenge submissions in admin
+        function loadChallengeSubmissions() {
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const submissionsDiv = document.getElementById('challengeSubmissionsList');
+            if (!submissionsDiv) return;
+
+            const allSubmissions = [];
+            members.forEach(m => {
+                if (m.challengeSubmissions) {
+                    m.challengeSubmissions.forEach(s => {
+                        allSubmissions.push({
+                            ...s,
+                            memberName: m.name,
+                            memberEmail: m.email
+                        });
+                    });
+                }
+            });
+
+            // Sort by most recent
+            allSubmissions.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+
+            if (allSubmissions.length === 0) {
+                submissionsDiv.innerHTML = '<p style="color: var(--text-light);">No challenge submissions yet.</p>';
+                return;
+            }
+
+            submissionsDiv.innerHTML = allSubmissions.slice(0, 20).map(s => `
+                <div class="member-item" style="font-size: 0.85rem;">
+                    <div>
+                        <strong>${s.memberName}</strong><br>
+                        <span style="color: var(--text-light);">${s.drillType} - ${new Date(s.submittedAt).toLocaleDateString()}</span>
+                    </div>
+                    <a href="${s.videoLink}" target="_blank" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.8rem;">View</a>
+                </div>
+            `).join('');
+        }
+
+        // Update loadAdminData to include challenge data
+        const originalLoadAdminData = loadAdminData;
+        loadAdminData = function() {
+            originalLoadAdminData();
+
+            // Load current drill challenge
+            const challenge = JSON.parse(localStorage.getItem('currentDrillChallenge'));
+            if (challenge) {
+                document.getElementById('adminChallengeTitle').value = challenge.title || '';
+                document.getElementById('adminChallengeDesc').value = challenge.description || '';
+                document.getElementById('adminChallengeGoal').value = challenge.goal || '';
+            }
+
+            loadChallengeSubmissions();
+        };
+
+        // ============================================
+        // SHOUTOUTS / WALL OF FAME
+        // ============================================
+        function loadShoutouts() {
+            const shoutoutsEl = document.getElementById('shoutoutsList');
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const history = JSON.parse(localStorage.getItem('contestHistory') || '[]');
+
+            const shoutouts = [];
+
+            // Check for first wins
+            members.forEach(m => {
+                if (m.wins === 1 && m.firstWinDate) {
+                    const daysSince = Math.floor((Date.now() - new Date(m.firstWinDate)) / (1000 * 60 * 60 * 24));
+                    if (daysSince < 14) { // Show for 2 weeks
+                        shoutouts.push({
+                            icon: '🏆',
+                            name: m.name,
+                            action: 'got their first win!',
+                            date: new Date(m.firstWinDate),
+                            priority: 1
+                        });
+                    }
+                }
+
+                // Milestone completions
+                if (m.challengesCompleted >= 10 && m.challengeMilestone10) {
+                    const daysSince = Math.floor((Date.now() - new Date(m.challengeMilestone10)) / (1000 * 60 * 60 * 24));
+                    if (daysSince < 7) {
+                        shoutouts.push({
+                            icon: '🔥',
+                            name: m.name,
+                            action: 'completed 10 challenges!',
+                            date: new Date(m.challengeMilestone10),
+                            priority: 2
+                        });
+                    }
+                }
+
+                // Long streaks
+                if ((m.challengeStreak || 0) >= 4) {
+                    shoutouts.push({
+                        icon: '⚡',
+                        name: m.name,
+                        action: `is on a ${m.challengeStreak}-week streak!`,
+                        date: new Date(),
+                        priority: 3
+                    });
+                }
+            });
+
+            // Recent contest winners
+            if (history.length > 0) {
+                const recent = history[0];
+                const daysSince = Math.floor((Date.now() - new Date(recent.endedAt)) / (1000 * 60 * 60 * 24));
+                if (daysSince < 7) {
+                    shoutouts.push({
+                        icon: '👑',
+                        name: recent.winnerName,
+                        action: `won "${recent.title}"!`,
+                        date: new Date(recent.endedAt),
+                        priority: 0
+                    });
+                }
+            }
+
+            // Sort by priority then date
+            shoutouts.sort((a, b) => a.priority - b.priority || b.date - a.date);
+
+            if (shoutouts.length === 0) {
+                shoutoutsEl.innerHTML = '<p class="no-shoutouts">Achievements will appear here!</p>';
+                return;
+            }
+
+            shoutoutsEl.innerHTML = shoutouts.slice(0, 4).map(s => `
+                <div class="shoutout-item">
+                    <span class="shoutout-icon">${s.icon}</span>
+                    <span class="shoutout-name">${s.name}</span>
+                    <span class="shoutout-action">${s.action}</span>
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // TIP OF THE WEEK
+        // ============================================
+        function loadTipOfWeek() {
+            const tip = JSON.parse(localStorage.getItem('tipOfWeek'));
+            if (tip) {
+                document.getElementById('tipContent').textContent = tip.content;
+                const tipDate = new Date(tip.date);
+                document.getElementById('tipDate').textContent = `— Ray, ${tipDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+            }
+        }
+
+        // ============================================
+        // DRILL VOTING
+        // ============================================
+        function loadDrillVoting() {
+            const { isMember, member } = getMemberStatus();
+            const drillVote = JSON.parse(localStorage.getItem('drillVote') || 'null');
+            const drillOptionsEl = document.getElementById('drillOptions');
+            const noteEl = document.getElementById('drillVoteNote');
+
+            if (!drillVote || !drillVote.options || drillVote.options.length === 0) {
+                document.getElementById('drillVoteCard').style.display = 'none';
+                return;
+            }
+
+            const memberVote = localStorage.getItem('drillVote_' + drillVote.weekEnding);
+
+            drillOptionsEl.innerHTML = drillVote.options.map((opt, i) => `
+                <div class="drill-option ${memberVote === opt.name ? 'voted' : ''}"
+                     onclick="voteDrill('${opt.name}')"
+                     ${!isMember ? 'style="cursor: not-allowed; opacity: 0.7;"' : ''}>
+                    <span class="drill-option-name">${opt.name}</span>
+                    <span class="drill-option-votes">${opt.votes || 0}</span>
+                </div>
+            `).join('');
+
+            if (!isMember) {
+                noteEl.textContent = 'Join to vote!';
+            } else if (memberVote) {
+                noteEl.textContent = '✓ You voted for ' + memberVote;
+            } else {
+                noteEl.textContent = 'Pick your favorite!';
+            }
+        }
+
+        function voteDrill(drillName) {
+            const { isMember } = getMemberStatus();
+            if (!isMember) {
+                alert('Join as a member to vote!');
+                return;
+            }
+
+            const drillVote = JSON.parse(localStorage.getItem('drillVote') || 'null');
+            if (!drillVote) return;
+
+            const alreadyVoted = localStorage.getItem('drillVote_' + drillVote.weekEnding);
+            if (alreadyVoted) {
+                alert('You already voted this week!');
+                return;
+            }
+
+            // Update vote count
+            const opt = drillVote.options.find(o => o.name === drillName);
+            if (opt) {
+                opt.votes = (opt.votes || 0) + 1;
+                localStorage.setItem('drillVote', JSON.stringify(drillVote));
+                localStorage.setItem('drillVote_' + drillVote.weekEnding, drillName);
+                loadDrillVoting();
+            }
+        }
+
+        // ============================================
+        // VIDEO REACTIONS
+        // ============================================
+        function toggleReaction(submissionId, emoji) {
+            const { isMember } = getMemberStatus();
+            if (!isMember) {
+                alert('Join as a member to react!');
+                return;
+            }
+
+            const contest = getContest();
+            const submission = contest.submissions.find(s => s.id === submissionId);
+            if (!submission) return;
+
+            submission.reactions = submission.reactions || {};
+            submission.reactions[emoji] = submission.reactions[emoji] || { count: 0, users: [] };
+
+            const memberEmail = localStorage.getItem('memberEmail');
+            const userIndex = submission.reactions[emoji].users.indexOf(memberEmail);
+
+            if (userIndex > -1) {
+                // Remove reaction
+                submission.reactions[emoji].users.splice(userIndex, 1);
+                submission.reactions[emoji].count--;
+            } else {
+                // Add reaction
+                submission.reactions[emoji].users.push(memberEmail);
+                submission.reactions[emoji].count++;
+            }
+
+            localStorage.setItem('currentContest', JSON.stringify(contest));
+            loadSubmissions();
+        }
+
+        // Update loadSubmissions to include reactions and first-win badge
+        const originalLoadSubmissions = loadSubmissions;
+        loadSubmissions = function(sortBy = 'votes') {
+            const contest = getContest();
+            const videosGrid = document.getElementById('videosGrid');
+            const { isMember, member } = getMemberStatus();
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+
+            if (!contest.submissions || contest.submissions.length === 0) {
+                videosGrid.innerHTML = '<div class="no-videos"><p>No submissions yet. Be the first to enter!</p></div>';
+                return;
+            }
+
+            let submissions = [...contest.submissions];
+
+            if (sortBy === 'votes') {
+                submissions.sort((a, b) => b.votes - a.votes);
+            } else {
+                submissions.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+            }
+
+            const hasVoted = localStorage.getItem('votedThisWeek_' + contest.deadline);
+            const votedFor = localStorage.getItem('votedForSubmission_' + contest.deadline);
+            const memberEmail = localStorage.getItem('memberEmail');
+
+            videosGrid.innerHTML = submissions.map((sub, index) => {
+                // Check if this person just got their first win
+                const submitter = members.find(m => m.email.toLowerCase() === sub.email.toLowerCase());
+                const isFirstWinner = submitter && submitter.wins === 1 && submitter.firstWinDate;
+
+                // Get reactions
+                const reactions = sub.reactions || {};
+                const emojis = ['🔥', '🎯', '😮', '👏'];
+
+                return `
+                <div class="video-card">
+                    <div class="video-thumbnail">🎬</div>
+                    <div class="video-info">
+                        <div class="video-title">
+                            ${sub.title || 'Untitled'}
+                            ${isFirstWinner ? '<span class="first-win-badge">🌟 1st Win!</span>' : ''}
+                        </div>
+                        <div class="video-author">by ${sub.name}</div>
+                        <a href="${sub.link}" target="_blank" class="video-link">View Video →</a>
+                        ${isMember ? `
+                        <div class="video-reactions">
+                            ${emojis.map(e => {
+                                const r = reactions[e] || { count: 0, users: [] };
+                                const reacted = r.users && r.users.includes(memberEmail);
+                                return `<button class="reaction-btn ${reacted ? 'reacted' : ''}" onclick="toggleReaction('${sub.id}', '${e}')">${e}<span class="reaction-count">${r.count || ''}</span></button>`;
+                            }).join('')}
+                        </div>
+                        ` : ''}
+                    </div>
+                    <div class="video-votes">
+                        <span class="vote-count">${sub.votes}</span>
+                        <span style="font-size: 0.8rem; color: var(--text-light);">votes</span>
+                        ${isMember ? `
+                            <button class="vote-btn ${votedFor === sub.id ? 'voted' : ''}"
+                                    onclick="voteForSubmission('${sub.id}')"
+                                    ${hasVoted && !isAdmin() ? 'disabled' : ''}>
+                                ${votedFor === sub.id ? 'Voted!' : 'Vote'}
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `}).join('');
+        };
+
+        // Update close contest to track first wins
+        const originalCloseContest = document.getElementById('closeContestBtn')?.onclick;
+        document.getElementById('closeContestBtn')?.addEventListener('click', function() {
+            // This runs before the original handler
+            const contest = getContest();
+            if (!contest.submissions || contest.submissions.length === 0) return;
+
+            const winner = contest.submissions.reduce((a, b) => a.votes > b.votes ? a : b);
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const winnerIndex = members.findIndex(m => m.email.toLowerCase() === winner.email.toLowerCase());
+
+            if (winnerIndex > -1 && (members[winnerIndex].wins || 0) === 0) {
+                // This will be their first win!
+                members[winnerIndex].firstWinDate = new Date().toISOString();
+                localStorage.setItem('members', JSON.stringify(members));
+            }
+        }, true); // Use capture to run first
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        loadContest();
+        updateMemberBar();
+        loadSubmissions();
+        loadLeaderboard();
+        loadPastWinners();
+        loadShoutouts();
+        loadTipOfWeek();
+        loadDrillVoting();
+        updateWeeklyActions();
+    </script>
+</body>
+</html>

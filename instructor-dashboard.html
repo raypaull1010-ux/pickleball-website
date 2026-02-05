@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor Dashboard - Ray's Pickleball</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Instructor Dashboard Styles */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            opacity: 0.9;
+        }
+
+        /* Login Section */
+        .login-section {
+            max-width: 400px;
+            margin: 60px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .login-section h2 {
+            margin-bottom: 10px;
+        }
+
+        .login-section p {
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+
+        .login-section input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .login-section input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .login-error {
+            color: #ef4444;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: none;
+        }
+
+        /* Welcome Header */
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .welcome-text h2 {
+            margin-bottom: 5px;
+        }
+
+        .welcome-text p {
+            color: var(--text-light);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Status Cards Row */
+        .status-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .status-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .status-card.active-status {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border-color: #10b981;
+        }
+
+        .status-card.paused-status {
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+            border-color: #ef4444;
+        }
+
+        .status-card.grace-status {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-color: #f59e0b;
+        }
+
+        .status-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .status-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .status-card.active-status .status-value {
+            color: #059669;
+        }
+
+        .status-card.paused-status .status-value {
+            color: #dc2626;
+        }
+
+        .status-card.grace-status .status-value {
+            color: #b45309;
+        }
+
+        .status-subtext {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        /* Referral Progress */
+        .referral-progress-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .progress-header h3 {
+            margin: 0;
+        }
+
+        .progress-count {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .progress-bar-container {
+            background: var(--background-alt);
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-message {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .progress-message.success {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        /* Referral Code Section */
+        .referral-code-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .referral-code-section h3 {
+            margin-bottom: 20px;
+        }
+
+        .referral-code-box {
+            background: var(--background-alt);
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .referral-code {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 3px;
+            font-family: monospace;
+        }
+
+        .copy-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .share-link {
+            background: #f3f4f6;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            word-break: break-all;
+            margin-bottom: 20px;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .share-btn.text {
+            background: #22c55e;
+            color: white;
+        }
+
+        .share-btn.email {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .share-btn.copy {
+            background: var(--text-color);
+            color: white;
+        }
+
+        /* Tabs */
+        .dashboard-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-color);
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Referral History */
+        .history-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .history-month {
+            margin-bottom: 25px;
+        }
+
+        .month-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .month-name {
+            font-weight: 600;
+        }
+
+        .month-count {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .month-count.met {
+            color: var(--secondary-color);
+        }
+
+        .referral-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--background-alt);
+        }
+
+        .referral-item:last-child {
+            border-bottom: none;
+        }
+
+        .referral-name {
+            font-weight: 500;
+        }
+
+        .referral-date {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .empty-history {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+        }
+
+        /* Profile Edit Form */
+        .profile-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-row {
+            margin-bottom: 20px;
+        }
+
+        .form-row label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-row input,
+        .form-row textarea,
+        .form-row select {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .form-row input:focus,
+        .form-row textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-row textarea {
+            min-height: 100px;
+        }
+
+        .form-row-half {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .save-message {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .save-message.success {
+            background: #ecfdf5;
+            color: #059669;
+            display: block;
+        }
+
+        /* Account Settings */
+        .account-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .account-option {
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .account-option h4 {
+            margin-bottom: 10px;
+        }
+
+        .account-option p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .price-tag {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--text-color);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .welcome-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .status-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .referral-code-box {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .form-row-half {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-tabs {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">🏓 Ray's Pickleball</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="instructors.html" class="active">Instructors</a></li>
+                <li><a href="membership.html">Membership</a></li>
+                <li><a href="contact.html">Submit Video</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Instructor Dashboard</h1>
+            <p>Manage your profile and track your referrals</p>
+        </section>
+
+        <!-- Login Section -->
+        <section id="loginSection" class="login-section">
+            <h2>Instructor Login</h2>
+            <p>Enter your email to access your dashboard</p>
+            <div id="loginError" class="login-error">Email not found. Please check your email or sign up first.</div>
+            <input type="email" id="loginEmail" placeholder="your@email.com">
+            <button class="btn btn-primary btn-full" onclick="loginInstructor()">Access Dashboard</button>
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                Not registered yet? <a href="instructor-signup.html">Join the network</a>
+            </p>
+        </section>
+
+        <!-- Dashboard (hidden until login) -->
+        <div id="dashboardContainer" class="dashboard-container">
+            <!-- Welcome Header -->
+            <div class="welcome-header">
+                <div class="welcome-text">
+                    <h2>Welcome, <span id="instructorName">Instructor</span>!</h2>
+                    <p>Your profile is live at <a href="instructors.html" target="_blank">rayspickleball.com/instructors</a></p>
+                </div>
+                <div class="header-actions">
+                    <a href="instructors.html" class="btn btn-secondary" target="_blank">View Directory</a>
+                    <button class="btn btn-secondary" onclick="logout()">Log Out</button>
+                </div>
+            </div>
+
+            <!-- Status Cards -->
+            <div class="status-cards">
+                <div id="accountStatusCard" class="status-card active-status">
+                    <div class="status-label">Account Status</div>
+                    <div id="accountStatusValue" class="status-value">✓ Active</div>
+                    <div id="accountStatusSubtext" class="status-subtext">Your profile is visible</div>
+                </div>
+                <div id="graceCard" class="status-card grace-status">
+                    <div class="status-label">Grace Period</div>
+                    <div id="graceValue" class="status-value">89 days left</div>
+                    <div class="status-subtext">Free until then!</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-label">Total Referrals</div>
+                    <div id="totalReferrals" class="status-value">0</div>
+                    <div class="status-subtext">All-time</div>
+                </div>
+            </div>
+
+            <!-- Referrals FROM Ray Section -->
+            <div id="rayReferralsSection" class="referral-progress-card" style="margin-bottom: 20px; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 2px solid #10b981; display: none;">
+                <div class="progress-header">
+                    <h3>🤝 Students Ray Sent You</h3>
+                    <span id="rayReferralCount" class="progress-count" style="color: #059669;">0</span>
+                </div>
+                <p style="color: #4b5563; margin-bottom: 15px;">These are students Ray has referred directly to you for lessons!</p>
+                <div id="rayReferralsList" style="max-height: 200px; overflow-y: auto;">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Referral Progress -->
+            <div class="referral-progress-card" style="margin-bottom: 30px;">
+                <div class="progress-header">
+                    <h3>This Month's Referrals</h3>
+                    <span id="monthProgress" class="progress-count">0 / 2</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div id="progressBar" class="progress-bar-fill" style="width: 0%;"></div>
+                </div>
+                <p id="progressMessage" class="progress-message">Refer 2 students to stay listed free after your grace period</p>
+            </div>
+
+            <!-- Referral Code Section -->
+            <div class="referral-code-section">
+                <h3>🔗 Your Referral Code</h3>
+                <div class="referral-code-box">
+                    <span id="referralCode" class="referral-code">INST00000</span>
+                    <button class="copy-btn" onclick="copyCode()">Copy Code</button>
+                </div>
+                <p style="margin-bottom: 15px; color: var(--text-light);">When students use this code for video analysis, it counts toward your monthly referrals.</p>
+                <div class="share-link" id="shareLink">https://rayspickleball.com/contact.html?ref=INST00000</div>
+                <div class="share-buttons">
+                    <button class="share-btn text" onclick="shareViaText()">📱 Text</button>
+                    <button class="share-btn email" onclick="shareViaEmail()">📧 Email</button>
+                    <button class="share-btn copy" onclick="copyLink()">📋 Copy Link</button>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" data-tab="history">Referral History</button>
+                <button class="tab-btn" data-tab="profile">Edit Profile</button>
+                <button class="tab-btn" data-tab="account">Account</button>
+            </div>
+
+            <!-- Referral History Tab -->
+            <div id="historyTab" class="tab-content active">
+                <div class="history-section">
+                    <div id="referralHistory">
+                        <div class="empty-history">
+                            <p>No referrals yet. Share your code with students!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div id="profileTab" class="tab-content">
+                <div class="profile-section">
+                    <h3 style="margin-bottom: 25px;">Edit Your Profile</h3>
+                    <form id="profileForm">
+                        <div class="form-row">
+                            <label>Full Name</label>
+                            <input type="text" id="editName">
+                        </div>
+                        <div class="form-row-half">
+                            <div class="form-row">
+                                <label>Phone</label>
+                                <input type="tel" id="editPhone">
+                            </div>
+                            <div class="form-row">
+                                <label>Hourly Rate</label>
+                                <input type="text" id="editRate">
+                            </div>
+                        </div>
+                        <div class="form-row-half">
+                            <div class="form-row">
+                                <label>City</label>
+                                <input type="text" id="editCity">
+                            </div>
+                            <div class="form-row">
+                                <label>State</label>
+                                <input type="text" id="editState">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Bio</label>
+                            <textarea id="editBio"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <label>Website</label>
+                            <input type="url" id="editWebsite">
+                        </div>
+                        <div class="form-row-half">
+                            <div class="form-row">
+                                <label>Instagram</label>
+                                <input type="text" id="editInstagram">
+                            </div>
+                            <div class="form-row">
+                                <label>Facebook</label>
+                                <input type="url" id="editFacebook">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <div id="saveMessage" class="save-message"></div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Account Tab -->
+            <div id="accountTab" class="tab-content">
+                <div class="account-section">
+                    <h3 style="margin-bottom: 25px;">Account Options</h3>
+
+                    <div class="account-option">
+                        <h4>🎯 Stay Listed Free</h4>
+                        <p>Refer 3 students per month to Ray's Video Analysis using your referral code. As long as you meet this quota, your listing stays active at no cost.</p>
+                        <a href="#" class="btn btn-secondary" onclick="document.querySelector('[data-tab=history]').click(); return false;">View Referral Progress</a>
+                    </div>
+
+                    <div class="account-option">
+                        <h4>💳 Pay Monthly</h4>
+                        <p>Prefer not to track referrals? Pay $40/month to keep your listing active regardless of referrals.</p>
+                        <div class="price-tag">$40/month</div>
+                        <p style="font-size: 0.85rem; color: var(--text-light);">Contact Ray at raypaull1010@gmail.com to set up payment via Venmo.</p>
+                    </div>
+
+                    <div class="account-option" style="background: #fef2f2; border-color: #fecaca;">
+                        <h4>⚠️ Pause My Listing</h4>
+                        <p>Need to take a break? Pause your listing temporarily. You can reactivate anytime.</p>
+                        <button class="btn btn-secondary" onclick="pauseAccount()">Pause Listing</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // ============================================
+        // CURRENT INSTRUCTOR DATA
+        // ============================================
+        let currentInstructor = null;
+
+        // ============================================
+        // LOGIN / LOGOUT
+        // ============================================
+        function loginInstructor() {
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const instructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+            const instructor = instructors.find(i => i.email.toLowerCase() === email);
+
+            if (!instructor) {
+                document.getElementById('loginError').style.display = 'block';
+                return;
+            }
+
+            // Store login
+            localStorage.setItem('instructorEmail', email);
+            currentInstructor = instructor;
+
+            // Show dashboard
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('dashboardContainer').style.display = 'block';
+
+            // Load dashboard data
+            loadDashboard();
+        }
+
+        function logout() {
+            localStorage.removeItem('instructorEmail');
+            currentInstructor = null;
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('dashboardContainer').style.display = 'none';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        // Check for existing login on page load
+        function checkExistingLogin() {
+            const savedEmail = localStorage.getItem('instructorEmail');
+            if (savedEmail) {
+                const instructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+                const instructor = instructors.find(i => i.email.toLowerCase() === savedEmail.toLowerCase());
+                if (instructor) {
+                    currentInstructor = instructor;
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('dashboardContainer').style.display = 'block';
+                    loadDashboard();
+                }
+            }
+        }
+
+        // ============================================
+        // LOAD DASHBOARD
+        // ============================================
+        function loadDashboard() {
+            if (!currentInstructor) return;
+
+            // Name
+            document.getElementById('instructorName').textContent = currentInstructor.name.split(' ')[0];
+
+            // Referral code
+            document.getElementById('referralCode').textContent = currentInstructor.referralCode;
+            document.getElementById('shareLink').textContent =
+                `https://rayspickleball.com/contact.html?ref=${currentInstructor.referralCode}`;
+
+            // Account status
+            updateAccountStatus();
+
+            // Grace period
+            updateGracePeriod();
+
+            // Referral progress
+            updateReferralProgress();
+
+            // Total referrals
+            document.getElementById('totalReferrals').textContent =
+                currentInstructor.referrals?.total || 0;
+
+            // Referrals FROM Ray (two-way)
+            loadRayReferrals();
+
+            // Referral history
+            loadReferralHistory();
+
+            // Profile form
+            loadProfileForm();
+        }
+
+        function updateAccountStatus() {
+            const card = document.getElementById('accountStatusCard');
+            const value = document.getElementById('accountStatusValue');
+            const subtext = document.getElementById('accountStatusSubtext');
+
+            card.className = 'status-card';
+
+            if (currentInstructor.status === 'active') {
+                card.classList.add('active-status');
+                value.textContent = '✓ Active';
+                subtext.textContent = 'Your profile is visible';
+            } else if (currentInstructor.status === 'paused') {
+                card.classList.add('paused-status');
+                value.textContent = '⏸ Paused';
+                subtext.textContent = 'Profile hidden from directory';
+            } else {
+                value.textContent = '⏳ Pending';
+                subtext.textContent = 'Awaiting approval';
+            }
+        }
+
+        function updateGracePeriod() {
+            const graceCard = document.getElementById('graceCard');
+            const graceValue = document.getElementById('graceValue');
+
+            if (!currentInstructor.gracePeriodEnds) {
+                graceCard.style.display = 'none';
+                return;
+            }
+
+            const graceEnd = new Date(currentInstructor.gracePeriodEnds);
+            const now = new Date();
+            const daysLeft = Math.max(0, Math.ceil((graceEnd - now) / (1000 * 60 * 60 * 24)));
+
+            if (daysLeft > 0) {
+                graceCard.style.display = 'block';
+                graceValue.textContent = `${daysLeft} days left`;
+            } else {
+                // Grace period over
+                graceCard.querySelector('.status-label').textContent = 'Grace Period';
+                graceValue.textContent = 'Ended';
+                graceCard.querySelector('.status-subtext').textContent = 'Refer 3/month or pay $40';
+            }
+        }
+
+        function updateReferralProgress() {
+            const currentMonth = currentInstructor.referrals?.currentMonth || 0;
+            const target = 2;
+            const percent = Math.min(100, (currentMonth / target) * 100);
+
+            document.getElementById('monthProgress').textContent = `${currentMonth} / ${target}`;
+            document.getElementById('progressBar').style.width = `${percent}%`;
+
+            const messageEl = document.getElementById('progressMessage');
+            if (currentMonth >= target) {
+                messageEl.textContent = "You've met this month's referral goal! 🎉";
+                messageEl.classList.add('success');
+            } else {
+                const remaining = target - currentMonth;
+                messageEl.textContent = `${remaining} more referral${remaining !== 1 ? 's' : ''} to stay listed free`;
+                messageEl.classList.remove('success');
+            }
+        }
+
+        function loadRayReferrals() {
+            const section = document.getElementById('rayReferralsSection');
+            const countEl = document.getElementById('rayReferralCount');
+            const listEl = document.getElementById('rayReferralsList');
+
+            const rayReferrals = currentInstructor.referralsFromRay || [];
+
+            if (rayReferrals.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+
+            section.style.display = 'block';
+            countEl.textContent = rayReferrals.length;
+
+            // Sort by date descending
+            const sorted = [...rayReferrals].sort((a, b) => new Date(b.referredAt) - new Date(a.referredAt));
+
+            listEl.innerHTML = sorted.map(ref => `
+                <div style="display: flex; justify-content: space-between; padding: 10px; background: white; border-radius: 6px; margin-bottom: 8px;">
+                    <span style="font-weight: 500; color: #1f2937;">${ref.studentName}</span>
+                    <span style="color: #6b7280; font-size: 0.9rem;">${new Date(ref.referredAt).toLocaleDateString()}</span>
+                </div>
+            `).join('');
+        }
+
+        function loadReferralHistory() {
+            const container = document.getElementById('referralHistory');
+            const history = currentInstructor.referrals?.history || [];
+
+            if (history.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-history">
+                        <p>No referrals yet. Share your code with students!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Group by month
+            const byMonth = {};
+            history.forEach(ref => {
+                const month = ref.month || new Date(ref.referredAt).toISOString().slice(0, 7);
+                if (!byMonth[month]) byMonth[month] = [];
+                byMonth[month].push(ref);
+            });
+
+            // Sort months descending
+            const sortedMonths = Object.keys(byMonth).sort().reverse();
+
+            container.innerHTML = sortedMonths.map(month => {
+                const refs = byMonth[month];
+                const monthName = new Date(month + '-01').toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                const metGoal = refs.length >= 2;
+
+                return `
+                    <div class="history-month">
+                        <div class="month-header">
+                            <span class="month-name">${monthName}</span>
+                            <span class="month-count ${metGoal ? 'met' : ''}">${refs.length} referral${refs.length !== 1 ? 's' : ''} ${metGoal ? '✓' : ''}</span>
+                        </div>
+                        ${refs.map(ref => `
+                            <div class="referral-item">
+                                <span class="referral-name">${ref.customerName || 'Customer'}</span>
+                                <span class="referral-date">${new Date(ref.referredAt).toLocaleDateString()}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function loadProfileForm() {
+            document.getElementById('editName').value = currentInstructor.name || '';
+            document.getElementById('editPhone').value = currentInstructor.phone || '';
+            document.getElementById('editRate').value = currentInstructor.hourlyRate || '';
+            document.getElementById('editCity').value = currentInstructor.city || '';
+            document.getElementById('editState').value = currentInstructor.state || '';
+            document.getElementById('editBio').value = currentInstructor.bio || '';
+            document.getElementById('editWebsite').value = currentInstructor.website || '';
+            document.getElementById('editInstagram').value = currentInstructor.instagram || '';
+            document.getElementById('editFacebook').value = currentInstructor.facebook || '';
+        }
+
+        // ============================================
+        // SHARE FUNCTIONS
+        // ============================================
+        function copyCode() {
+            navigator.clipboard.writeText(currentInstructor.referralCode);
+            alert('Code copied to clipboard!');
+        }
+
+        function copyLink() {
+            const link = `https://rayspickleball.com/contact.html?ref=${currentInstructor.referralCode}`;
+            navigator.clipboard.writeText(link);
+            alert('Link copied to clipboard!');
+        }
+
+        function shareViaText() {
+            const message = `Want to improve your pickleball game? Get professional video analysis from Ray's Pickleball! Use my code ${currentInstructor.referralCode} when you submit: https://rayspickleball.com/contact.html?ref=${currentInstructor.referralCode}`;
+            window.open(`sms:?body=${encodeURIComponent(message)}`);
+        }
+
+        function shareViaEmail() {
+            const subject = 'Check out this pickleball video analysis service';
+            const body = `Hey!\n\nI wanted to share this great pickleball video analysis service with you. Ray breaks down your gameplay and gives you specific feedback to improve.\n\nUse my referral code: ${currentInstructor.referralCode}\n\nSubmit your video here: https://rayspickleball.com/contact.html?ref=${currentInstructor.referralCode}\n\nSee you on the courts!`;
+            window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+        }
+
+        // ============================================
+        // PROFILE SAVE
+        // ============================================
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const instructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+            const index = instructors.findIndex(i => i.email === currentInstructor.email);
+
+            if (index === -1) return;
+
+            // Update fields
+            instructors[index].name = document.getElementById('editName').value.trim();
+            instructors[index].phone = document.getElementById('editPhone').value.trim();
+            instructors[index].hourlyRate = document.getElementById('editRate').value.trim();
+            instructors[index].city = document.getElementById('editCity').value.trim();
+            instructors[index].state = document.getElementById('editState').value.trim();
+            instructors[index].bio = document.getElementById('editBio').value.trim();
+            instructors[index].website = document.getElementById('editWebsite').value.trim();
+            instructors[index].instagram = document.getElementById('editInstagram').value.trim();
+            instructors[index].facebook = document.getElementById('editFacebook').value.trim();
+
+            localStorage.setItem('instructors', JSON.stringify(instructors));
+            currentInstructor = instructors[index];
+
+            // Show success message
+            const msg = document.getElementById('saveMessage');
+            msg.textContent = 'Profile saved successfully!';
+            msg.classList.add('success');
+
+            // Update name in header
+            document.getElementById('instructorName').textContent = currentInstructor.name.split(' ')[0];
+
+            setTimeout(() => {
+                msg.classList.remove('success');
+            }, 3000);
+        });
+
+        // ============================================
+        // ACCOUNT ACTIONS
+        // ============================================
+        function pauseAccount() {
+            if (!confirm('Are you sure you want to pause your listing? Your profile will be hidden from the directory.')) {
+                return;
+            }
+
+            const instructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+            const index = instructors.findIndex(i => i.email === currentInstructor.email);
+
+            if (index !== -1) {
+                instructors[index].status = 'paused';
+                localStorage.setItem('instructors', JSON.stringify(instructors));
+                currentInstructor = instructors[index];
+                updateAccountStatus();
+                alert('Your listing has been paused. Contact Ray to reactivate when ready.');
+            }
+        }
+
+        // ============================================
+        // TABS
+        // ============================================
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Update buttons
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                // Update content
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.getElementById(this.dataset.tab + 'Tab').classList.add('active');
+            });
+        });
+
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', checkExistingLogin);
+
+        // Enter key for login
+        document.getElementById('loginEmail').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginInstructor();
+            }
+        });
+    </script>
+</body>
+</html>

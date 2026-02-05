@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Your Video - Ray Paull Pickleball Analysis</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <!-- Email Service Module -->
+    <script src="js/email-service.js"></script>
+    <!-- API Client -->
+    <script src="js/api-client.js"></script>
+    <!-- Config -->
+    <script src="js/config.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">🏓 Ray's Pickleball</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li class="nav-dropdown">
+                    <a href="services.html">Services</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="services.html">Video Analysis</a></li>
+                        <li><a href="skill-evaluation.html">Skill Evaluation</a></li>
+                        <li><a href="doubles-analysis.html">Doubles Analysis</a></li>
+                        <li><a href="level-up.html" class="dropdown-highlight">Level Up Program</a></li>
+                    </ul>
+                </li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="membership.html">Membership</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="btn btn-primary active" style="padding: 8px 20px; color: white;">Submit Video</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Submit Your Video</h1>
+            <p>Ready to see what the data says about your game?</p>
+        </section>
+
+        <section class="contact-content">
+            <div class="container">
+                <div class="contact-grid">
+
+                    <!-- VIDEO SUBMISSION INSTRUCTIONS -->
+                    <div class="submission-instructions">
+                        <h2>How to Submit Your Video</h2>
+
+                        <!-- Step 1: Record -->
+                        <div class="instruction-section">
+                            <h3>📹 Step 1: Record Your Gameplay</h3>
+                            <ul class="instruction-list">
+                                <li><strong>30 or 60 minutes</strong> of competitive match play (not drilling)</li>
+                                <li>Position camera <strong>behind the baseline</strong> if possible</li>
+                                <li>Make sure <strong>your side of the court</strong> is clearly visible</li>
+                                <li>Standard video quality is fine — no need for 4K</li>
+                            </ul>
+                        </div>
+
+                        <!-- Step 2: Upload -->
+                        <div class="instruction-section">
+                            <h3>☁️ Step 2: Upload to a File Sharing Service</h3>
+                            <p>Choose one of these options:</p>
+
+                            <div class="file-sharing-options">
+                                <div class="sharing-option">
+                                    <h4>Google Drive (Recommended)</h4>
+                                    <ol>
+                                        <li>Go to <a href="https://drive.google.com" target="_blank">drive.google.com</a></li>
+                                        <li>Click <strong>"+ New"</strong> then <strong>"File upload"</strong></li>
+                                        <li>Select your video file</li>
+                                        <li>Right-click the file, select <strong>"Share"</strong></li>
+                                        <li>Change access to <strong>"Anyone with the link"</strong></li>
+                                        <li>Copy the link</li>
+                                    </ol>
+                                </div>
+
+                                <div class="sharing-option">
+                                    <h4>Dropbox</h4>
+                                    <ol>
+                                        <li>Go to <a href="https://dropbox.com" target="_blank">dropbox.com</a></li>
+                                        <li>Upload your video file</li>
+                                        <li>Click <strong>"Share"</strong> on the file</li>
+                                        <li>Click <strong>"Create link"</strong></li>
+                                        <li>Copy the link</li>
+                                    </ol>
+                                </div>
+
+                                <div class="sharing-option">
+                                    <h4>WeTransfer</h4>
+                                    <ol>
+                                        <li>Go to <a href="https://wetransfer.com" target="_blank">wetransfer.com</a></li>
+                                        <li>Click <strong>"+"</strong> to add your file</li>
+                                        <li>Enter <strong>raypaull1010@gmail.com</strong> as recipient</li>
+                                        <li>Add your name in the message</li>
+                                        <li>Click <strong>"Transfer"</strong></li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Submit -->
+                        <div class="instruction-section">
+                            <h3>📝 Step 3: Complete the Form</h3>
+                            <p>Fill out the form with your video link and I'll confirm receipt within 24 hours.</p>
+                        </div>
+
+                        <!-- What You'll Receive -->
+                        <div class="instruction-section what-youll-receive">
+                            <h3>📦 What You'll Receive</h3>
+                            <ul class="deliverables-list">
+                                <li><strong>Statistical Report:</strong> Complete breakdown of all 15+ metrics tracked</li>
+                                <li><strong>Video Walkthrough:</strong> Recorded feedback where I walk through your footage and explain patterns</li>
+                                <li><strong>Player Snapshot:</strong> Your biggest strength, biggest leak, decision quality grade, and top fix</li>
+                                <li><strong>Delivery:</strong> Both sent via email within <strong>48-72 hours</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- SUBMISSION FORM -->
+                    <div class="contact-info">
+                        <h2>Video Submission Form</h2>
+                        <p class="form-intro">Paste your video link below and I'll get started on your analysis.</p>
+
+                        <form class="contact-form" action="#" method="POST">
+                            <div class="form-group">
+                                <label for="name">Your Name *</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">Phone Number (optional)</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="video-link">Video Link *</label>
+                                <input type="url" id="video-link" name="video-link" placeholder="Paste your Google Drive, Dropbox, or WeTransfer link" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="skill-level">Your DUPR or Skill Level</label>
+                                <select id="skill-level" name="skill-level">
+                                    <option value="">Select your level...</option>
+                                    <option value="3.0-3.4">3.0 - 3.4</option>
+                                    <option value="3.5-3.9">3.5 - 3.9</option>
+                                    <option value="4.0-4.4">4.0 - 4.4</option>
+                                    <option value="4.5-4.9">4.5 - 4.9</option>
+                                    <option value="5.0+">5.0+</option>
+                                    <option value="not-sure">Not sure</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="video-length">Video Length *</label>
+                                <select id="video-length" name="video-length" required>
+                                    <option value="">Select video length...</option>
+                                    <option value="30">30 minutes — $75</option>
+                                    <option value="60">60 minutes — $120</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="focus-areas">Focus Areas (optional)</label>
+                                <textarea id="focus-areas" name="focus-areas" rows="4" placeholder="Any specific aspects of your game you want me to pay extra attention to?"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="referral-code">Referral Code (optional)</label>
+                                <input type="text" id="referral-code" name="referral-code" placeholder="e.g. INST8K2PL or RAY2F9KL" style="text-transform: uppercase;">
+                                <p id="referralCodeFeedback" class="referral-feedback" style="display: none;"></p>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-full">Submit for Analysis</button>
+                        </form>
+
+                        <!-- Thank You / Payment Section (Hidden by default) -->
+                        <div id="thankYouSection" class="thank-you-section" style="display: none;">
+                            <div class="thank-you-header">
+                                <span class="success-icon">✅</span>
+                                <h3>Video Submitted!</h3>
+                            </div>
+                            <p class="thank-you-message">Thanks, <span id="submittedName"></span>! I received your video and will start the analysis soon.</p>
+
+                            <div class="payment-instructions">
+                                <h4>💳 Complete Your Payment (<span id="paymentAmount">$75</span>)</h4>
+                                <p>Choose your preferred payment method:</p>
+
+                                <div class="payment-options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;">
+                                    <!-- Stripe Payment Button -->
+                                    <button type="button" id="stripePaymentBtn" class="btn btn-primary payment-btn" style="padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                        <span style="font-size: 24px;">💳</span>
+                                        <strong>Pay with Card</strong>
+                                        <span style="font-size: 14px; opacity: 0.9;">Secure checkout</span>
+                                    </button>
+
+                                    <!-- Venmo Option -->
+                                    <div class="payment-option" style="padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 8px; background: #008CFF; color: white; border-radius: 8px; text-align: center;">
+                                        <span style="font-size: 24px;">📱</span>
+                                        <strong>Pay with Venmo</strong>
+                                        <span class="payment-handle" style="font-size: 14px;">@Ray-Paull</span>
+                                    </div>
+                                </div>
+
+                                <p class="payment-memo" style="background: #fef3c7; padding: 10px 15px; border-radius: 6px; margin-top: 15px; font-size: 0.95rem;">
+                                    <strong>For Venmo:</strong> Include your name + "Video Analysis" in the memo
+                                </p>
+                            </div>
+
+                            <div class="next-steps">
+                                <h4>📋 What Happens Next</h4>
+                                <ol>
+                                    <li>I'll confirm receipt of your video within 24 hours</li>
+                                    <li>Once payment is received, I'll begin the analysis</li>
+                                    <li>You'll receive your full report + video feedback within 48-72 hours</li>
+                                </ol>
+                            </div>
+
+                            <p class="questions-text">Questions? Email <a href="mailto:raypaull1010@gmail.com">raypaull1010@gmail.com</a> or text <a href="tel:+18012059124">(801) 205-9124</a></p>
+                        </div>
+
+                        <div class="contact-details">
+                            <h3>Questions?</h3>
+                            <div class="info-block">
+                                <h4>📧 Email</h4>
+                                <p><a href="mailto:raypaull1010@gmail.com">raypaull1010@gmail.com</a></p>
+                            </div>
+
+                            <div class="info-block">
+                                <h4>📱 Phone/Text</h4>
+                                <p><a href="tel:+18012059124">(801) 205-9124</a></p>
+                            </div>
+
+                            <div class="info-block">
+                                <h4>⏱️ Turnaround</h4>
+                                <p>48-72 hours from video receipt</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <style>
+        /* Thank You / Payment Section Styles */
+        .thank-you-section {
+            background: white;
+            border: 2px solid var(--secondary-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .thank-you-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .success-icon {
+            font-size: 2rem;
+        }
+
+        .thank-you-header h3 {
+            color: var(--secondary-color);
+            margin: 0;
+        }
+
+        .thank-you-message {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+        }
+
+        .payment-instructions {
+            background: var(--background-alt);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .payment-instructions h4 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .payment-options {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .payment-icon {
+            font-size: 1.5rem;
+        }
+
+        .payment-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .payment-details strong {
+            font-size: 1rem;
+        }
+
+        .payment-handle {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .payment-memo {
+            background: #fef3c7;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+
+        .next-steps {
+            margin-bottom: 20px;
+        }
+
+        .next-steps h4 {
+            margin-bottom: 10px;
+        }
+
+        .next-steps ol {
+            padding-left: 20px;
+        }
+
+        .next-steps li {
+            margin-bottom: 8px;
+        }
+
+        .questions-text {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .questions-text a {
+            color: var(--primary-color);
+        }
+
+        /* Referral Code Feedback */
+        .referral-feedback {
+            font-size: 0.85rem;
+            margin-top: 5px;
+            padding: 6px 10px;
+            border-radius: 4px;
+        }
+
+        .referral-feedback.valid {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .referral-feedback.invalid {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+
+    <script>
+        // ============================================
+        // VIDEO SUBMISSION FORM HANDLER
+        // Uses EmailService module for email functionality
+        // ============================================
+
+        // Check for referral code in URL
+        function checkURLReferralCode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            if (refCode) {
+                document.getElementById('referral-code').value = refCode.toUpperCase();
+                validateReferralCode(refCode.toUpperCase());
+            }
+        }
+
+        // Validate referral code
+        function validateReferralCode(code) {
+            const feedback = document.getElementById('referralCodeFeedback');
+
+            if (!code || code.length < 5) {
+                feedback.style.display = 'none';
+                return null;
+            }
+
+            code = code.toUpperCase();
+
+            // Check if it's an instructor code (INST prefix)
+            if (code.startsWith('INST')) {
+                const instructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+                const instructor = instructors.find(i => i.referralCode === code && i.status === 'active');
+
+                if (instructor) {
+                    feedback.textContent = `✓ Referred by instructor: ${instructor.name}`;
+                    feedback.className = 'referral-feedback valid';
+                    feedback.style.display = 'block';
+                    return { type: 'instructor', code, referrer: instructor };
+                } else {
+                    feedback.textContent = '✗ Invalid instructor code';
+                    feedback.className = 'referral-feedback invalid';
+                    feedback.style.display = 'block';
+                    return null;
+                }
+            }
+
+            // Check if it's a member code (RAY prefix)
+            if (code.startsWith('RAY')) {
+                const members = JSON.parse(localStorage.getItem('members') || '[]');
+                const member = members.find(m => {
+                    // Generate their code and compare
+                    let hash = 0;
+                    for (let i = 0; i < m.email.length; i++) {
+                        const char = m.email.charCodeAt(i);
+                        hash = ((hash << 5) - hash) + char;
+                        hash = hash & hash;
+                    }
+                    const memberCode = 'RAY' + Math.abs(hash).toString(36).toUpperCase().slice(0, 5);
+                    return memberCode === code;
+                });
+
+                if (member) {
+                    feedback.textContent = `✓ Referred by member: ${member.name}`;
+                    feedback.className = 'referral-feedback valid';
+                    feedback.style.display = 'block';
+                    return { type: 'member', code, referrer: member };
+                }
+            }
+
+            feedback.textContent = '✗ Code not recognized';
+            feedback.className = 'referral-feedback invalid';
+            feedback.style.display = 'block';
+            return null;
+        }
+
+        // Add referral to instructor's count
+        function processInstructorReferral(instructor, customerName, customerEmail) {
+            const instructors = JSON.parse(localStorage.getItem('instructors') || '[]');
+            const index = instructors.findIndex(i => i.email === instructor.email);
+
+            if (index !== -1) {
+                // Initialize referrals if needed
+                if (!instructors[index].referrals) {
+                    instructors[index].referrals = { total: 0, currentMonth: 0, history: [] };
+                }
+
+                // Add to history
+                const now = new Date();
+                instructors[index].referrals.history.push({
+                    customerEmail,
+                    customerName,
+                    referredAt: now.toISOString(),
+                    month: now.toISOString().slice(0, 7)
+                });
+
+                // Update counts
+                instructors[index].referrals.total++;
+                instructors[index].referrals.currentMonth++;
+
+                localStorage.setItem('instructors', JSON.stringify(instructors));
+                console.log(`Referral credited to instructor ${instructor.name}`);
+            }
+        }
+
+        // Referral code input listener
+        document.getElementById('referral-code').addEventListener('input', function() {
+            validateReferralCode(this.value.toUpperCase());
+        });
+
+        // Check URL on page load
+        document.addEventListener('DOMContentLoaded', checkURLReferralCode);
+
+        // Store submission data globally for payment handlers
+        let currentSubmission = null;
+
+        // Handle form submission
+        document.querySelector('.contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Get form values
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const videoLink = document.getElementById('video-link').value.trim();
+            const videoLength = document.getElementById('video-length').value;
+            const skillLevel = document.getElementById('skill-level').value;
+            const focusAreas = document.getElementById('focus-areas').value.trim();
+            const referralCode = document.getElementById('referral-code').value.trim().toUpperCase();
+            const price = EmailService.formatPrice(videoLength);
+            const priceCents = videoLength === '30' ? 7500 : 12000;
+
+            // Validate required fields
+            if (!name || !email || !videoLink || !videoLength) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            // Validate email format
+            if (!FormHelpers.isValidEmail(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            // Disable submit button and show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            // Prepare submission data for API
+            const apiData = {
+                name,
+                email,
+                phone,
+                videoUrl: videoLink,
+                videoLength: parseInt(videoLength),
+                skillLevel,
+                focusAreas,
+                referralCode: referralCode || null
+            };
+
+            try {
+                // Try to submit to API (database)
+                const apiResponse = await API.submitVideo(apiData);
+
+                if (apiResponse.success) {
+                    // Store submission info for payment
+                    currentSubmission = {
+                        id: apiResponse.submission.id,
+                        name,
+                        email,
+                        videoLength,
+                        price,
+                        priceCents,
+                        productType: videoLength === '30' ? 'video_30' : 'video_60'
+                    };
+
+                    console.log('Submission saved to database:', apiResponse.submission.id);
+                }
+            } catch (apiError) {
+                console.warn('API submission failed, falling back to localStorage:', apiError.message);
+
+                // Fallback: Store locally if API fails (Supabase not configured yet)
+                const storedSubmission = EmailService.storePendingVideoSubmission({
+                    name, email, phone, videoLink, videoLength, skillLevel, focusAreas, referralCode
+                });
+
+                currentSubmission = {
+                    id: storedSubmission.id,
+                    name,
+                    email,
+                    videoLength,
+                    price,
+                    priceCents,
+                    productType: videoLength === '30' ? 'video_30' : 'video_60',
+                    isLocal: true // Flag that this is localStorage-only
+                };
+            }
+
+            // Try to send confirmation emails
+            let emailSuccess = false;
+            try {
+                const [customerResult, adminResult] = await Promise.all([
+                    EmailService.sendVideoSubmissionReceived({ name, email, phone, videoLink, videoLength, skillLevel, focusAreas, referralCode }),
+                    EmailService.sendVideoAdminNotification({ name, email, phone, videoLink, videoLength, skillLevel, focusAreas, referralCode })
+                ]);
+                emailSuccess = customerResult.success && adminResult.success;
+            } catch (emailError) {
+                console.warn('Email sending failed:', emailError);
+            }
+
+            // Hide the form
+            this.style.display = 'none';
+
+            // Show thank you section
+            const thankYouSection = document.getElementById('thankYouSection');
+            thankYouSection.style.display = 'block';
+
+            // Personalize with name and correct price
+            document.getElementById('submittedName').textContent = name.split(' ')[0];
+            document.getElementById('paymentAmount').textContent = price;
+
+            // Show email status message
+            if (emailSuccess) {
+                const emailSentNote = document.createElement('p');
+                emailSentNote.style.cssText = 'background: #d1fae5; padding: 10px 15px; border-radius: 6px; margin-top: 15px; font-size: 0.95rem; color: #065f46;';
+                emailSentNote.innerHTML = '📧 <strong>Confirmation email sent!</strong> Check your inbox at ' + email;
+                document.querySelector('.thank-you-message').after(emailSentNote);
+            }
+
+            // Scroll to thank you section
+            thankYouSection.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Handle Stripe payment button
+        document.getElementById('stripePaymentBtn').addEventListener('click', async function() {
+            if (!currentSubmission) {
+                alert('Please submit the form first.');
+                return;
+            }
+
+            // Check if Stripe is configured
+            if (typeof CONFIG !== 'undefined' && !CONFIG.isStripeConfigured()) {
+                alert('Card payments are not yet available. Please use Venmo for now.');
+                return;
+            }
+
+            // Show loading state
+            this.disabled = true;
+            this.innerHTML = '<span>Processing...</span>';
+
+            try {
+                // Store order info for success page
+                FormHelpers.storeOrderInfo({
+                    type: currentSubmission.productType,
+                    productName: `Video Analysis - ${currentSubmission.videoLength} Minutes`,
+                    amount: currentSubmission.price,
+                    id: currentSubmission.id
+                });
+
+                // Create Stripe checkout session and redirect
+                await API.createCheckout({
+                    productType: currentSubmission.productType,
+                    itemId: currentSubmission.id,
+                    customerEmail: currentSubmission.email,
+                    customerName: currentSubmission.name
+                });
+            } catch (error) {
+                console.error('Stripe checkout error:', error);
+                alert('Payment setup failed: ' + error.message + '\n\nPlease use Venmo or try again later.');
+
+                // Reset button
+                this.disabled = false;
+                this.innerHTML = '<span style="font-size: 24px;">💳</span><strong>Pay with Card</strong><span style="font-size: 14px; opacity: 0.9;">Secure checkout</span>';
+            }
+        });
+    </script>
+</body>
+</html>

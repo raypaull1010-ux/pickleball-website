@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games Library - Fun Competitive Drills | Ray Paull Pickleball</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">Ray's Pickleball</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="membership.html">Membership</a></li>
+                <li><a href="contact.html">Submit Video</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Games Library</h1>
+            <p>Fun competitive games to make practice more engaging</p>
+        </section>
+
+        <section class="games-content">
+            <div class="container">
+                <!-- Player Count Filter -->
+                <div class="player-filter">
+                    <button class="player-btn active" data-players="all">All Games</button>
+                    <button class="player-btn" data-players="2">2 Players</button>
+                    <button class="player-btn" data-players="3">3 Players</button>
+                    <button class="player-btn" data-players="4">4 Players</button>
+                </div>
+
+                <!-- 2-PERSON GAMES -->
+                <div class="games-section" data-player-count="2">
+                    <div class="section-header-bar">
+                        <span class="player-icon">👥</span>
+                        <h2>2-Person Games</h2>
+                        <span class="game-count">7 games</span>
+                    </div>
+
+                    <div class="games-grid">
+                        <!-- Dink Wars -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>Dink Wars</h3>
+                                <span class="difficulty easy">Easy</span>
+                            </div>
+                            <p class="game-description">Battle of consistency. First to 11 points wins - you score when your opponent pops up.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>Both players at the kitchen line</li>
+                                    <li>Dink cross-court only (or straight - your choice)</li>
+                                    <li>Score a point when opponent hits attackable pop-up</li>
+                                    <li>Lose a point for errors (net/out)</li>
+                                    <li>First to 11, win by 2</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Pop-up count per player</li>
+                                    <li>Rally lengths</li>
+                                    <li>Winner declaration</li>
+                                    <li>Consistency streaks</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Target Practice -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>Target Practice</h3>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                            <p class="game-description">Place targets (cones, towels) on the court. Hit them for points. Most points wins.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>Set up 3-5 targets in opponent's court</li>
+                                    <li>Take turns hitting serves/returns/dinks</li>
+                                    <li>1 point for hitting target zone</li>
+                                    <li>Bonus points for direct hits</li>
+                                    <li>20 shots each, highest score wins</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Target accuracy %</li>
+                                    <li>Zone hit heatmap</li>
+                                    <li>Score breakdown</li>
+                                    <li>FH vs BH accuracy</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- King of the Kitchen -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>King of the Kitchen</h3>
+                                <span class="difficulty easy">Easy</span>
+                            </div>
+                            <p class="game-description">Stay in the rally as long as possible. Loser gets a point against them.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>Both players dink at the kitchen</li>
+                                    <li>Rally until someone makes an error</li>
+                                    <li>Error = 1 point against you</li>
+                                    <li>First to 7 points loses</li>
+                                    <li>Optional: allow speed-ups</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Points against each player</li>
+                                    <li>Average rally length</li>
+                                    <li>Error types</li>
+                                    <li>Longest rally achieved</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Speed-up Roulette -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>Speed-up Roulette</h3>
+                                <span class="difficulty hard">Hard</span>
+                            </div>
+                            <p class="game-description">Dink until someone speeds up. The other player must reset. Tests attack & defense.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>Dink cross-court normally</li>
+                                    <li>Either player can speed up anytime</li>
+                                    <li>Defender must reset to kitchen</li>
+                                    <li>Point for successful reset OR winner</li>
+                                    <li>First to 11 points</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Speed-up success rate</li>
+                                    <li>Reset success rate</li>
+                                    <li>Reaction time</li>
+                                    <li>Point outcomes</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 21 Drops -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>21 Drops</h3>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                            <p class="game-description">Alternate third shot drops. Race to 21 "perfect" drops that land in the kitchen.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>One player feeds, one drops</li>
+                                    <li>Perfect drop (kitchen) = 1 point</li>
+                                    <li>Transition zone = 0 points</li>
+                                    <li>Deep/net/out = -1 point</li>
+                                    <li>First to 21 wins, then switch roles</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Perfect drops count</li>
+                                    <li>Landing zone breakdown</li>
+                                    <li>Consistency %</li>
+                                    <li>Final scores</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Crossfire -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>Crossfire</h3>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                            <p class="game-description">Cross-court dinking only. No straight shots allowed. Tests angles and footwork.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>Both start on same side (both left or both right)</li>
+                                    <li>Only cross-court shots allowed</li>
+                                    <li>Straight shot = lose point</li>
+                                    <li>Error = lose point</li>
+                                    <li>First to 11 wins</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Cross-court accuracy</li>
+                                    <li>Illegal straight shots</li>
+                                    <li>Rally consistency</li>
+                                    <li>Angle variety</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Serve & Return Battle -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>Serve & Return Battle</h3>
+                                <span class="difficulty easy">Easy</span>
+                            </div>
+                            <p class="game-description">Points for deep serves AND deep returns. Both players can score every rally.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>Alternate serving</li>
+                                    <li>Deep serve (back 1/3) = 1 point for server</li>
+                                    <li>Deep return (past kitchen) = 1 point for returner</li>
+                                    <li>Both can score same rally</li>
+                                    <li>20 serves each, highest total wins</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Serve depth %</li>
+                                    <li>Return depth %</li>
+                                    <li>Points per player</li>
+                                    <li>Depth consistency</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3-PERSON GAMES -->
+                <div class="games-section" data-player-count="3">
+                    <div class="section-header-bar">
+                        <span class="player-icon">👥👤</span>
+                        <h2>3-Person Games</h2>
+                        <span class="game-count">4 games</span>
+                    </div>
+
+                    <div class="games-grid">
+                        <!-- Rotating King -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>Rotating King</h3>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                            <p class="game-description">2v1 format. Winner stays, loser rotates out. Track individual win rates.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>Two players vs one "King"</li>
+                                    <li>Play points rally-style</li>
+                                    <li>If King wins point, they stay</li>
+                                    <li>If challengers win, King rotates out</li>
+                                    <li>Track total wins per player</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Individual win %</li>
+                                    <li>Longest King streak</li>
+                                    <li>Points played per player</li>
+                                    <li>Shot quality stats</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Triangle Dinks -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>Triangle Dinks</h3>
+                                <span class="difficulty easy">Easy</span>
+                            </div>
+                            <p class="game-description">3-way dinking pattern. Rotate shots around the triangle. Tests consistency.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>Form triangle: 2 at kitchen, 1 across</li>
+                                    <li>Dink in sequence: A→B→C→A...</li>
+                                    <li>Error = 1 point against you</li>
+                                    <li>First to 5 points against loses</li>
+                                    <li>Rotate positions each round</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Per-player consistency</li>
+                                    <li>Error count by player</li>
+                                    <li>Rally lengths</li>
+                                    <li>Pattern completion rate</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 2v1 Reset Drill -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>2v1 Reset Challenge</h3>
+                                <span class="difficulty hard">Hard</span>
+                            </div>
+                            <p class="game-description">Two attackers vs one defender. Defender tries to reset. Great pressure practice.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>2 players at kitchen attack</li>
+                                    <li>1 player in transition defends</li>
+                                    <li>Defender resets to kitchen = 1 point</li>
+                                    <li>Attackers win point = 1 point for them</li>
+                                    <li>Play to 7, rotate defender</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Reset success % per player</li>
+                                    <li>Attack success %</li>
+                                    <li>Rally survival rate</li>
+                                    <li>Pressure handling rating</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Rotating Thirds -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>Rotating Thirds</h3>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                            <p class="game-description">One feeds, one drops, one evaluates. Rotate roles. Compare everyone's drops.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>Player A feeds from baseline</li>
+                                    <li>Player B hits third shot drop</li>
+                                    <li>Player C catches at kitchen, evaluates</li>
+                                    <li>10 drops each, then rotate</li>
+                                    <li>Best average score wins</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Per-player drop stats</li>
+                                    <li>Landing zone breakdown</li>
+                                    <li>Consistency comparison</li>
+                                    <li>Winner determination</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4-PERSON GAMES -->
+                <div class="games-section" data-player-count="4">
+                    <div class="section-header-bar">
+                        <span class="player-icon">👥👥</span>
+                        <h2>4-Person Games</h2>
+                        <span class="game-count">6 games</span>
+                    </div>
+
+                    <div class="games-grid">
+                        <!-- Skinny Singles -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>Skinny Singles</h3>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                            <p class="game-description">Half-court 1v1 games. Two matches happening simultaneously. Full individual tracking.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>Split court in half (down the middle)</li>
+                                    <li>2 separate 1v1 games on each half</li>
+                                    <li>Standard scoring to 11</li>
+                                    <li>Winner rotates to play other winner</li>
+                                    <li>Track all 4 players individually</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Full stats per player</li>
+                                    <li>Win/loss records</li>
+                                    <li>Head-to-head matchups</li>
+                                    <li>Comparative rankings</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Round Robin Dinks -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>Round Robin Dinks</h3>
+                                <span class="difficulty easy">Easy</span>
+                            </div>
+                            <p class="game-description">4 players rotate positions. Track consistency across all kitchen positions.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>4 players at kitchen (2 per side)</li>
+                                    <li>Dink in pattern (diagonal or around)</li>
+                                    <li>Error = point against you</li>
+                                    <li>Rotate positions every 2 minutes</li>
+                                    <li>Most consistent player wins</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Per-player consistency</li>
+                                    <li>Stats by position</li>
+                                    <li>Pop-up rates</li>
+                                    <li>Overall rankings</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Firefight 4-Way -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>Firefight 4-Way</h3>
+                                <span class="difficulty hard">Hard</span>
+                            </div>
+                            <p class="game-description">2v2 speed-up battles. Dink until someone attacks, then it's firefight time.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>Standard 2v2 at kitchen</li>
+                                    <li>Dink until someone speeds up</li>
+                                    <li>Point ends when someone wins/errors</li>
+                                    <li>First team to 11 wins</li>
+                                    <li>Track team AND individual stats</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Team scores</li>
+                                    <li>Individual hand speed ratings</li>
+                                    <li>Speed-up success rates</li>
+                                    <li>Firefight win %</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Poaching Drill -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>Poaching Drill</h3>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                            <p class="game-description">Practice switching and poaching. Points for successful poaches.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>Standard 2v2 dinking</li>
+                                    <li>Either team can poach anytime</li>
+                                    <li>Successful poach = 2 points</li>
+                                    <li>Failed poach = 1 point to opponent</li>
+                                    <li>First team to 15 wins</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Poach attempt rate</li>
+                                    <li>Poach success %</li>
+                                    <li>Communication rating</li>
+                                    <li>Team coordination score</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Rotate & Attack -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>Rotate & Attack</h3>
+                                <span class="difficulty medium">Medium</span>
+                            </div>
+                            <p class="game-description">One team attacks, one defends. Rotate roles. Compare attack vs defense stats.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>Team A attacks from kitchen</li>
+                                    <li>Team B defends from transition</li>
+                                    <li>Point for winner or successful reset</li>
+                                    <li>Switch roles every 10 points</li>
+                                    <li>Best combined score wins</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Attack success per player</li>
+                                    <li>Reset success per player</li>
+                                    <li>Role effectiveness comparison</li>
+                                    <li>Team balance analysis</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Kitchen Chaos -->
+                        <div class="game-card">
+                            <div class="game-header">
+                                <h3>Kitchen Chaos</h3>
+                                <span class="difficulty hard">Hard</span>
+                            </div>
+                            <p class="game-description">4-way dink rally with random speed-ups allowed. Total chaos, maximum fun.</p>
+
+                            <div class="game-rules">
+                                <h4>How to Play:</h4>
+                                <ol>
+                                    <li>4 players at kitchen, 2v2</li>
+                                    <li>Anyone can dink OR attack anytime</li>
+                                    <li>No pattern required</li>
+                                    <li>Point for every error opponent makes</li>
+                                    <li>First team to 15 wins</li>
+                                </ol>
+                            </div>
+
+                            <div class="game-tracking">
+                                <h4>What We Track:</h4>
+                                <ul>
+                                    <li>Reaction times</li>
+                                    <li>Dink vs attack ratio</li>
+                                    <li>Consistency under pressure</li>
+                                    <li>Chaos survival rating</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="games-cta">
+                    <h2>Ready to Play?</h2>
+                    <p>Upload your game session and we'll track everyone's stats automatically.</p>
+                    <div class="cta-buttons">
+                        <a href="session-upload.html" class="btn btn-primary btn-large">Upload Session</a>
+                        <a href="drills-library.html" class="btn btn-secondary btn-large">Browse Drills</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <style>
+        /* Games Library Styles */
+        .games-content {
+            padding: var(--section-padding) 20px;
+        }
+
+        /* Player Filter */
+        .player-filter {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .player-btn {
+            padding: 12px 28px;
+            border: 2px solid var(--border-color);
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .player-btn:hover {
+            border-color: var(--primary-color);
+        }
+
+        .player-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Section Headers */
+        .games-section {
+            margin-bottom: 60px;
+        }
+
+        .section-header-bar {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px 25px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #8b5cf6 100%);
+            border-radius: 12px;
+            color: white;
+        }
+
+        .player-icon {
+            font-size: 1.5rem;
+        }
+
+        .section-header-bar h2 {
+            margin: 0;
+            flex: 1;
+        }
+
+        .game-count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+        }
+
+        /* Game Cards */
+        .game-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .game-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .difficulty {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .difficulty.easy {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .difficulty.medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .difficulty.hard {
+            background: #fce7f3;
+            color: #9d174d;
+        }
+
+        .game-description {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .game-rules, .game-tracking {
+            margin-bottom: 15px;
+        }
+
+        .game-rules h4, .game-tracking h4 {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .game-rules ol {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .game-rules li {
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .game-tracking ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .game-tracking li {
+            padding: 6px 0 6px 18px;
+            position: relative;
+            font-size: 0.85rem;
+            color: var(--text-color);
+        }
+
+        .game-tracking li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        /* CTA */
+        .games-cta {
+            text-align: center;
+            padding: 60px 40px;
+            background: var(--background-alt);
+            border-radius: 16px;
+            margin-top: 40px;
+        }
+
+        .games-cta h2 {
+            margin-bottom: 10px;
+        }
+
+        .games-cta p {
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .game-tracking ul {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script>
+        // Filter functionality
+        const playerBtns = document.querySelectorAll('.player-btn');
+        const gamesSections = document.querySelectorAll('.games-section');
+
+        playerBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                playerBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.players;
+
+                gamesSections.forEach(section => {
+                    if (filter === 'all' || section.dataset.playerCount === filter) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
