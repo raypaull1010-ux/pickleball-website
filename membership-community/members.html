@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Member Hub - Ray Paull Pickleball</title>
     <link rel="stylesheet" href="../css/styles.css">
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Config & API -->
+    <script src="../js/config.js"></script>
+    <script src="../js/api-client.js"></script>
+    <!-- Gamification & Social -->
+    <script src="../js/gamification.js"></script>
+    <script src="../js/social.js"></script>
 </head>
 <body>
     <header>
@@ -33,11 +41,12 @@
         <!-- TAB NAVIGATION -->
         <div class="tab-navigation">
             <div class="container">
-                <button class="tab-btn active" data-tab="profile">My Profile</button>
-                <button class="tab-btn" data-tab="challenges">Drill Challenges</button>
-                <button class="tab-btn" data-tab="rewards">Rewards</button>
+                <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+                <button class="tab-btn" data-tab="profile">My Profile</button>
+                <button class="tab-btn" data-tab="challenges">Challenges</button>
+                <button class="tab-btn" data-tab="progress">Progress</button>
                 <button class="tab-btn" data-tab="partners">Find Partners</button>
-                <button class="tab-btn" data-tab="spotlight">Member Spotlight</button>
+                <button class="tab-btn" data-tab="leaderboard">Leaderboard</button>
             </div>
         </div>
 
@@ -60,8 +69,71 @@
         <div class="member-content" id="memberContent" style="display: none;">
             <div class="container">
 
+                <!-- GAMIFICATION DASHBOARD TAB -->
+                <div class="tab-content active" id="dashboard-tab">
+                    <!-- Daily Check-in Banner -->
+                    <div class="checkin-banner" id="checkinBanner">
+                        <div class="checkin-content">
+                            <div class="checkin-greeting">
+                                <h2>Welcome back! <span id="welcomeName"></span></h2>
+                                <p id="checkinMessage">Check in daily to build your streak!</p>
+                            </div>
+                            <button class="btn btn-primary checkin-btn" id="checkinBtn">
+                                <span class="btn-icon">🔥</span> Check In Today
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- XP Bar & Stats Overview -->
+                    <div class="dashboard-grid">
+                        <div class="dashboard-main">
+                            <!-- XP Progress Bar -->
+                            <div id="xpBarContainer"></div>
+
+                            <!-- Stats Overview Cards -->
+                            <div id="statsOverviewContainer"></div>
+
+                            <!-- Streak Calendar -->
+                            <div id="streakCalendarContainer"></div>
+
+                            <!-- Recent Activity -->
+                            <div class="recent-activity-section">
+                                <h3>🕐 Your Recent Activity</h3>
+                                <div id="recentXPContainer" class="recent-xp-list">
+                                    <!-- Populated by JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-sidebar">
+                            <!-- Badges Preview -->
+                            <div id="badgesContainer"></div>
+
+                            <!-- Quick Actions -->
+                            <div class="quick-actions-card">
+                                <h4>Quick Actions</h4>
+                                <a href="../coach-analysis/video-analysis.html" class="quick-action-btn">
+                                    <span>🎬</span> Submit Video
+                                </a>
+                                <a href="../ai-drill-coach/drills-library.html" class="quick-action-btn">
+                                    <span>🏃</span> Practice Drills
+                                </a>
+                                <button class="quick-action-btn" onclick="switchTab('partners')">
+                                    <span>🤝</span> Find Partners
+                                </button>
+                                <button class="quick-action-btn" onclick="switchTab('challenges')">
+                                    <span>🏆</span> View Challenges
+                                </button>
+                            </div>
+
+                            <!-- Community Activity Feed -->
+                            <div id="activityFeedContainer"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- MY PROFILE TAB -->
-                <div class="tab-content active" id="profile-tab">
+                <div class="tab-content" id="profile-tab">
                     <div class="profile-section">
                         <div class="profile-header">
                             <div class="profile-photo" id="profilePhoto">
@@ -2442,8 +2514,91 @@
                     </div>
                 </div>
 
-                <!-- MEMBER SPOTLIGHT TAB -->
-                <div class="tab-content" id="spotlight-tab">
+                <!-- PROGRESS TAB -->
+                <div class="tab-content" id="progress-tab">
+                    <div class="progress-section">
+                        <div class="progress-header">
+                            <h2>📈 Your Progress</h2>
+                            <p>Track your improvement over time</p>
+                        </div>
+
+                        <!-- Skill Progression Chart -->
+                        <div id="progressChartContainer">
+                            <!-- Populated by Social.renderProgressChart() -->
+                        </div>
+
+                        <!-- Video Analysis History -->
+                        <div class="analysis-history-section">
+                            <h3>📹 Video Analysis History</h3>
+                            <div id="analysisHistoryContainer">
+                                <p class="no-history">Submit a video for analysis to start tracking your improvement!</p>
+                            </div>
+                        </div>
+
+                        <!-- Personal Stats -->
+                        <div class="personal-stats-section">
+                            <h3>📊 Personal Statistics</h3>
+                            <div class="personal-stats-grid">
+                                <div class="personal-stat-card">
+                                    <span class="stat-icon">🎬</span>
+                                    <span class="stat-value" id="totalVideosAnalyzed">0</span>
+                                    <span class="stat-label">Videos Analyzed</span>
+                                </div>
+                                <div class="personal-stat-card">
+                                    <span class="stat-icon">🏃</span>
+                                    <span class="stat-value" id="totalDrillsCompleted">0</span>
+                                    <span class="stat-label">Drills Completed</span>
+                                </div>
+                                <div class="personal-stat-card">
+                                    <span class="stat-icon">🔥</span>
+                                    <span class="stat-value" id="longestStreakStat">0</span>
+                                    <span class="stat-label">Longest Streak</span>
+                                </div>
+                                <div class="personal-stat-card">
+                                    <span class="stat-icon">📅</span>
+                                    <span class="stat-value" id="memberSince">--</span>
+                                    <span class="stat-label">Member Since</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEADERBOARD TAB -->
+                <div class="tab-content" id="leaderboard-tab">
+                    <div class="leaderboard-section">
+                        <div class="leaderboard-header">
+                            <h2>🏆 Community Leaderboard</h2>
+                            <p>See how you stack up against other members</p>
+                        </div>
+
+                        <!-- Leaderboard Component -->
+                        <div id="leaderboardContainer">
+                            <!-- Populated by Gamification.renderLeaderboard() -->
+                        </div>
+
+                        <!-- Your Rank Card -->
+                        <div class="your-rank-card" id="yourRankCard">
+                            <h4>Your Current Rank</h4>
+                            <div class="rank-display">
+                                <span class="rank-number" id="yourRank">#--</span>
+                                <span class="rank-xp" id="yourTotalXP">0 XP</span>
+                            </div>
+                            <p class="rank-message" id="rankMessage">Keep earning XP to climb the ranks!</p>
+                        </div>
+
+                        <!-- Top Badges Showcase -->
+                        <div class="top-badges-section">
+                            <h3>🏅 Rarest Badges Earned</h3>
+                            <div id="topBadgesContainer">
+                                <!-- Shows members with rare badges -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEMBER SPOTLIGHT TAB (Hidden - replaced with Leaderboard) -->
+                <div class="tab-content" id="spotlight-tab" style="display:none;">
                     <div class="spotlight-section">
                         <div class="spotlight-header">
                             <h2>Member of the Month</h2>
@@ -2479,6 +2634,249 @@
     </footer>
 
     <style>
+        /* ==========================================
+           GAMIFICATION DASHBOARD STYLES
+           ========================================== */
+
+        /* Check-in Banner */
+        .checkin-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 24px 32px;
+            margin-bottom: 24px;
+            color: white;
+        }
+        .checkin-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .checkin-greeting h2 {
+            margin: 0 0 4px 0;
+            font-size: 24px;
+        }
+        .checkin-greeting p {
+            margin: 0;
+            opacity: 0.9;
+        }
+        .checkin-btn {
+            background: white !important;
+            color: #667eea !important;
+            font-weight: 700;
+            padding: 14px 28px !important;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .checkin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        .checkin-btn.checked-in {
+            background: rgba(255,255,255,0.2) !important;
+            color: white !important;
+            cursor: default;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+        }
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .dashboard-main {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .dashboard-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Quick Actions */
+        .quick-actions-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .quick-actions-card h4 {
+            margin: 0 0 16px 0;
+        }
+        .quick-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #374151;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quick-action-btn:last-child {
+            margin-bottom: 0;
+        }
+        .quick-action-btn:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+            transform: translateX(4px);
+        }
+        .quick-action-btn span:first-child {
+            font-size: 20px;
+        }
+
+        /* Recent XP Activity */
+        .recent-activity-section {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .recent-activity-section h3 {
+            margin: 0 0 16px 0;
+        }
+        .recent-xp-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .recent-xp-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+        .recent-xp-item .xp-action {
+            font-weight: 500;
+        }
+        .recent-xp-item .xp-amount {
+            color: #10b981;
+            font-weight: 600;
+        }
+        .recent-xp-item .xp-time {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        /* Progress Section */
+        .progress-section {
+            padding: 20px 0;
+        }
+        .progress-header {
+            margin-bottom: 24px;
+        }
+        .progress-header h2 {
+            margin: 0 0 8px 0;
+        }
+        .progress-header p {
+            color: #6b7280;
+            margin: 0;
+        }
+        .personal-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+        @media (max-width: 768px) {
+            .personal-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .personal-stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .personal-stat-card .stat-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .personal-stat-card .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            display: block;
+        }
+        .personal-stat-card .stat-label {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        /* Leaderboard Section */
+        .leaderboard-section {
+            padding: 20px 0;
+        }
+        .leaderboard-header {
+            margin-bottom: 24px;
+        }
+        .leaderboard-header h2 {
+            margin: 0 0 8px 0;
+        }
+        .leaderboard-header p {
+            color: #6b7280;
+            margin: 0;
+        }
+        .your-rank-card {
+            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+            border: 2px solid #8b5cf6;
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 24px;
+            text-align: center;
+        }
+        .your-rank-card h4 {
+            margin: 0 0 16px 0;
+            color: #6d28d9;
+        }
+        .rank-display {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 12px;
+        }
+        .rank-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: #7c3aed;
+        }
+        .rank-xp {
+            font-size: 24px;
+            color: #6d28d9;
+            display: flex;
+            align-items: center;
+        }
+        .rank-message {
+            color: #6d28d9;
+            margin: 0;
+        }
+        .top-badges-section {
+            margin-top: 32px;
+        }
+        .top-badges-section h3 {
+            margin: 0 0 16px 0;
+        }
+
         /* Tab Navigation */
         .tab-navigation {
             background: white;
@@ -6077,8 +6475,207 @@
             return false;
         }
 
+        // ============================================
+        // GAMIFICATION INTEGRATION
+        // ============================================
+
+        // Initialize gamification and social modules
+        async function initGamification() {
+            // Initialize modules
+            if (typeof Gamification !== 'undefined') {
+                Gamification.init();
+            }
+            if (typeof Social !== 'undefined') {
+                Social.init();
+            }
+
+            // Check if user is logged in via Supabase
+            const supabase = getSupabaseClient();
+            if (!supabase) return;
+
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+
+            // Load gamification dashboard
+            await loadGamificationDashboard(user);
+        }
+
+        async function loadGamificationDashboard(user) {
+            try {
+                // Get gamification stats
+                const gamificationData = await Gamification.getStats();
+
+                // Update welcome name
+                const welcomeName = document.getElementById('welcomeName');
+                if (welcomeName) {
+                    welcomeName.textContent = user.user_metadata?.full_name?.split(' ')[0] || 'Player';
+                }
+
+                // Render XP bar
+                Gamification.renderXPBar('#xpBarContainer', gamificationData.stats, gamificationData.levelProgress);
+
+                // Render stats overview
+                Gamification.renderStatsOverview('#statsOverviewContainer', gamificationData.stats);
+
+                // Render streak calendar
+                Gamification.renderStreakCalendar('#streakCalendarContainer', gamificationData.streakCalendar);
+
+                // Render badges
+                const allBadges = await Gamification.getAllBadges();
+                Gamification.renderBadges('#badgesContainer', gamificationData.badges, allBadges.badges);
+
+                // Render recent XP transactions
+                renderRecentXP(gamificationData.recentXP);
+
+                // Setup checkin button
+                setupCheckinButton(gamificationData.stats);
+
+                // Load leaderboard
+                const leaderboardData = await Gamification.getLeaderboard('alltime', 10);
+                Gamification.renderLeaderboard('#leaderboardContainer', leaderboardData.leaderboard, user.id);
+
+                // Update rank card
+                updateYourRank(leaderboardData.leaderboard, user.id, gamificationData.stats);
+
+                // Load activity feed
+                const activityData = await Gamification.getActivityFeed(10);
+                Gamification.renderActivityFeed('#activityFeedContainer', activityData.activities);
+
+                // Load progress data
+                const progressData = await Social.getProgress();
+                Social.renderProgressChart('#progressChartContainer', progressData);
+
+                // Update personal stats
+                document.getElementById('totalVideosAnalyzed').textContent = progressData.totalVideosAnalyzed || 0;
+                document.getElementById('longestStreakStat').textContent = gamificationData.stats.longestStreak || 0;
+
+            } catch (error) {
+                console.error('Error loading gamification dashboard:', error);
+            }
+        }
+
+        function renderRecentXP(transactions) {
+            const container = document.getElementById('recentXPContainer');
+            if (!container || !transactions || transactions.length === 0) return;
+
+            container.innerHTML = transactions.map(tx => `
+                <div class="recent-xp-item">
+                    <div>
+                        <span class="xp-action">${tx.description || tx.action_type}</span>
+                        <span class="xp-time">${Gamification.formatTimeAgo(tx.created_at)}</span>
+                    </div>
+                    <span class="xp-amount">+${tx.xp_amount} XP</span>
+                </div>
+            `).join('');
+        }
+
+        function setupCheckinButton(stats) {
+            const checkinBtn = document.getElementById('checkinBtn');
+            const checkinMessage = document.getElementById('checkinMessage');
+
+            if (!checkinBtn) return;
+
+            // Check if already checked in today
+            const today = new Date().toISOString().split('T')[0];
+            const alreadyCheckedIn = stats.lastLoginDate === today;
+
+            if (alreadyCheckedIn) {
+                checkinBtn.innerHTML = '<span class="btn-icon">✓</span> Checked In!';
+                checkinBtn.classList.add('checked-in');
+                checkinBtn.disabled = true;
+                if (checkinMessage) {
+                    checkinMessage.textContent = `🔥 ${stats.currentStreak}-day streak! Keep it up!`;
+                }
+            } else {
+                checkinBtn.addEventListener('click', async () => {
+                    checkinBtn.disabled = true;
+                    checkinBtn.innerHTML = '<span class="btn-icon">⏳</span> Checking in...';
+
+                    try {
+                        await Gamification.showCheckinModal();
+
+                        // Update button state
+                        checkinBtn.innerHTML = '<span class="btn-icon">✓</span> Checked In!';
+                        checkinBtn.classList.add('checked-in');
+
+                        // Reload dashboard to reflect new stats
+                        const supabase = getSupabaseClient();
+                        const { data: { user } } = await supabase.auth.getUser();
+                        if (user) {
+                            await loadGamificationDashboard(user);
+                        }
+                    } catch (error) {
+                        console.error('Checkin error:', error);
+                        checkinBtn.disabled = false;
+                        checkinBtn.innerHTML = '<span class="btn-icon">🔥</span> Check In Today';
+                    }
+                });
+            }
+        }
+
+        function updateYourRank(leaderboard, userId, stats) {
+            const yourRankEl = document.getElementById('yourRank');
+            const yourXPEl = document.getElementById('yourTotalXP');
+            const rankMessageEl = document.getElementById('rankMessage');
+
+            const myEntry = leaderboard.find(e => e.userId === userId);
+            const myRank = myEntry ? myEntry.rank : '--';
+
+            if (yourRankEl) yourRankEl.textContent = `#${myRank}`;
+            if (yourXPEl) yourXPEl.textContent = `${Gamification.formatNumber(stats.totalXP)} XP`;
+
+            if (rankMessageEl) {
+                if (myRank === 1) {
+                    rankMessageEl.textContent = "🏆 You're #1! Amazing work!";
+                } else if (myRank <= 3) {
+                    rankMessageEl.textContent = "🥇 Top 3! You're crushing it!";
+                } else if (myRank <= 10) {
+                    rankMessageEl.textContent = "Top 10! Keep climbing!";
+                } else {
+                    rankMessageEl.textContent = "Keep earning XP to climb the ranks!";
+                }
+            }
+        }
+
+        // Update the switchTab function to handle new tabs
+        const originalSwitchTab = typeof switchTab === 'function' ? switchTab : null;
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+                tab.style.display = 'none';
+            });
+
+            // Show selected tab
+            const selectedTab = document.getElementById(tabName + '-tab');
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+                selectedTab.style.display = 'block';
+            }
+
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.tab === tabName) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // Setup tab navigation
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchTab(btn.dataset.tab);
+            });
+        });
+
         // Initialize
         loadMemberHub();
+
+        // Initialize gamification after page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initGamification();
+        });
     </script>
 </body>
 </html>
