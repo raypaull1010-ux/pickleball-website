@@ -504,7 +504,47 @@ CREATE INDEX IF NOT EXISTS idx_referrals_status ON public.referrals(status);
 CREATE INDEX IF NOT EXISTS idx_users_referral_code ON public.users(referral_code);
 
 -- ============================================
--- 11. INITIAL DATA (OPTIONAL)
+-- 11. COACHES TABLE (Internal coaches who deliver services)
+-- ============================================
+CREATE TABLE IF NOT EXISTS public.coaches (
+  id TEXT PRIMARY KEY, -- 'ray', 'priscilla', 'eddie'
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  stripe_account_id TEXT, -- For direct payments
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Insert default coaches
+INSERT INTO public.coaches (id, name, email) VALUES
+  ('ray', 'Ray', 'raypaull1010@gmail.com'),
+  ('priscilla', 'Priscilla', 'priscilla@rayspickleball.com'),
+  ('eddie', 'Eddie', 'eddie@rayspickleball.com')
+ON CONFLICT (id) DO NOTHING;
+
+-- Anyone can read coaches
+ALTER TABLE public.coaches ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can read coaches" ON public.coaches
+  FOR SELECT USING (true);
+
+-- ============================================
+-- 12. ADD coach_name TO EXISTING TABLES
+-- ============================================
+
+-- Add coach_name to video_submissions
+ALTER TABLE public.video_submissions
+  ADD COLUMN IF NOT EXISTS coach_name TEXT DEFAULT 'ray';
+
+-- Add coach_name to skill_evaluations
+ALTER TABLE public.skill_evaluations
+  ADD COLUMN IF NOT EXISTS coach_name TEXT DEFAULT 'ray';
+
+-- Create index for coach filtering
+CREATE INDEX IF NOT EXISTS idx_video_submissions_coach ON public.video_submissions(coach_name);
+CREATE INDEX IF NOT EXISTS idx_skill_evaluations_coach ON public.skill_evaluations(coach_name);
+
+-- ============================================
+-- 13. INITIAL DATA (OPTIONAL)
 -- ============================================
 
 -- Set launch date for grace period calculation (adjust this date to your actual launch)

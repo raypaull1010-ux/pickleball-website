@@ -12,6 +12,14 @@ const stripe = stripeKey ? require('stripe')(stripeKey) : null;
 const { getServiceClient, jsonResponse, handleCors } = require('./lib/supabase');
 const { withSecurity, isValidEmail } = require('./lib/security');
 
+// Coach Stripe Connect account mapping
+// Each coach can have their own Stripe account for direct payments
+const COACH_STRIPE_ACCOUNTS = {
+  ray: process.env.STRIPE_ACCOUNT_RAY || null, // null = use platform account (default)
+  priscilla: process.env.STRIPE_ACCOUNT_PRISCILLA || null,
+  eddie: process.env.STRIPE_ACCOUNT_EDDIE || null
+};
+
 // SECURITY: Whitelist of allowed origins for redirect URLs
 // This prevents attackers from injecting malicious redirect URLs
 const ALLOWED_ORIGINS = [
@@ -110,6 +118,7 @@ const handler = async (event, context) => {
       customerName,
       successUrl,
       cancelUrl,
+      coach,       // Coach selection for payment routing (ray, priscilla, eddie)
       metadata = {}
     } = body;
 
@@ -127,6 +136,11 @@ const handler = async (event, context) => {
     }
 
     const product = PRODUCTS[productType];
+
+    // Determine coach for payment routing
+    const validCoaches = ['ray', 'priscilla', 'eddie'];
+    const selectedCoach = coach && validCoaches.includes(coach.toLowerCase()) ? coach.toLowerCase() : 'ray';
+    const coachStripeAccount = COACH_STRIPE_ACCOUNTS[selectedCoach];
 
     // Build checkout session configuration
     const sessionConfig = {
@@ -158,9 +172,21 @@ const handler = async (event, context) => {
         product_type: productType,
         item_id: itemId,
         customer_name: customerName,
+        coach: selectedCoach,
         ...metadata
       }
     };
+
+    // If coach has a connected Stripe account, route payment directly to them
+    // This uses Stripe Connect's direct charges or transfers
+    if (coachStripeAccount && product.mode === 'payment') {
+      // For one-time payments, use transfer_data to send funds to connected account
+      sessionConfig.payment_intent_data = {
+        transfer_data: {
+          destination: coachStripeAccount
+        }
+      };
+    }
 
     // Create checkout session
     const session = await stripe.checkout.sessions.create(sessionConfig);
@@ -184,7 +210,8 @@ const handler = async (event, context) => {
       if (table) {
         const updateData = {
           payment_method: 'stripe',
-          payment_id: session.id
+          payment_id: session.id,
+          coach_name: selectedCoach
         };
 
         await supabase

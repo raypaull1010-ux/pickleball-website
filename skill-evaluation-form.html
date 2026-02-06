@@ -526,6 +526,16 @@
                 </div>
 
                 <div class="form-row">
+                    <label for="coach">Select Your Coach</label>
+                    <select id="coach" required style="width: 100%; padding: 14px 16px; font-size: 1rem; border: 2px solid var(--border-color); border-radius: 8px;">
+                        <option value="">Choose a coach...</option>
+                        <option value="ray">Ray</option>
+                        <option value="priscilla">Priscilla</option>
+                        <option value="eddie">Eddie</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
                     <label>What level do you think you play at? <span class="optional">(optional)</span></label>
                     <div class="level-options" id="levelOptions">
                         <div class="level-option" data-level="2.5">
@@ -740,6 +750,7 @@
                 const firstName = document.getElementById('firstName').value.trim();
                 const lastName = document.getElementById('lastName').value.trim();
                 const email = document.getElementById('email').value.trim();
+                const coach = document.getElementById('coach').value;
 
                 if (!firstName || !lastName) {
                     alert('Please enter your name.');
@@ -748,6 +759,11 @@
 
                 if (!email || !email.includes('@')) {
                     alert('Please enter a valid email address.');
+                    return false;
+                }
+
+                if (!coach) {
+                    alert('Please select a coach.');
                     return false;
                 }
             }
@@ -785,6 +801,7 @@
                 customerEmail: document.getElementById('email').value.trim(),
                 videoUrl: document.getElementById('videoLink').value.trim(),
                 selfAssessedLevel: selectedLevel || 'Not specified',
+                coach: document.getElementById('coach').value,
                 submittedAt: new Date().toISOString(),
                 amount: 35,
                 paymentMethod: 'venmo',

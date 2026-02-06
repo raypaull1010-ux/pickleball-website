@@ -28,6 +28,7 @@ const handler = async (event, context) => {
         focusAreas,
         referralCode,
         paymentMethod,
+        coach, // Coach selection (ray, priscilla, eddie)
         userId // Optional - if user is logged in
       } = body;
 
@@ -78,6 +79,10 @@ const handler = async (event, context) => {
         }
       }
 
+      // Validate coach if provided
+      const validCoaches = ['ray', 'priscilla', 'eddie'];
+      const selectedCoach = coach && validCoaches.includes(coach.toLowerCase()) ? coach.toLowerCase() : 'ray';
+
       // Create submission
       const submissionData = {
         video_url: videoUrl,
@@ -87,6 +92,7 @@ const handler = async (event, context) => {
         referral_code_used: validReferralCode,
         price_cents: priceCents,
         payment_method: paymentMethod || null,
+        coach_name: selectedCoach,
         status: 'pending_payment'
       };
 

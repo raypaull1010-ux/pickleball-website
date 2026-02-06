@@ -26,7 +26,15 @@ const CONFIG = {
   USE_STRIPE_PAYMENTS: true, // Stripe is now configured
 
   // Legacy fallback (remove after migration)
-  LEGACY_ADMIN_PASSWORD: 'raycoach2025'
+  LEGACY_ADMIN_PASSWORD: 'raycoach2025',
+
+  // Available Coaches
+  // Each coach can receive payments directly via Stripe Connect
+  COACHES: [
+    { id: 'ray', name: 'Ray', email: 'raypaull1010@gmail.com' },
+    { id: 'priscilla', name: 'Priscilla', email: 'priscilla@rayspickleball.com' },
+    { id: 'eddie', name: 'Eddie', email: 'eddie@rayspickleball.com' }
+  ]
 };
 
 // Helper to check if Supabase is properly configured

@@ -174,6 +174,16 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="coach">Select Your Coach *</label>
+                                <select id="coach" name="coach" required>
+                                    <option value="">Choose a coach...</option>
+                                    <option value="ray">Ray</option>
+                                    <option value="priscilla">Priscilla</option>
+                                    <option value="eddie">Eddie</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="focus-areas">Focus Areas (optional)</label>
                                 <textarea id="focus-areas" name="focus-areas" rows="4" placeholder="Any specific aspects of your game you want me to pay extra attention to?"></textarea>
                             </div>
@@ -519,11 +529,12 @@
             const skillLevel = document.getElementById('skill-level').value;
             const focusAreas = document.getElementById('focus-areas').value.trim();
             const referralCode = document.getElementById('referral-code').value.trim().toUpperCase();
+            const coach = document.getElementById('coach').value;
             const price = EmailService.formatPrice(videoLength);
             const priceCents = videoLength === '30' ? 7500 : 12000;
 
             // Validate required fields
-            if (!name || !email || !videoLink || !videoLength) {
+            if (!name || !email || !videoLink || !videoLength || !coach) {
                 alert('Please fill in all required fields.');
                 return;
             }
@@ -548,7 +559,8 @@
                 videoLength: parseInt(videoLength),
                 skillLevel,
                 focusAreas,
-                referralCode: referralCode || null
+                referralCode: referralCode || null,
+                coach: coach
             };
 
             try {
@@ -564,7 +576,8 @@
                         videoLength,
                         price,
                         priceCents,
-                        productType: videoLength === '30' ? 'video_30' : 'video_60'
+                        productType: videoLength === '30' ? 'video_30' : 'video_60',
+                        coach: coach
                     };
 
                     console.log('Submission saved to database:', apiResponse.submission.id);
@@ -585,6 +598,7 @@
                     price,
                     priceCents,
                     productType: videoLength === '30' ? 'video_30' : 'video_60',
+                    coach: coach,
                     isLocal: true // Flag that this is localStorage-only
                 };
             }
@@ -655,7 +669,10 @@
                     productType: currentSubmission.productType,
                     itemId: currentSubmission.id,
                     customerEmail: currentSubmission.email,
-                    customerName: currentSubmission.name
+                    customerName: currentSubmission.name,
+                    metadata: {
+                        coach: currentSubmission.coach
+                    }
                 });
             } catch (error) {
                 console.error('Stripe checkout error:', error);
