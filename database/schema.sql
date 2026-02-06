@@ -544,7 +544,443 @@ CREATE INDEX IF NOT EXISTS idx_video_submissions_coach ON public.video_submissio
 CREATE INDEX IF NOT EXISTS idx_skill_evaluations_coach ON public.skill_evaluations(coach_name);
 
 -- ============================================
--- 13. INITIAL DATA (OPTIONAL)
+-- 13. GAMIFICATION SYSTEM
+-- ============================================
+
+-- User XP and Level tracking
+CREATE TABLE IF NOT EXISTS public.user_gamification (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE UNIQUE,
+  total_xp INTEGER DEFAULT 0,
+  level INTEGER DEFAULT 1,
+  current_streak INTEGER DEFAULT 0,
+  longest_streak INTEGER DEFAULT 0,
+  last_login_date DATE,
+  last_activity_at TIMESTAMPTZ DEFAULT NOW(),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- XP History/Transactions (for tracking what earned XP)
+CREATE TABLE IF NOT EXISTS public.xp_transactions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  xp_amount INTEGER NOT NULL,
+  action_type TEXT NOT NULL, -- 'login', 'streak_bonus', 'video_submit', 'drill_complete', 'badge_earned', 'referral', 'community_help'
+  description TEXT,
+  metadata JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Badge Definitions
+CREATE TABLE IF NOT EXISTS public.badge_definitions (
+  id TEXT PRIMARY KEY, -- e.g., 'first_video', 'streak_7', 'helper_5'
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  icon TEXT NOT NULL, -- emoji or icon class
+  category TEXT NOT NULL, -- 'achievement', 'streak', 'social', 'skill', 'milestone'
+  xp_reward INTEGER DEFAULT 0,
+  requirement_type TEXT NOT NULL, -- 'count', 'streak', 'milestone', 'special'
+  requirement_value INTEGER DEFAULT 1,
+  requirement_action TEXT, -- what action triggers this badge
+  is_hidden BOOLEAN DEFAULT FALSE, -- secret badges
+  rarity TEXT DEFAULT 'common', -- 'common', 'uncommon', 'rare', 'epic', 'legendary'
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- User Earned Badges
+CREATE TABLE IF NOT EXISTS public.user_badges (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  badge_id TEXT REFERENCES public.badge_definitions(id) ON DELETE CASCADE,
+  earned_at TIMESTAMPTZ DEFAULT NOW(),
+  is_displayed BOOLEAN DEFAULT TRUE, -- user can choose to display or hide
+  UNIQUE(user_id, badge_id)
+);
+
+-- Daily Check-ins (for streak tracking)
+CREATE TABLE IF NOT EXISTS public.daily_checkins (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  checkin_date DATE NOT NULL,
+  xp_earned INTEGER DEFAULT 0,
+  streak_day INTEGER DEFAULT 1, -- which day of the streak this was
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, checkin_date)
+);
+
+-- Leaderboard Cache (updated periodically for performance)
+CREATE TABLE IF NOT EXISTS public.leaderboard_cache (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  period TEXT NOT NULL, -- 'weekly', 'monthly', 'alltime'
+  xp_earned INTEGER DEFAULT 0,
+  rank INTEGER,
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, period)
+);
+
+-- Activity Feed (what members are doing)
+CREATE TABLE IF NOT EXISTS public.activity_feed (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  activity_type TEXT NOT NULL, -- 'badge_earned', 'level_up', 'streak_milestone', 'video_submitted', 'drill_completed'
+  title TEXT NOT NULL,
+  description TEXT,
+  metadata JSONB DEFAULT '{}',
+  is_public BOOLEAN DEFAULT TRUE, -- show in community feed
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Enable RLS on all gamification tables
+ALTER TABLE public.user_gamification ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.xp_transactions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.badge_definitions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.user_badges ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.daily_checkins ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.leaderboard_cache ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.activity_feed ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies for gamification
+
+-- user_gamification: Users can read all (for leaderboards), update own
+CREATE POLICY "Anyone can read gamification stats" ON public.user_gamification
+  FOR SELECT USING (true);
+CREATE POLICY "Users can update own gamification" ON public.user_gamification
+  FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Service can insert gamification" ON public.user_gamification
+  FOR INSERT WITH CHECK (true);
+
+-- xp_transactions: Users can read own
+CREATE POLICY "Users can read own XP transactions" ON public.xp_transactions
+  FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Service can insert XP transactions" ON public.xp_transactions
+  FOR INSERT WITH CHECK (true);
+
+-- badge_definitions: Anyone can read
+CREATE POLICY "Anyone can read badge definitions" ON public.badge_definitions
+  FOR SELECT USING (NOT is_hidden OR EXISTS (
+    SELECT 1 FROM public.user_badges WHERE user_id = auth.uid() AND badge_id = id
+  ));
+
+-- user_badges: Anyone can read (for profiles), users manage own display
+CREATE POLICY "Anyone can read user badges" ON public.user_badges
+  FOR SELECT USING (true);
+CREATE POLICY "Users can update own badge display" ON public.user_badges
+  FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Service can insert user badges" ON public.user_badges
+  FOR INSERT WITH CHECK (true);
+
+-- daily_checkins: Users can read own
+CREATE POLICY "Users can read own checkins" ON public.daily_checkins
+  FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Service can insert checkins" ON public.daily_checkins
+  FOR INSERT WITH CHECK (true);
+
+-- leaderboard_cache: Anyone can read
+CREATE POLICY "Anyone can read leaderboard" ON public.leaderboard_cache
+  FOR SELECT USING (true);
+
+-- activity_feed: Public activities visible to all, private only to owner
+CREATE POLICY "Public activities visible to all" ON public.activity_feed
+  FOR SELECT USING (is_public OR auth.uid() = user_id);
+CREATE POLICY "Service can insert activities" ON public.activity_feed
+  FOR INSERT WITH CHECK (true);
+
+-- Indexes for gamification tables
+CREATE INDEX IF NOT EXISTS idx_user_gamification_xp ON public.user_gamification(total_xp DESC);
+CREATE INDEX IF NOT EXISTS idx_user_gamification_level ON public.user_gamification(level DESC);
+CREATE INDEX IF NOT EXISTS idx_user_gamification_streak ON public.user_gamification(current_streak DESC);
+CREATE INDEX IF NOT EXISTS idx_xp_transactions_user ON public.xp_transactions(user_id);
+CREATE INDEX IF NOT EXISTS idx_xp_transactions_created ON public.xp_transactions(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_user_badges_user ON public.user_badges(user_id);
+CREATE INDEX IF NOT EXISTS idx_daily_checkins_user_date ON public.daily_checkins(user_id, checkin_date DESC);
+CREATE INDEX IF NOT EXISTS idx_leaderboard_period_rank ON public.leaderboard_cache(period, rank);
+CREATE INDEX IF NOT EXISTS idx_activity_feed_created ON public.activity_feed(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_activity_feed_public ON public.activity_feed(is_public, created_at DESC);
+
+-- ============================================
+-- 14. DEFAULT BADGE DEFINITIONS
+-- ============================================
+
+INSERT INTO public.badge_definitions (id, name, description, icon, category, xp_reward, requirement_type, requirement_value, requirement_action, rarity) VALUES
+  -- Achievement Badges
+  ('first_login', 'Welcome!', 'Logged in for the first time', '👋', 'achievement', 10, 'milestone', 1, 'login', 'common'),
+  ('first_video', 'Video Rookie', 'Submitted your first video for analysis', '🎬', 'achievement', 50, 'milestone', 1, 'video_submit', 'common'),
+  ('first_drill', 'Drill Starter', 'Completed your first AI drill session', '🏃', 'achievement', 25, 'milestone', 1, 'drill_complete', 'common'),
+  ('video_5', 'Dedicated Student', 'Submitted 5 videos for analysis', '📹', 'achievement', 100, 'count', 5, 'video_submit', 'uncommon'),
+  ('video_10', 'Serious Player', 'Submitted 10 videos for analysis', '🎯', 'achievement', 200, 'count', 10, 'video_submit', 'rare'),
+  ('video_25', 'Analysis Addict', 'Submitted 25 videos for analysis', '🏆', 'achievement', 500, 'count', 25, 'video_submit', 'epic'),
+
+  -- Streak Badges
+  ('streak_3', 'Getting Started', '3-day login streak', '🔥', 'streak', 25, 'streak', 3, 'login_streak', 'common'),
+  ('streak_7', 'Week Warrior', '7-day login streak', '💪', 'streak', 75, 'streak', 7, 'login_streak', 'uncommon'),
+  ('streak_14', 'Two Week Champion', '14-day login streak', '⚡', 'streak', 150, 'streak', 14, 'login_streak', 'rare'),
+  ('streak_30', 'Monthly Master', '30-day login streak', '👑', 'streak', 300, 'streak', 30, 'login_streak', 'epic'),
+  ('streak_100', 'Legendary Dedication', '100-day login streak', '🌟', 'streak', 1000, 'streak', 100, 'login_streak', 'legendary'),
+
+  -- Social Badges
+  ('first_referral', 'Friend Finder', 'Referred your first friend', '🤝', 'social', 100, 'milestone', 1, 'referral', 'uncommon'),
+  ('referral_5', 'Community Builder', 'Referred 5 friends', '🏘️', 'social', 300, 'count', 5, 'referral', 'rare'),
+  ('helper', 'Helpful Hand', 'Helped another member in the community', '❤️', 'social', 50, 'milestone', 1, 'community_help', 'common'),
+
+  -- Skill Badges
+  ('level_5', 'Rising Star', 'Reached level 5', '⭐', 'milestone', 0, 'milestone', 5, 'level_up', 'common'),
+  ('level_10', 'Pickleball Pro', 'Reached level 10', '🌟', 'milestone', 0, 'milestone', 10, 'level_up', 'uncommon'),
+  ('level_25', 'Elite Player', 'Reached level 25', '💎', 'milestone', 0, 'milestone', 25, 'level_up', 'rare'),
+  ('level_50', 'Pickleball Legend', 'Reached level 50', '🏅', 'milestone', 0, 'milestone', 50, 'level_up', 'epic'),
+
+  -- Special/Hidden Badges
+  ('early_adopter', 'Early Adopter', 'Joined during the beta period', '🚀', 'achievement', 200, 'special', 1, 'special', 'rare'),
+  ('night_owl', 'Night Owl', 'Practiced after midnight', '🦉', 'achievement', 25, 'special', 1, 'special', 'uncommon'),
+  ('weekend_warrior', 'Weekend Warrior', 'Logged in every weekend for a month', '🗓️', 'achievement', 100, 'special', 1, 'special', 'uncommon')
+ON CONFLICT (id) DO NOTHING;
+
+-- ============================================
+-- 15. GAMIFICATION HELPER FUNCTIONS
+-- ============================================
+
+-- Function to calculate level from XP (every 100 XP = 1 level, with increasing requirements)
+CREATE OR REPLACE FUNCTION calculate_level(xp INTEGER)
+RETURNS INTEGER AS $$
+BEGIN
+  -- Level formula: Level = floor(sqrt(xp / 50)) + 1
+  -- Level 1: 0-49 XP, Level 2: 50-199 XP, Level 3: 200-449 XP, etc.
+  RETURN GREATEST(1, FLOOR(SQRT(xp::FLOAT / 50)) + 1);
+END;
+$$ LANGUAGE plpgsql IMMUTABLE;
+
+-- Function to calculate XP needed for next level
+CREATE OR REPLACE FUNCTION xp_for_level(level INTEGER)
+RETURNS INTEGER AS $$
+BEGIN
+  -- Inverse of level formula
+  RETURN ((level - 1) * (level - 1)) * 50;
+END;
+$$ LANGUAGE plpgsql IMMUTABLE;
+
+-- ============================================
+-- 16. SOCIAL FEATURES & MEMBER PROFILES
+-- ============================================
+
+-- Enhanced Member Profiles
+CREATE TABLE IF NOT EXISTS public.member_profiles (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE UNIQUE,
+  display_name TEXT,
+  avatar_url TEXT,
+  bio TEXT,
+  skill_level DECIMAL(2,1), -- 2.5 to 5.5
+  dupr_rating DECIMAL(3,2),
+  preferred_play_style TEXT, -- 'aggressive', 'defensive', 'balanced'
+  dominant_hand TEXT, -- 'right', 'left', 'ambidextrous'
+  years_playing INTEGER,
+  favorite_paddle TEXT,
+  location_city TEXT,
+  location_state TEXT,
+  location_zip TEXT,
+  location_lat DECIMAL(10, 7),
+  location_lng DECIMAL(10, 7),
+  looking_for_partners BOOLEAN DEFAULT FALSE,
+  availability JSONB DEFAULT '{}', -- {"monday": ["morning", "evening"], ...}
+  social_links JSONB DEFAULT '{}', -- {"instagram": "...", "facebook": "..."}
+  is_public BOOLEAN DEFAULT TRUE,
+  show_on_leaderboard BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Player Connections (friends/following)
+CREATE TABLE IF NOT EXISTS public.player_connections (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  follower_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  following_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  status TEXT DEFAULT 'following', -- 'following', 'friends' (mutual), 'blocked'
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(follower_id, following_id)
+);
+
+-- Partner Match Requests
+CREATE TABLE IF NOT EXISTS public.partner_requests (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  requester_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  target_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  message TEXT,
+  play_date DATE,
+  play_time TEXT, -- 'morning', 'afternoon', 'evening'
+  location TEXT,
+  status TEXT DEFAULT 'pending', -- 'pending', 'accepted', 'declined', 'expired'
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  responded_at TIMESTAMPTZ,
+  UNIQUE(requester_id, target_id, play_date)
+);
+
+-- Challenges between members
+CREATE TABLE IF NOT EXISTS public.member_challenges (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  challenger_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  challenged_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  challenge_type TEXT NOT NULL, -- 'drill_completion', 'streak_race', 'xp_battle', 'custom'
+  title TEXT NOT NULL,
+  description TEXT,
+  goal_type TEXT, -- 'count', 'duration', 'score'
+  goal_value INTEGER,
+  duration_days INTEGER DEFAULT 7,
+  stakes TEXT, -- Optional: what the loser does
+  xp_reward INTEGER DEFAULT 100,
+  status TEXT DEFAULT 'pending', -- 'pending', 'active', 'completed', 'declined', 'expired'
+  winner_id UUID REFERENCES public.users(id),
+  challenger_progress INTEGER DEFAULT 0,
+  challenged_progress INTEGER DEFAULT 0,
+  starts_at TIMESTAMPTZ,
+  ends_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Progress/Stats Tracking (for visual progression)
+CREATE TABLE IF NOT EXISTS public.player_stats_history (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  stat_date DATE NOT NULL,
+  skill_level DECIMAL(2,1),
+  games_played INTEGER DEFAULT 0,
+  drills_completed INTEGER DEFAULT 0,
+  practice_minutes INTEGER DEFAULT 0,
+  videos_analyzed INTEGER DEFAULT 0,
+  strengths JSONB DEFAULT '[]', -- ["dinks", "serves"]
+  weaknesses JSONB DEFAULT '[]', -- ["third_shot_drop", "positioning"]
+  notes TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, stat_date)
+);
+
+-- Video Analysis Progress (before/after tracking)
+CREATE TABLE IF NOT EXISTS public.analysis_progress (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  submission_id UUID REFERENCES public.video_submissions(id) ON DELETE SET NULL,
+  analysis_date DATE NOT NULL,
+  skill_ratings JSONB DEFAULT '{}', -- {"dinks": 7, "serves": 8, "positioning": 6}
+  coach_notes TEXT,
+  improvement_areas JSONB DEFAULT '[]',
+  strengths_identified JSONB DEFAULT '[]',
+  overall_rating DECIMAL(2,1),
+  compared_to_previous JSONB DEFAULT '{}', -- {"dinks": +1, "serves": 0}
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Membership Tiers & Perks
+CREATE TABLE IF NOT EXISTS public.membership_tiers (
+  id TEXT PRIMARY KEY, -- 'monthly', '6_month', 'annual'
+  name TEXT NOT NULL,
+  price_cents INTEGER NOT NULL,
+  duration_months INTEGER NOT NULL,
+  perks JSONB NOT NULL, -- List of perk IDs
+  discount_video_analysis INTEGER DEFAULT 0, -- Percentage discount
+  discount_skill_eval INTEGER DEFAULT 0,
+  free_monthly_videos INTEGER DEFAULT 0,
+  priority_support BOOLEAN DEFAULT FALSE,
+  exclusive_content BOOLEAN DEFAULT FALSE,
+  badge_id TEXT REFERENCES public.badge_definitions(id),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Insert membership tiers with perks
+INSERT INTO public.membership_tiers (id, name, price_cents, duration_months, perks, discount_video_analysis, discount_skill_eval, free_monthly_videos, priority_support, exclusive_content) VALUES
+  ('monthly', 'Monthly Member', 1999, 1,
+   '["ai_drill_coach", "drill_playbook", "community_access", "progress_tracking"]',
+   10, 10, 0, FALSE, FALSE),
+  ('6_month', '6-Month Member', 9999, 6,
+   '["ai_drill_coach", "drill_playbook", "community_access", "progress_tracking", "monthly_live_qa", "exclusive_drills", "partner_matching"]',
+   15, 15, 1, TRUE, TRUE),
+  ('annual', 'Annual Member', 19900, 12,
+   '["ai_drill_coach", "drill_playbook", "community_access", "progress_tracking", "monthly_live_qa", "exclusive_drills", "partner_matching", "free_skill_eval", "priority_booking", "annual_badge"]',
+   20, 25, 2, TRUE, TRUE)
+ON CONFLICT (id) DO UPDATE SET
+  perks = EXCLUDED.perks,
+  discount_video_analysis = EXCLUDED.discount_video_analysis,
+  discount_skill_eval = EXCLUDED.discount_skill_eval,
+  free_monthly_videos = EXCLUDED.free_monthly_videos,
+  priority_support = EXCLUDED.priority_support,
+  exclusive_content = EXCLUDED.exclusive_content;
+
+-- Add membership badges
+INSERT INTO public.badge_definitions (id, name, description, icon, category, xp_reward, requirement_type, requirement_value, requirement_action, rarity) VALUES
+  ('member_6_month', '6-Month Supporter', 'Committed to 6 months of improvement', '💪', 'milestone', 150, 'special', 1, 'membership', 'uncommon'),
+  ('member_annual', 'Annual Champion', 'Dedicated yearly member', '🏆', 'milestone', 300, 'special', 1, 'membership', 'rare'),
+  ('founding_member', 'Founding Member', 'One of the first 100 members', '🌟', 'achievement', 500, 'special', 1, 'special', 'legendary')
+ON CONFLICT (id) DO NOTHING;
+
+-- Enable RLS on social tables
+ALTER TABLE public.member_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.player_connections ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.partner_requests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.member_challenges ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.player_stats_history ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.analysis_progress ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.membership_tiers ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies for social features
+
+-- member_profiles: Public profiles visible to all, users manage own
+CREATE POLICY "Public profiles visible to all" ON public.member_profiles
+  FOR SELECT USING (is_public OR auth.uid() = user_id);
+CREATE POLICY "Users can update own profile" ON public.member_profiles
+  FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Users can insert own profile" ON public.member_profiles
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+-- player_connections: Users can see own and public connections
+CREATE POLICY "Users can see own connections" ON public.player_connections
+  FOR SELECT USING (auth.uid() = follower_id OR auth.uid() = following_id);
+CREATE POLICY "Users can manage own connections" ON public.player_connections
+  FOR ALL USING (auth.uid() = follower_id);
+
+-- partner_requests: Users can see own requests
+CREATE POLICY "Users can see own partner requests" ON public.partner_requests
+  FOR SELECT USING (auth.uid() = requester_id OR auth.uid() = target_id);
+CREATE POLICY "Users can create partner requests" ON public.partner_requests
+  FOR INSERT WITH CHECK (auth.uid() = requester_id);
+CREATE POLICY "Users can update requests they're involved in" ON public.partner_requests
+  FOR UPDATE USING (auth.uid() = requester_id OR auth.uid() = target_id);
+
+-- member_challenges: Participants can see challenges
+CREATE POLICY "Challenge participants can see" ON public.member_challenges
+  FOR SELECT USING (auth.uid() = challenger_id OR auth.uid() = challenged_id);
+CREATE POLICY "Users can create challenges" ON public.member_challenges
+  FOR INSERT WITH CHECK (auth.uid() = challenger_id);
+CREATE POLICY "Participants can update challenges" ON public.member_challenges
+  FOR UPDATE USING (auth.uid() = challenger_id OR auth.uid() = challenged_id);
+
+-- player_stats_history: Users can see own stats
+CREATE POLICY "Users can see own stats" ON public.player_stats_history
+  FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Service can insert stats" ON public.player_stats_history
+  FOR INSERT WITH CHECK (true);
+
+-- analysis_progress: Users can see own progress
+CREATE POLICY "Users can see own analysis progress" ON public.analysis_progress
+  FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Service can insert analysis progress" ON public.analysis_progress
+  FOR INSERT WITH CHECK (true);
+
+-- membership_tiers: Anyone can read
+CREATE POLICY "Anyone can read membership tiers" ON public.membership_tiers
+  FOR SELECT USING (true);
+
+-- Indexes for social tables
+CREATE INDEX IF NOT EXISTS idx_member_profiles_location ON public.member_profiles(location_state, location_city);
+CREATE INDEX IF NOT EXISTS idx_member_profiles_looking ON public.member_profiles(looking_for_partners) WHERE looking_for_partners = TRUE;
+CREATE INDEX IF NOT EXISTS idx_member_profiles_skill ON public.member_profiles(skill_level);
+CREATE INDEX IF NOT EXISTS idx_player_connections_follower ON public.player_connections(follower_id);
+CREATE INDEX IF NOT EXISTS idx_player_connections_following ON public.player_connections(following_id);
+CREATE INDEX IF NOT EXISTS idx_partner_requests_target ON public.partner_requests(target_id, status);
+CREATE INDEX IF NOT EXISTS idx_member_challenges_status ON public.member_challenges(status, ends_at);
+CREATE INDEX IF NOT EXISTS idx_player_stats_user_date ON public.player_stats_history(user_id, stat_date DESC);
+CREATE INDEX IF NOT EXISTS idx_analysis_progress_user ON public.analysis_progress(user_id, analysis_date DESC);
+
+-- ============================================
+-- 17. INITIAL DATA (OPTIONAL)
 -- ============================================
 
 -- Set launch date for grace period calculation (adjust this date to your actual launch)
