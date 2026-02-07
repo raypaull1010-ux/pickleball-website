@@ -700,40 +700,17 @@ CREATE INDEX IF NOT EXISTS idx_activity_feed_created ON public.activity_feed(cre
 CREATE INDEX IF NOT EXISTS idx_activity_feed_public ON public.activity_feed(is_public, created_at DESC);
 
 -- ============================================
--- 14. DEFAULT BADGE DEFINITIONS
+-- 14. BADGE DEFINITIONS
 -- ============================================
+-- Full badge set (309 badges) is in database/badge-migration.sql
+-- Run that migration to populate all badges.
+-- Badges are managed via the admin panel Badges tab and stored in the badge_definitions table.
+-- Below are the core/seed badges for initial setup:
 
 INSERT INTO public.badge_definitions (id, name, description, icon, category, xp_reward, requirement_type, requirement_value, requirement_action, rarity) VALUES
-  -- Achievement Badges
   ('first_login', 'Welcome!', 'Logged in for the first time', '👋', 'achievement', 10, 'milestone', 1, 'login', 'common'),
   ('first_video', 'Video Rookie', 'Submitted your first video for analysis', '🎬', 'achievement', 50, 'milestone', 1, 'video_submit', 'common'),
-  ('first_drill', 'Drill Starter', 'Completed your first AI drill session', '🏃', 'achievement', 25, 'milestone', 1, 'drill_complete', 'common'),
-  ('video_5', 'Dedicated Student', 'Submitted 5 videos for analysis', '📹', 'achievement', 100, 'count', 5, 'video_submit', 'uncommon'),
-  ('video_10', 'Serious Player', 'Submitted 10 videos for analysis', '🎯', 'achievement', 200, 'count', 10, 'video_submit', 'rare'),
-  ('video_25', 'Analysis Addict', 'Submitted 25 videos for analysis', '🏆', 'achievement', 500, 'count', 25, 'video_submit', 'epic'),
-
-  -- Streak Badges
-  ('streak_3', 'Getting Started', '3-day login streak', '🔥', 'streak', 25, 'streak', 3, 'login_streak', 'common'),
-  ('streak_7', 'Week Warrior', '7-day login streak', '💪', 'streak', 75, 'streak', 7, 'login_streak', 'uncommon'),
-  ('streak_14', 'Two Week Champion', '14-day login streak', '⚡', 'streak', 150, 'streak', 14, 'login_streak', 'rare'),
-  ('streak_30', 'Monthly Master', '30-day login streak', '👑', 'streak', 300, 'streak', 30, 'login_streak', 'epic'),
-  ('streak_100', 'Legendary Dedication', '100-day login streak', '🌟', 'streak', 1000, 'streak', 100, 'login_streak', 'legendary'),
-
-  -- Social Badges
-  ('first_referral', 'Friend Finder', 'Referred your first friend', '🤝', 'social', 100, 'milestone', 1, 'referral', 'uncommon'),
-  ('referral_5', 'Community Builder', 'Referred 5 friends', '🏘️', 'social', 300, 'count', 5, 'referral', 'rare'),
-  ('helper', 'Helpful Hand', 'Helped another member in the community', '❤️', 'social', 50, 'milestone', 1, 'community_help', 'common'),
-
-  -- Skill Badges
-  ('level_5', 'Rising Star', 'Reached level 5', '⭐', 'milestone', 0, 'milestone', 5, 'level_up', 'common'),
-  ('level_10', 'Pickleball Pro', 'Reached level 10', '🌟', 'milestone', 0, 'milestone', 10, 'level_up', 'uncommon'),
-  ('level_25', 'Elite Player', 'Reached level 25', '💎', 'milestone', 0, 'milestone', 25, 'level_up', 'rare'),
-  ('level_50', 'Pickleball Legend', 'Reached level 50', '🏅', 'milestone', 0, 'milestone', 50, 'level_up', 'epic'),
-
-  -- Special/Hidden Badges
-  ('early_adopter', 'Early Adopter', 'Joined during the beta period', '🚀', 'achievement', 200, 'special', 1, 'special', 'rare'),
-  ('night_owl', 'Night Owl', 'Practiced after midnight', '🦉', 'achievement', 25, 'special', 1, 'special', 'uncommon'),
-  ('weekend_warrior', 'Weekend Warrior', 'Logged in every weekend for a month', '🗓️', 'achievement', 100, 'special', 1, 'special', 'uncommon')
+  ('first_drill', 'Drill Starter', 'Completed your first AI drill session', '🏃', 'achievement', 25, 'milestone', 1, 'drill_complete', 'common')
 ON CONFLICT (id) DO NOTHING;
 
 -- ============================================

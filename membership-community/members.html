@@ -673,8 +673,11 @@
                             </div>
 
                             <div class="badges-grid" id="badgesGrid">
+                                <!-- Badges loaded dynamically from API -->
+                                <div class="loading" id="badgesLoading">Loading badges...</div>
 
-                                <!-- ========== STREAK BADGES (30 badges) ========== -->
+                                <!-- LEGACY STATIC BADGES (kept as fallback, hidden when API loads)
+                                ========== STREAK BADGES (30 badges) ========== -->
                                 <div class="badge locked" data-category="streak" data-type="streak" data-requirement="1">
                                     <span class="badge-icon">🌱</span>
                                     <span class="badge-name">First Step</span>
@@ -2819,11 +2822,11 @@
             document.getElementById('longestStreak').textContent = member.longestStreak || 0;
             document.getElementById('totalCompleted').textContent = member.challengesCompleted || 0;
 
-            // Update all badges with comprehensive system
-            updateAllBadges(member);
-
-            // Setup badge category filters
-            setupBadgeCategoryFilters();
+            // Load badges from API (dynamic), then update states and setup filters
+            loadBadgesFromAPI().then(() => {
+                updateAllBadges(member);
+                setupBadgeCategoryFilters();
+            });
 
             // Leaderboard
             loadChallengeLeaderboard();
@@ -2855,6 +2858,63 @@
         // ============================================
         // COMPREHENSIVE BADGE SYSTEM
         // ============================================
+        // Load badges dynamically from API (replaces hardcoded HTML)
+        async function loadBadgesFromAPI() {
+            const grid = document.getElementById('badgesGrid');
+            const loadingEl = document.getElementById('badgesLoading');
+
+            try {
+                const response = await fetch(`${CONFIG?.API_BASE_URL || ''}/api-gamification/badges`);
+                if (!response.ok) throw new Error('API unavailable');
+                const data = await response.json();
+
+                // Flatten grouped badges into ordered array
+                const categoryOrder = ['streak','challenge','contest','points','social','drills','time','special',
+                                       'leaderboard','featured','helper','skill','combo','member'];
+                let badgesHTML = '';
+                let count = 0;
+
+                for (const cat of categoryOrder) {
+                    const badges = data.badges[cat] || [];
+                    if (badges.length === 0) continue;
+
+                    for (const b of badges) {
+                        count++;
+                        badgesHTML += `<div class="badge locked" data-category="${b.category}" data-type="${b.requirement_action || b.requirement_type}" data-requirement="${b.requirement_value}">
+                            <span class="badge-icon">${b.icon}</span>
+                            <span class="badge-name">${b.name}</span>
+                            <span class="badge-desc">${b.description}</span>
+                        </div>`;
+                    }
+                }
+
+                // Also include any categories not in our ordered list
+                for (const [cat, badges] of Object.entries(data.badges)) {
+                    if (categoryOrder.includes(cat)) continue;
+                    for (const b of badges) {
+                        count++;
+                        badgesHTML += `<div class="badge locked" data-category="${b.category}" data-type="${b.requirement_action || b.requirement_type}" data-requirement="${b.requirement_value}">
+                            <span class="badge-icon">${b.icon}</span>
+                            <span class="badge-name">${b.name}</span>
+                            <span class="badge-desc">${b.description}</span>
+                        </div>`;
+                    }
+                }
+
+                if (count > 0) {
+                    grid.innerHTML = badgesHTML;
+                    console.log(`Loaded ${count} badges from API`);
+                } else {
+                    // No badges in DB, keep the static fallback
+                    if (loadingEl) loadingEl.style.display = 'none';
+                }
+            } catch (err) {
+                console.log('Badge API unavailable, using static badges:', err.message);
+                if (loadingEl) loadingEl.style.display = 'none';
+                // Static badges already in the HTML serve as fallback
+            }
+        }
+
         function updateAllBadges(member) {
             // Gather all member stats
             const stats = {
@@ -3181,20 +3241,28 @@
         function setupBadgeCategoryFilters() {
             const buttons = document.querySelectorAll('.badge-cat-btn');
 
+            // Map parent group names to individual badge categories
+            const groupMap = {
+                progress: ['streak', 'challenge', 'contest', 'points', 'time'],
+                social: ['social', 'helper'],
+                skills: ['drills', 'skill', 'featured', 'leaderboard'],
+                special: ['special', 'combo', 'member']
+            };
+
             buttons.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    // Update active state
                     buttons.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
 
                     const category = btn.dataset.category;
 
-                    // Filter badges
                     document.querySelectorAll('.badge').forEach(badge => {
                         if (category === 'all') {
                             badge.classList.remove('hidden');
                         } else {
-                            if (badge.dataset.category === category) {
+                            const badgeCat = badge.dataset.category;
+                            const matchCategories = groupMap[category] || [category];
+                            if (matchCategories.includes(badgeCat)) {
                                 badge.classList.remove('hidden');
                             } else {
                                 badge.classList.add('hidden');
