@@ -1,0 +1,537 @@
+/**
+ * Gamification UI Components
+ * Extracted from js/gamification.js for better caching and maintenance
+ */
+
+/* ============================================
+   XP NOTIFICATION
+   ============================================ */
+.xp-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 16px 24px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+  transform: translateX(120%);
+  transition: transform 0.3s ease;
+  z-index: 10000;
+}
+
+.xp-notification.show {
+  transform: translateX(0);
+}
+
+.xp-notification .xp-icon {
+  font-size: 24px;
+}
+
+.xp-notification .xp-amount {
+  font-size: 18px;
+}
+
+.xp-notification .xp-message {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* ============================================
+   BADGE POPUP & LEVEL UP OVERLAYS
+   ============================================ */
+.badge-popup-overlay,
+.level-up-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10001;
+}
+
+.badge-popup-overlay.show,
+.level-up-overlay.show {
+  opacity: 1;
+}
+
+.badge-popup,
+.level-up-popup {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  max-width: 400px;
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
+}
+
+.badge-popup-overlay.show .badge-popup,
+.level-up-overlay.show .level-up-popup {
+  transform: scale(1);
+}
+
+.badge-earned-icon {
+  font-size: 64px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.badge-earned-name {
+  color: #667eea;
+  margin: 8px 0;
+}
+
+.badge-earned-xp {
+  color: #10b981;
+  font-weight: 600;
+}
+
+/* ============================================
+   LEVEL UP ANIMATION
+   ============================================ */
+.level-up-sparkles {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.level-up-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 48px;
+  color: #f59e0b;
+  margin: 16px 0;
+}
+
+.level-star {
+  font-size: 40px;
+}
+
+/* ============================================
+   XP BAR
+   ============================================ */
+.xp-bar-container {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.xp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.level-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.level-icon {
+  font-size: 18px;
+}
+
+.xp-numbers {
+  font-weight: 600;
+  color: #374151;
+}
+
+.streak-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #fef3c7;
+  color: #d97706;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.xp-bar-wrapper {
+  margin-top: 8px;
+}
+
+.xp-bar {
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 6px;
+  transition: width 1s ease;
+  width: 0;
+}
+
+.xp-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* ============================================
+   STATS OVERVIEW
+   ============================================ */
+.stats-overview {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .stats-overview {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.stat-icon {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  display: block;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* ============================================
+   STREAK CALENDAR
+   ============================================ */
+.streak-calendar {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.streak-calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.streak-calendar-header h4 {
+  margin: 0;
+}
+
+.streak-info {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.streak-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
+}
+
+@media (max-width: 600px) {
+  .streak-calendar-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.streak-day {
+  aspect-ratio: 1;
+  background: #f3f4f6;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #9ca3af;
+  position: relative;
+}
+
+.streak-day.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.day-check {
+  position: absolute;
+  bottom: 2px;
+  font-size: 10px;
+}
+
+/* ============================================
+   BADGES
+   ============================================ */
+.badges-container {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.badges-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.badges-header h4 {
+  margin: 0;
+}
+
+.badges-count {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .badges-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.badge-item {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.badge-item:hover {
+  transform: translateY(-2px);
+}
+
+.badge-item.locked {
+  opacity: 0.5;
+}
+
+.badge-item.rarity-legendary {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 2px solid #f59e0b;
+}
+
+.badge-item.rarity-epic {
+  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+  border: 2px solid #8b5cf6;
+}
+
+.badge-item.rarity-rare {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  border: 2px solid #3b82f6;
+}
+
+.badge-icon {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.badge-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  display: block;
+}
+
+.badge-xp {
+  font-size: 11px;
+  color: #10b981;
+}
+
+/* ============================================
+   LEADERBOARD
+   ============================================ */
+.leaderboard-container {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.leaderboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.leaderboard-header h4 {
+  margin: 0;
+}
+
+.leaderboard-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.leaderboard-tabs .tab {
+  background: #f3f4f6;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.leaderboard-tabs .tab.active {
+  background: #667eea;
+  color: white;
+}
+
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.leaderboard-entry {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: #f9fafb;
+  border-radius: 12px;
+}
+
+.leaderboard-entry.current-user {
+  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+  border: 2px solid #8b5cf6;
+}
+
+.leaderboard-entry .rank {
+  font-size: 20px;
+  width: 40px;
+  text-align: center;
+}
+
+.leaderboard-entry .player-info {
+  flex: 1;
+}
+
+.player-name {
+  font-weight: 600;
+  display: block;
+}
+
+.player-level {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.player-stats {
+  text-align: right;
+}
+
+.player-xp {
+  font-weight: 600;
+  color: #667eea;
+  display: block;
+}
+
+.player-streak {
+  font-size: 12px;
+  color: #f59e0b;
+}
+
+/* ============================================
+   ACTIVITY FEED
+   ============================================ */
+.activity-feed-container {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.activity-feed-header h4 {
+  margin: 0 0 16px 0;
+}
+
+.activity-feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.activity-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 12px;
+}
+
+.activity-icon {
+  font-size: 24px;
+}
+
+.activity-content {
+  flex: 1;
+}
+
+.activity-user {
+  font-weight: 600;
+}
+
+.activity-text {
+  color: #6b7280;
+}
+
+.activity-time {
+  font-size: 12px;
+  color: #9ca3af;
+  display: block;
+  margin-top: 4px;
+}

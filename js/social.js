@@ -834,8 +834,16 @@ const Social = {
 
   // Initialize social features
   init() {
-    // Add CSS
-    if (!document.getElementById('social-styles')) {
+    // Only inject styles if external CSS is not loaded (fallback for pages not using main.css)
+    // Check if external styles are loaded by looking for a known social class
+    const testEl = document.createElement('div');
+    testEl.className = 'modal-overlay';
+    testEl.style.cssText = 'position:absolute;visibility:hidden;';
+    document.body.appendChild(testEl);
+    const hasExternalStyles = window.getComputedStyle(testEl).zIndex === '10000';
+    document.body.removeChild(testEl);
+
+    if (!hasExternalStyles && !document.getElementById('social-styles')) {
       const styles = document.createElement('style');
       styles.id = 'social-styles';
       styles.textContent = this.getStyles();

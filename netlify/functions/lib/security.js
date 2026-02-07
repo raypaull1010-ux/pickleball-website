@@ -98,7 +98,11 @@ const RATE_LIMITS = {
   'membership': { maxRequests: 10, windowMs: 60000 }, // 10 req/min
   'instructor': { maxRequests: 20, windowMs: 60000 }, // 20 req/min
   'create-checkout': { maxRequests: 10, windowMs: 60000 }, // 10 req/min
-  'analyze-video': { maxRequests: 5, windowMs: 60000 } // 5 req/min (expensive)
+  'analyze-video': { maxRequests: 5, windowMs: 60000 }, // 5 req/min (expensive)
+  'avatar': { maxRequests: 30, windowMs: 60000 }, // 30 req/min
+  'assessment': { maxRequests: 20, windowMs: 60000 }, // 20 req/min
+  'gamification': { maxRequests: 60, windowMs: 60000 }, // 60 req/min
+  'social': { maxRequests: 60, windowMs: 60000 } // 60 req/min
 };
 
 // Check rate limit for an IP/endpoint combination

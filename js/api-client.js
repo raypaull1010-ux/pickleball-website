@@ -9,17 +9,35 @@ const API = {
   baseUrl: '/.netlify/functions',
 
   // Get auth token if user is logged in
+  // Unified auth: checks Supabase session first, then falls back to localStorage
   getAuthToken: async function() {
+    // Try Supabase session first (preferred method)
     if (typeof getSupabaseClient === 'function') {
-      const supabase = getSupabaseClient();
-      if (supabase) {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-          return session.access_token;
+      try {
+        const supabase = getSupabaseClient();
+        if (supabase) {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            return session.access_token;
+          }
         }
+      } catch (e) {
+        console.warn('Supabase session check failed:', e);
       }
     }
-    return null;
+    // Fallback to localStorage tokens (legacy support)
+    return localStorage.getItem('auth_token') || localStorage.getItem('supabase_token') || null;
+  },
+
+  // Synchronous version for cases where async isn't practical
+  getAuthTokenSync: function() {
+    return localStorage.getItem('auth_token') || localStorage.getItem('supabase_token') || null;
+  },
+
+  // Check if user is authenticated (async)
+  isAuthenticated: async function() {
+    const token = await this.getAuthToken();
+    return !!token;
   },
 
   // Make API request

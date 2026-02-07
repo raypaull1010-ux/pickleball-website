@@ -11,6 +11,9 @@
  *   GET    /api/avatars/leaderboard - Get top avatars
  */
 
+const { jsonResponse, handleCors } = require('./lib/supabase');
+const { withSecurity, validateRequired } = require('./lib/security');
+
 // Note: In production, connect to your database (Supabase, PlanetScale, etc.)
 // This is a mock implementation for demonstration
 
@@ -42,21 +45,13 @@ mockAvatars.set('1', {
     updated_at: new Date().toISOString()
 });
 
-exports.handler = async (event, context) => {
+// Main handler function
+const handler = async (event, context) => {
     const { httpMethod, path, body, queryStringParameters } = event;
 
-    // CORS headers
-    const headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
-        'Content-Type': 'application/json'
-    };
-
-    // Handle preflight
-    if (httpMethod === 'OPTIONS') {
-        return { statusCode: 204, headers, body: '' };
-    }
+    // Handle CORS preflight
+    const corsResponse = handleCors(event);
+    if (corsResponse) return corsResponse;
 
     try {
         // Parse path: /api/avatar/xxx or /api/avatars/leaderboard
@@ -64,66 +59,57 @@ exports.handler = async (event, context) => {
 
         // GET /api/avatars/leaderboard
         if (pathParts[0] === 'leaderboard' && httpMethod === 'GET') {
-            return handleLeaderboard(queryStringParameters, headers);
+            return handleLeaderboard(queryStringParameters);
         }
 
         // GET /api/avatar/:id
         if (pathParts.length === 1 && httpMethod === 'GET') {
-            return handleGetAvatar(pathParts[0], headers);
+            return handleGetAvatar(pathParts[0]);
         }
 
         // POST /api/avatar
         if (pathParts.length === 0 && httpMethod === 'POST') {
-            return handleCreateAvatar(JSON.parse(body || '{}'), headers);
+            return handleCreateAvatar(JSON.parse(body || '{}'));
         }
 
         // PATCH /api/avatar/:id/stats
         if (pathParts.length === 2 && pathParts[1] === 'stats' && httpMethod === 'PATCH') {
-            return handleUpdateStats(pathParts[0], JSON.parse(body || '{}'), headers);
+            return handleUpdateStats(pathParts[0], JSON.parse(body || '{}'));
         }
 
         // 404 for unknown routes
-        return {
-            statusCode: 404,
-            headers,
-            body: JSON.stringify({ error: 'Not found', path, method: httpMethod })
-        };
+        return jsonResponse(404, { error: 'Not found', path, method: httpMethod });
 
     } catch (error) {
         console.error('API Error:', error);
-        return {
-            statusCode: 500,
-            headers,
-            body: JSON.stringify({ error: error.message })
-        };
+        return jsonResponse(500, { error: error.message });
     }
 };
+
+// Wrap handler with security middleware (rate limiting, sanitization)
+exports.handler = withSecurity(handler, {
+    endpoint: 'avatar',
+    rateLimit: true,
+    sanitize: true
+});
 
 /**
  * Get avatar by ID
  */
-function handleGetAvatar(avatarId, headers) {
+function handleGetAvatar(avatarId) {
     const avatar = mockAvatars.get(avatarId);
 
     if (!avatar) {
-        return {
-            statusCode: 404,
-            headers,
-            body: JSON.stringify({ error: 'Avatar not found' })
-        };
+        return jsonResponse(404, { error: 'Avatar not found' });
     }
 
-    return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify(avatar)
-    };
+    return jsonResponse(200, avatar);
 }
 
 /**
  * Create new avatar
  */
-function handleCreateAvatar(data, headers) {
+function handleCreateAvatar(data) {
     const id = `avatar-${Date.now()}`;
 
     const avatar = {
@@ -152,25 +138,17 @@ function handleCreateAvatar(data, headers) {
 
     mockAvatars.set(id, avatar);
 
-    return {
-        statusCode: 201,
-        headers,
-        body: JSON.stringify(avatar)
-    };
+    return jsonResponse(201, avatar);
 }
 
 /**
  * Update avatar stats
  */
-function handleUpdateStats(avatarId, data, headers) {
+function handleUpdateStats(avatarId, data) {
     const avatar = mockAvatars.get(avatarId);
 
     if (!avatar) {
-        return {
-            statusCode: 404,
-            headers,
-            body: JSON.stringify({ error: 'Avatar not found' })
-        };
+        return jsonResponse(404, { error: 'Avatar not found' });
     }
 
     const { stats, source, notes } = data;
@@ -202,22 +180,18 @@ function handleUpdateStats(avatarId, data, headers) {
 
     mockAvatars.set(avatarId, avatar);
 
-    return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({
-            avatar,
-            changes,
-            source: source || 'manual',
-            notes: notes || ''
-        })
-    };
+    return jsonResponse(200, {
+        avatar,
+        changes,
+        source: source || 'manual',
+        notes: notes || ''
+    });
 }
 
 /**
  * Get leaderboard
  */
-function handleLeaderboard(params, headers) {
+function handleLeaderboard(params) {
     const limit = parseInt(params?.limit) || 10;
     const offset = parseInt(params?.offset) || 0;
 
@@ -229,16 +203,12 @@ function handleLeaderboard(params, headers) {
             rank: offset + index + 1
         }));
 
-    return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({
-            leaderboard: avatars,
-            total: mockAvatars.size,
-            limit,
-            offset
-        })
-    };
+    return jsonResponse(200, {
+        leaderboard: avatars,
+        total: mockAvatars.size,
+        limit,
+        offset
+    });
 }
 
 /**

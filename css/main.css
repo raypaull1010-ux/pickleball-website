@@ -27,6 +27,8 @@
 @import './components/_cards.css';
 @import './components/_forms.css';
 @import './components/_footer.css';
+@import './components/_gamification-ui.css';
+@import './components/_social-ui.css';
 
 /* ===========================================
    LEGACY STYLES (to be migrated)

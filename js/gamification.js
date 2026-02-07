@@ -577,7 +577,16 @@ const Gamification = {
   // Initialize gamification on page load
   init() {
     // Add CSS for notifications
-    if (!document.getElementById('gamification-styles')) {
+    // Only inject styles if external CSS is not loaded (fallback for pages not using main.css)
+    // Check if external styles are loaded by looking for a known gamification class
+    const testEl = document.createElement('div');
+    testEl.className = 'xp-notification';
+    testEl.style.cssText = 'position:absolute;visibility:hidden;';
+    document.body.appendChild(testEl);
+    const hasExternalStyles = window.getComputedStyle(testEl).zIndex === '10000';
+    document.body.removeChild(testEl);
+
+    if (!hasExternalStyles && !document.getElementById('gamification-styles')) {
       const styles = document.createElement('style');
       styles.id = 'gamification-styles';
       styles.textContent = this.getStyles();

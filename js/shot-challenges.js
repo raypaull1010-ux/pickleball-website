@@ -11,6 +11,23 @@ const ShotChallenges = {
   currentWeek: null,
 
   // ==========================================
+  // Auth Helper
+  // ==========================================
+
+  /**
+   * Get auth token using unified API method
+   * Falls back to localStorage if API object not available
+   */
+  async getAuthToken() {
+    // Use unified API.getAuthToken if available
+    if (typeof API !== 'undefined' && API.getAuthToken) {
+      return await API.getAuthToken();
+    }
+    // Fallback to localStorage
+    return localStorage.getItem('auth_token') || localStorage.getItem('supabase_token') || null;
+  },
+
+  // ==========================================
   // API Methods
   // ==========================================
 
@@ -19,7 +36,7 @@ const ShotChallenges = {
    */
   async getCurrentChallenges() {
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = await this.getAuthToken();
       const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
 
       const response = await fetch(this.apiBase, { headers });
@@ -54,7 +71,7 @@ const ShotChallenges = {
    */
   async getProgress() {
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = await this.getAuthToken();
       if (!token) return { progress: null, submissions: [] };
 
       const response = await fetch(`${this.apiBase}/progress`, {
@@ -72,7 +89,7 @@ const ShotChallenges = {
    */
   async submitVideo(challengeId, videoUrl, videoDuration = null) {
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = await this.getAuthToken();
       if (!token) {
         return { success: false, error: 'Must be logged in to submit' };
       }
@@ -102,7 +119,7 @@ const ShotChallenges = {
    */
   async getHistory() {
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = await this.getAuthToken();
       if (!token) return { history: [] };
 
       const response = await fetch(`${this.apiBase}/history`, {
