@@ -1,0 +1,94 @@
+/* =========================================
+   CSS RESET
+   =========================================
+   Normalize browser defaults for consistency.
+   ========================================= */
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--color-text);
+    background-color: var(--color-background);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Links */
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Images */
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Forms */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+/* Remove list styles */
+ul,
+ol {
+    list-style: none;
+}
+
+/* Tables */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* Remove default button styles */
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Accessibility */
+:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

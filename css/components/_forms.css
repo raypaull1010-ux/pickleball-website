@@ -1,0 +1,224 @@
+/* =========================================
+   FORM COMPONENT
+   =========================================
+   Form inputs, labels, and validation.
+   BEM: .form, .form--*, .form__*
+   ========================================= */
+
+/* Form container */
+.form {
+    width: 100%;
+}
+
+.form__group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form__row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+}
+
+@media (max-width: 768px) {
+    .form__row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Labels */
+.form__label,
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text);
+}
+
+.form__label--required::after {
+    content: " *";
+    color: var(--color-danger);
+}
+
+/* Text inputs */
+.form__input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+input[type="url"],
+input[type="search"],
+input[type="date"],
+textarea,
+select {
+    width: 100%;
+    padding: var(--spacing-md);
+    font-size: var(--font-size-base);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-background);
+    color: var(--color-text);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form__input:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="date"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form__input::placeholder,
+input::placeholder,
+textarea::placeholder {
+    color: var(--color-text-muted);
+}
+
+/* Textarea */
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Select */
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--spacing-md) center;
+    padding-right: var(--spacing-2xl);
+}
+
+/* Checkbox and Radio */
+.form__checkbox,
+.form__radio {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    cursor: pointer;
+}
+
+.form__checkbox input,
+.form__radio input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Input sizes */
+.form__input--sm {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
+}
+
+.form__input--lg {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    font-size: var(--font-size-lg);
+}
+
+/* Validation states */
+.form__input--error,
+.is-invalid {
+    border-color: var(--color-danger);
+}
+
+.form__input--error:focus,
+.is-invalid:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form__input--success,
+.is-valid {
+    border-color: var(--color-success);
+}
+
+.form__error {
+    color: var(--color-danger);
+    font-size: var(--font-size-sm);
+    margin-top: var(--spacing-xs);
+}
+
+.form__help {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    margin-top: var(--spacing-xs);
+}
+
+/* Input with icon */
+.form__input-wrapper {
+    position: relative;
+}
+
+.form__input-icon {
+    position: absolute;
+    left: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+}
+
+.form__input-wrapper .form__input {
+    padding-left: var(--spacing-2xl);
+}
+
+/* Input group */
+.input-group {
+    display: flex;
+}
+
+.input-group .form__input {
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.input-group .btn {
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+/* Contact form (legacy support) */
+.contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+/* File upload */
+.form__file {
+    position: relative;
+}
+
+.form__file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.form__file-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg);
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.form__file-label:hover {
+    border-color: var(--color-primary);
+    background: var(--color-background-alt);
+}

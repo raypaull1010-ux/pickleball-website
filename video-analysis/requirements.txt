@@ -1,0 +1,33 @@
+# 🎬 Pickleball Video Analysis - Python Dependencies
+# Ray's Pickleball Platform
+#
+# Install with: pip install -r requirements.txt
+
+# Core dependencies
+opencv-python>=4.8.0
+numpy>=1.24.0
+
+# Pose estimation (Google MediaPipe)
+mediapipe>=0.10.0
+
+# Advanced object detection (optional, for better ball tracking)
+# Uncomment to enable YOLOv8:
+# ultralytics>=8.0.0
+
+# Utility libraries
+Pillow>=10.0.0
+tqdm>=4.65.0  # Progress bars
+
+# API/Server dependencies (if running as service)
+fastapi>=0.100.0
+uvicorn>=0.23.0
+python-multipart>=0.0.6  # File uploads
+aiofiles>=23.0.0  # Async file handling
+
+# Cloud storage (optional)
+# boto3>=1.28.0  # AWS S3
+# google-cloud-storage>=2.10.0  # GCS
+
+# Database (for storing results)
+# asyncpg>=0.28.0  # PostgreSQL async driver
+# sqlalchemy>=2.0.0  # ORM

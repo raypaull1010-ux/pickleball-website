@@ -1,0 +1,196 @@
+/* =========================================
+   LAYOUT UTILITIES
+   =========================================
+   Container, grid, and spacing utilities.
+   ========================================= */
+
+/* Container */
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+}
+
+.container--narrow {
+    max-width: var(--container-narrow);
+}
+
+.container--fluid {
+    max-width: 100%;
+}
+
+/* Sections */
+section,
+.section {
+    padding: var(--section-padding) 0;
+}
+
+.section--sm {
+    padding: var(--spacing-2xl) 0;
+}
+
+.section--lg {
+    padding: calc(var(--section-padding) * 1.5) 0;
+}
+
+.section--alt {
+    background-color: var(--color-background-alt);
+}
+
+.section--dark {
+    background-color: var(--color-text);
+    color: white;
+}
+
+/* Section header */
+.section__header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto var(--spacing-2xl);
+}
+
+.section__title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    margin-bottom: var(--spacing-md);
+}
+
+.section__subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-light);
+}
+
+/* Grid system */
+.grid {
+    display: grid;
+    gap: var(--spacing-xl);
+}
+
+.grid--2 { grid-template-columns: repeat(2, 1fr); }
+.grid--3 { grid-template-columns: repeat(3, 1fr); }
+.grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+.grid--auto {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+@media (max-width: 992px) {
+    .grid--3,
+    .grid--4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .grid--2,
+    .grid--3,
+    .grid--4 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Flexbox utilities */
+.flex {
+    display: flex;
+}
+
+.flex--center {
+    justify-content: center;
+    align-items: center;
+}
+
+.flex--between {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex--column {
+    flex-direction: column;
+}
+
+.flex--wrap {
+    flex-wrap: wrap;
+}
+
+.gap-xs { gap: var(--spacing-xs); }
+.gap-sm { gap: var(--spacing-sm); }
+.gap-md { gap: var(--spacing-md); }
+.gap-lg { gap: var(--spacing-lg); }
+.gap-xl { gap: var(--spacing-xl); }
+
+/* Spacing utilities */
+.m-0 { margin: 0; }
+.mt-0 { margin-top: 0; }
+.mb-0 { margin-bottom: 0; }
+.ml-0 { margin-left: 0; }
+.mr-0 { margin-right: 0; }
+
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-lg { margin-top: var(--spacing-lg); }
+.mt-xl { margin-top: var(--spacing-xl); }
+
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+.mb-xl { margin-bottom: var(--spacing-xl); }
+
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+.p-0 { padding: 0; }
+.p-sm { padding: var(--spacing-sm); }
+.p-md { padding: var(--spacing-md); }
+.p-lg { padding: var(--spacing-lg); }
+.p-xl { padding: var(--spacing-xl); }
+
+/* Display utilities */
+.d-none { display: none; }
+.d-block { display: block; }
+.d-inline { display: inline; }
+.d-inline-block { display: inline-block; }
+.d-flex { display: flex; }
+.d-grid { display: grid; }
+
+/* Width utilities */
+.w-100 { width: 100%; }
+.w-auto { width: auto; }
+.max-w-100 { max-width: 100%; }
+
+/* Height utilities */
+.h-100 { height: 100%; }
+.min-h-screen { min-height: 100vh; }
+
+/* Position utilities */
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+
+/* Overflow */
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+
+/* Visibility */
+.visible { visibility: visible; }
+.invisible { visibility: hidden; }
+
+/* Screen reader only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Responsive visibility */
+@media (max-width: 768px) {
+    .hide-mobile { display: none !important; }
+}
+
+@media (min-width: 769px) {
+    .hide-desktop { display: none !important; }
+}

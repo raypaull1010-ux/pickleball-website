@@ -1,9 +1,16 @@
 # Netlify configuration file
 
 [build]
-  # No build command needed for static HTML site
-  publish = "."
+  # Build with Vite
+  command = "npm run build"
+  publish = "dist"
   functions = "netlify/functions"
+
+[dev]
+  command = "npm run dev"
+  targetPort = 3000
+  port = 8888
+  autoLaunch = false
 
 [functions]
   # Use Node.js for serverless functions

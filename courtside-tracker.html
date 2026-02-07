@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🏓 Courtside Live Tracker - Ray's Pickleball</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏓</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f0f23;
+            --darker: #0a0a1a;
+            --card: #1a1a2e;
+            --text: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --gold: #ffd700;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════════════════════════════ */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .live-dot {
+            width: 12px;
+            height: 12px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .live-dot.recording {
+            background: #ef4444;
+        }
+
+        .live-dot.paused {
+            background: #f59e0b;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           MATCH TIMER
+           ═══════════════════════════════════════════════════════════════ */
+        .timer-bar {
+            background: var(--darker);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .timer-display {
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: 'Courier New', monospace;
+            color: var(--gold);
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .timer-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .timer-btn.start { background: var(--success); color: white; }
+        .timer-btn.pause { background: var(--warning); color: var(--dark); }
+        .timer-btn.reset { background: rgba(255,255,255,0.1); color: white; }
+
+        /* ═══════════════════════════════════════════════════════════════
+           SCOREBOARD
+           ═══════════════════════════════════════════════════════════════ */
+        .scoreboard {
+            background: linear-gradient(180deg, var(--card), var(--darker));
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .player-side {
+            flex: 1;
+            text-align: center;
+        }
+
+        .player-side.left { border-right: 1px solid rgba(255,255,255,0.1); padding-right: 20px; }
+        .player-side.right { padding-left: 20px; }
+
+        .player-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            border: 3px solid rgba(255,255,255,0.2);
+        }
+
+        .player-avatar.serving {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .player-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .player-name input {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-align: center;
+            width: 100%;
+            padding: 5px;
+            border-bottom: 2px dashed rgba(255,255,255,0.2);
+        }
+
+        .player-name input:focus {
+            outline: none;
+            border-bottom-color: var(--primary);
+        }
+
+        .score-display {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1;
+            color: var(--gold);
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .score-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .score-btn {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .score-btn.plus {
+            background: var(--success);
+            color: white;
+        }
+
+        .score-btn.minus {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .score-btn:active {
+            transform: scale(0.95);
+        }
+
+        .vs-divider {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .serve-indicator {
+            font-size: 0.8rem;
+            color: var(--gold);
+            margin-top: 5px;
+            height: 20px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           SHOT TRACKER BUTTONS
+           ═══════════════════════════════════════════════════════════════ */
+        .shot-tracker {
+            padding: 20px;
+        }
+
+        .shot-tracker-title {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .player-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .player-tab {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            background: transparent;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .player-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .shot-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .shot-btn {
+            padding: 20px 10px;
+            border: none;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shot-btn:active {
+            transform: scale(0.95);
+        }
+
+        .shot-btn .icon {
+            font-size: 1.8rem;
+        }
+
+        .shot-btn .count {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.3);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+        }
+
+        /* Shot type colors */
+        .shot-btn.dink { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .shot-btn.drive { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+        .shot-btn.drop { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; }
+        .shot-btn.lob { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+        .shot-btn.volley { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
+        .shot-btn.overhead { background: linear-gradient(135deg, #ec4899, #db2777); color: white; }
+        .shot-btn.serve { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; }
+        .shot-btn.winner { background: linear-gradient(135deg, #ffd700, #ff8c00); color: var(--dark); }
+        .shot-btn.error { background: linear-gradient(135deg, #64748b, #475569); color: white; }
+
+        /* ═══════════════════════════════════════════════════════════════
+           LIVE STATS PANEL
+           ═══════════════════════════════════════════════════════════════ */
+        .stats-panel {
+            background: var(--card);
+            margin: 0 20px 20px;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stats-panel-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 10px;
+        }
+
+        .stat-row {
+            display: contents;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-align: center;
+            padding: 8px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+        }
+
+        .stat-value.left { text-align: right; }
+        .stat-value.right { text-align: left; }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           ACTION FEED
+           ═══════════════════════════════════════════════════════════════ */
+        .action-feed {
+            background: var(--card);
+            margin: 0 20px 20px;
+            border-radius: 16px;
+            padding: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .action-feed-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-muted);
+        }
+
+        .action-item {
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .action-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .action-time {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           BOTTOM ACTIONS
+           ═══════════════════════════════════════════════════════════════ */
+        .bottom-actions {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--darker);
+            padding: 15px 20px;
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .action-btn.success {
+            background: var(--success);
+            color: white;
+        }
+
+        .action-btn.secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .action-btn.danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           MODALS
+           ═══════════════════════════════════════════════════════════════ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--card);
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-stat {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .modal-stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        .modal-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           RESPONSIVE
+           ═══════════════════════════════════════════════════════════════ */
+        @media (max-width: 600px) {
+            .score-display {
+                font-size: 3rem;
+            }
+
+            .shot-btn {
+                padding: 15px 8px;
+            }
+
+            .shot-btn .icon {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Add padding at bottom for fixed actions */
+        .main-content {
+            padding-bottom: 100px;
+        }
+
+        /* Undo button */
+        .undo-btn {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .undo-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-title">
+            <span>🏓</span> Courtside Tracker
+        </div>
+        <div class="header-status">
+            <div class="live-dot" id="liveDot"></div>
+            <span id="statusText">Ready</span>
+        </div>
+    </div>
+
+    <!-- Timer Bar -->
+    <div class="timer-bar">
+        <div class="timer-display" id="timerDisplay">00:00</div>
+        <div class="timer-controls">
+            <button class="timer-btn start" id="timerStartBtn" onclick="toggleTimer()">▶ Start</button>
+            <button class="timer-btn reset" onclick="resetTimer()">↺</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- Scoreboard -->
+        <div class="scoreboard">
+            <div class="player-side left">
+                <div class="player-avatar" id="player1Avatar" style="background: linear-gradient(135deg, #667eea, #764ba2);" onclick="toggleServe(1)">🏓</div>
+                <div class="player-name">
+                    <input type="text" id="player1Name" value="Player 1" placeholder="Name">
+                </div>
+                <div class="serve-indicator" id="serve1">🎾 Serving</div>
+                <div class="score-display" id="score1">0</div>
+                <div class="score-controls">
+                    <button class="score-btn minus" onclick="updateScore(1, -1)">−</button>
+                    <button class="score-btn plus" onclick="updateScore(1, 1)">+</button>
+                </div>
+            </div>
+
+            <div class="vs-divider">VS</div>
+
+            <div class="player-side right">
+                <div class="player-avatar" id="player2Avatar" style="background: linear-gradient(135deg, #10b981, #059669);" onclick="toggleServe(2)">🎾</div>
+                <div class="player-name">
+                    <input type="text" id="player2Name" value="Player 2" placeholder="Name">
+                </div>
+                <div class="serve-indicator" id="serve2"></div>
+                <div class="score-display" id="score2">0</div>
+                <div class="score-controls">
+                    <button class="score-btn minus" onclick="updateScore(2, -1)">−</button>
+                    <button class="score-btn plus" onclick="updateScore(2, 1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shot Tracker -->
+        <div class="shot-tracker">
+            <div class="shot-tracker-title">📊 Shot Tracker</div>
+
+            <div class="player-tabs">
+                <button class="player-tab active" id="tab1" onclick="selectPlayer(1)">Player 1</button>
+                <button class="player-tab" id="tab2" onclick="selectPlayer(2)">Player 2</button>
+            </div>
+
+            <div class="shot-grid">
+                <button class="shot-btn dink" onclick="recordShot('dink')">
+                    <span class="icon">🎯</span>
+                    <span>Dink</span>
+                    <span class="count" id="count-dink">0</span>
+                </button>
+                <button class="shot-btn drive" onclick="recordShot('drive')">
+                    <span class="icon">💥</span>
+                    <span>Drive</span>
+                    <span class="count" id="count-drive">0</span>
+                </button>
+                <button class="shot-btn drop" onclick="recordShot('drop')">
+                    <span class="icon">🪂</span>
+                    <span>Drop</span>
+                    <span class="count" id="count-drop">0</span>
+                </button>
+                <button class="shot-btn lob" onclick="recordShot('lob')">
+                    <span class="icon">🌈</span>
+                    <span>Lob</span>
+                    <span class="count" id="count-lob">0</span>
+                </button>
+                <button class="shot-btn volley" onclick="recordShot('volley')">
+                    <span class="icon">⚡</span>
+                    <span>Volley</span>
+                    <span class="count" id="count-volley">0</span>
+                </button>
+                <button class="shot-btn overhead" onclick="recordShot('overhead')">
+                    <span class="icon">🔨</span>
+                    <span>Overhead</span>
+                    <span class="count" id="count-overhead">0</span>
+                </button>
+                <button class="shot-btn serve" onclick="recordShot('serve')">
+                    <span class="icon">🎾</span>
+                    <span>Serve</span>
+                    <span class="count" id="count-serve">0</span>
+                </button>
+                <button class="shot-btn winner" onclick="recordShot('winner')">
+                    <span class="icon">🏆</span>
+                    <span>Winner</span>
+                    <span class="count" id="count-winner">0</span>
+                </button>
+                <button class="shot-btn error" onclick="recordShot('error')">
+                    <span class="icon">❌</span>
+                    <span>Error</span>
+                    <span class="count" id="count-error">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Live Stats Panel -->
+        <div class="stats-panel">
+            <div class="stats-panel-title">📈 Live Stats Comparison</div>
+            <div class="stats-grid">
+                <div class="stat-row">
+                    <div class="stat-value left" id="stat1-total">0</div>
+                    <div class="stat-label">Total Shots</div>
+                    <div class="stat-value right" id="stat2-total">0</div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-value left" id="stat1-winners">0</div>
+                    <div class="stat-label">Winners</div>
+                    <div class="stat-value right" id="stat2-winners">0</div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-value left" id="stat1-errors">0</div>
+                    <div class="stat-label">Errors</div>
+                    <div class="stat-value right" id="stat2-errors">0</div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-value left" id="stat1-dinks">0</div>
+                    <div class="stat-label">Dinks</div>
+                    <div class="stat-value right" id="stat2-dinks">0</div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-value left" id="stat1-drives">0</div>
+                    <div class="stat-label">Drives</div>
+                    <div class="stat-value right" id="stat2-drives">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Feed -->
+        <div class="action-feed">
+            <div class="action-feed-title">📋 Recent Actions</div>
+            <div id="actionList">
+                <div class="action-item" style="color: var(--text-muted); text-align: center;">
+                    Tap shots to start tracking...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Undo Button -->
+    <button class="undo-btn" id="undoBtn" onclick="undoLastAction()" disabled>↩</button>
+
+    <!-- Bottom Actions -->
+    <div class="bottom-actions">
+        <button class="action-btn secondary" onclick="showResetModal()">🔄 Reset</button>
+        <button class="action-btn success" onclick="endMatch()">✅ End Match</button>
+    </div>
+
+    <!-- End Match Modal -->
+    <div class="modal-overlay" id="endMatchModal">
+        <div class="modal">
+            <div class="modal-title">🏆 Match Complete!</div>
+
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 2rem; margin-bottom: 10px;">
+                    <span id="finalScore1">0</span> - <span id="finalScore2">0</span>
+                </div>
+                <div style="color: var(--gold); font-size: 1.2rem; font-weight: 700;" id="winnerText">
+                    Player 1 Wins!
+                </div>
+            </div>
+
+            <div class="modal-stats" id="finalStats">
+                <!-- Populated by JS -->
+            </div>
+
+            <div class="modal-actions">
+                <button class="action-btn secondary" onclick="closeModal('endMatchModal')">Continue Editing</button>
+                <button class="action-btn primary" onclick="saveAndExport()">💾 Save & Export</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Confirmation Modal -->
+    <div class="modal-overlay" id="resetModal">
+        <div class="modal">
+            <div class="modal-title">⚠️ Reset Match?</div>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 20px;">
+                This will clear all scores and shot data. This cannot be undone.
+            </p>
+            <div class="modal-actions">
+                <button class="action-btn secondary" onclick="closeModal('resetModal')">Cancel</button>
+                <button class="action-btn danger" onclick="resetMatch()">Reset Everything</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save Success Modal -->
+    <div class="modal-overlay" id="saveModal">
+        <div class="modal">
+            <div class="modal-title">✅ Match Saved!</div>
+            <p style="text-align: center; margin-bottom: 20px;">
+                Stats have been saved and are ready to update player avatars.
+            </p>
+            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                <div style="font-size: 0.9rem; color: var(--success);">
+                    📊 Match ID: <strong id="matchId">-</strong>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="action-btn secondary" onclick="startNewMatch()">New Match</button>
+                <button class="action-btn primary" onclick="goToAvatars()">Update Avatars →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════
+        // GAME STATE
+        // ═══════════════════════════════════════════════════════════════
+        let gameState = {
+            score: [0, 0],
+            serving: 1,
+            selectedPlayer: 1,
+            timer: 0,
+            timerRunning: false,
+            timerInterval: null,
+            actions: [],
+            stats: {
+                1: { dink: 0, drive: 0, drop: 0, lob: 0, volley: 0, overhead: 0, serve: 0, winner: 0, error: 0 },
+                2: { dink: 0, drive: 0, drop: 0, lob: 0, volley: 0, overhead: 0, serve: 0, winner: 0, error: 0 }
+            }
+        };
+
+        // ═══════════════════════════════════════════════════════════════
+        // TIMER FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════
+        function toggleTimer() {
+            if (gameState.timerRunning) {
+                pauseTimer();
+            } else {
+                startTimer();
+            }
+        }
+
+        function startTimer() {
+            gameState.timerRunning = true;
+            document.getElementById('timerStartBtn').textContent = '⏸ Pause';
+            document.getElementById('timerStartBtn').classList.remove('start');
+            document.getElementById('timerStartBtn').classList.add('pause');
+            document.getElementById('liveDot').classList.add('recording');
+            document.getElementById('liveDot').classList.remove('paused');
+            document.getElementById('statusText').textContent = 'Recording';
+
+            gameState.timerInterval = setInterval(() => {
+                gameState.timer++;
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            gameState.timerRunning = false;
+            document.getElementById('timerStartBtn').textContent = '▶ Start';
+            document.getElementById('timerStartBtn').classList.add('start');
+            document.getElementById('timerStartBtn').classList.remove('pause');
+            document.getElementById('liveDot').classList.remove('recording');
+            document.getElementById('liveDot').classList.add('paused');
+            document.getElementById('statusText').textContent = 'Paused';
+
+            clearInterval(gameState.timerInterval);
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            gameState.timer = 0;
+            updateTimerDisplay();
+            document.getElementById('statusText').textContent = 'Ready';
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(gameState.timer / 60);
+            const seconds = gameState.timer % 60;
+            document.getElementById('timerDisplay').textContent =
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = seconds % 60;
+            return `${m}:${s.toString().padStart(2, '0')}`;
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // SCORE FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════
+        function updateScore(player, delta) {
+            const index = player - 1;
+            gameState.score[index] = Math.max(0, gameState.score[index] + delta);
+            document.getElementById(`score${player}`).textContent = gameState.score[index];
+
+            // Add to action log
+            if (delta !== 0) {
+                addAction(`Score: ${gameState.score[0]} - ${gameState.score[1]}`, 'score');
+            }
+
+            // Vibrate feedback
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+        }
+
+        function toggleServe(player) {
+            gameState.serving = player;
+            updateServeIndicator();
+        }
+
+        function updateServeIndicator() {
+            const serve1 = document.getElementById('serve1');
+            const serve2 = document.getElementById('serve2');
+            const avatar1 = document.getElementById('player1Avatar');
+            const avatar2 = document.getElementById('player2Avatar');
+
+            if (gameState.serving === 1) {
+                serve1.textContent = '🎾 Serving';
+                serve2.textContent = '';
+                avatar1.classList.add('serving');
+                avatar2.classList.remove('serving');
+            } else {
+                serve1.textContent = '';
+                serve2.textContent = '🎾 Serving';
+                avatar1.classList.remove('serving');
+                avatar2.classList.add('serving');
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // SHOT TRACKING
+        // ═══════════════════════════════════════════════════════════════
+        function selectPlayer(player) {
+            gameState.selectedPlayer = player;
+
+            document.getElementById('tab1').classList.toggle('active', player === 1);
+            document.getElementById('tab2').classList.toggle('active', player === 2);
+
+            // Update button tab text with player names
+            const name1 = document.getElementById('player1Name').value || 'Player 1';
+            const name2 = document.getElementById('player2Name').value || 'Player 2';
+            document.getElementById('tab1').textContent = name1;
+            document.getElementById('tab2').textContent = name2;
+
+            // Update shot counts for selected player
+            updateShotCounts();
+        }
+
+        function recordShot(shotType) {
+            const player = gameState.selectedPlayer;
+
+            // Increment stat
+            gameState.stats[player][shotType]++;
+
+            // Update count display
+            updateShotCounts();
+            updateStatsPanel();
+
+            // Add to action log
+            const playerName = document.getElementById(`player${player}Name`).value || `Player ${player}`;
+            const shotEmoji = getShotEmoji(shotType);
+            addAction(`${playerName}: ${shotEmoji} ${capitalizeFirst(shotType)}`, shotType);
+
+            // Save action for undo
+            gameState.actions.push({
+                type: 'shot',
+                player,
+                shotType,
+                time: gameState.timer
+            });
+
+            // Enable undo button
+            document.getElementById('undoBtn').disabled = false;
+
+            // Vibrate feedback
+            if (navigator.vibrate) {
+                navigator.vibrate(30);
+            }
+        }
+
+        function getShotEmoji(shotType) {
+            const emojis = {
+                dink: '🎯',
+                drive: '💥',
+                drop: '🪂',
+                lob: '🌈',
+                volley: '⚡',
+                overhead: '🔨',
+                serve: '🎾',
+                winner: '🏆',
+                error: '❌'
+            };
+            return emojis[shotType] || '📊';
+        }
+
+        function capitalizeFirst(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function updateShotCounts() {
+            const player = gameState.selectedPlayer;
+            const stats = gameState.stats[player];
+
+            for (const [shot, count] of Object.entries(stats)) {
+                const el = document.getElementById(`count-${shot}`);
+                if (el) el.textContent = count;
+            }
+        }
+
+        function updateStatsPanel() {
+            // Total shots
+            const total1 = Object.values(gameState.stats[1]).reduce((a, b) => a + b, 0);
+            const total2 = Object.values(gameState.stats[2]).reduce((a, b) => a + b, 0);
+            document.getElementById('stat1-total').textContent = total1;
+            document.getElementById('stat2-total').textContent = total2;
+
+            // Winners
+            document.getElementById('stat1-winners').textContent = gameState.stats[1].winner;
+            document.getElementById('stat2-winners').textContent = gameState.stats[2].winner;
+
+            // Errors
+            document.getElementById('stat1-errors').textContent = gameState.stats[1].error;
+            document.getElementById('stat2-errors').textContent = gameState.stats[2].error;
+
+            // Dinks
+            document.getElementById('stat1-dinks').textContent = gameState.stats[1].dink;
+            document.getElementById('stat2-dinks').textContent = gameState.stats[2].dink;
+
+            // Drives
+            document.getElementById('stat1-drives').textContent = gameState.stats[1].drive;
+            document.getElementById('stat2-drives').textContent = gameState.stats[2].drive;
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // ACTION LOG
+        // ═══════════════════════════════════════════════════════════════
+        function addAction(text, type) {
+            const list = document.getElementById('actionList');
+
+            // Clear placeholder
+            if (list.children.length === 1 && list.children[0].style.color) {
+                list.innerHTML = '';
+            }
+
+            const item = document.createElement('div');
+            item.className = 'action-item';
+            item.innerHTML = `
+                <span>${text}</span>
+                <span class="action-time">${formatTime(gameState.timer)}</span>
+            `;
+
+            list.insertBefore(item, list.firstChild);
+
+            // Keep only last 20 actions
+            while (list.children.length > 20) {
+                list.removeChild(list.lastChild);
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // UNDO
+        // ═══════════════════════════════════════════════════════════════
+        function undoLastAction() {
+            if (gameState.actions.length === 0) return;
+
+            const lastAction = gameState.actions.pop();
+
+            if (lastAction.type === 'shot') {
+                gameState.stats[lastAction.player][lastAction.shotType]--;
+                updateShotCounts();
+                updateStatsPanel();
+
+                // Remove from action list
+                const list = document.getElementById('actionList');
+                if (list.firstChild) {
+                    list.removeChild(list.firstChild);
+                }
+            }
+
+            // Disable undo if no more actions
+            if (gameState.actions.length === 0) {
+                document.getElementById('undoBtn').disabled = true;
+            }
+
+            // Vibrate feedback
+            if (navigator.vibrate) {
+                navigator.vibrate([30, 30, 30]);
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // END MATCH
+        // ═══════════════════════════════════════════════════════════════
+        function endMatch() {
+            pauseTimer();
+
+            // Update final scores
+            document.getElementById('finalScore1').textContent = gameState.score[0];
+            document.getElementById('finalScore2').textContent = gameState.score[1];
+
+            // Determine winner
+            const name1 = document.getElementById('player1Name').value || 'Player 1';
+            const name2 = document.getElementById('player2Name').value || 'Player 2';
+            const winner = gameState.score[0] > gameState.score[1] ? name1 :
+                           gameState.score[1] > gameState.score[0] ? name2 : 'Tie';
+            document.getElementById('winnerText').textContent = `${winner} Wins!`;
+
+            // Populate final stats
+            const finalStats = document.getElementById('finalStats');
+            finalStats.innerHTML = `
+                <div class="modal-stat">
+                    <div class="modal-stat-value">${formatTime(gameState.timer)}</div>
+                    <div class="modal-stat-label">Match Duration</div>
+                </div>
+                <div class="modal-stat">
+                    <div class="modal-stat-value">${Object.values(gameState.stats[1]).reduce((a,b)=>a+b,0) + Object.values(gameState.stats[2]).reduce((a,b)=>a+b,0)}</div>
+                    <div class="modal-stat-label">Total Shots</div>
+                </div>
+                <div class="modal-stat">
+                    <div class="modal-stat-value">${gameState.stats[1].winner + gameState.stats[2].winner}</div>
+                    <div class="modal-stat-label">Total Winners</div>
+                </div>
+                <div class="modal-stat">
+                    <div class="modal-stat-value">${gameState.stats[1].dink + gameState.stats[2].dink}</div>
+                    <div class="modal-stat-label">Total Dinks</div>
+                </div>
+            `;
+
+            showModal('endMatchModal');
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // SAVE & EXPORT
+        // ═══════════════════════════════════════════════════════════════
+        function saveAndExport() {
+            const matchData = {
+                id: `match-${Date.now()}`,
+                date: new Date().toISOString(),
+                duration: gameState.timer,
+                players: {
+                    player1: {
+                        name: document.getElementById('player1Name').value || 'Player 1',
+                        score: gameState.score[0],
+                        stats: gameState.stats[1]
+                    },
+                    player2: {
+                        name: document.getElementById('player2Name').value || 'Player 2',
+                        score: gameState.score[1],
+                        stats: gameState.stats[2]
+                    }
+                },
+                actions: gameState.actions
+            };
+
+            // Save to localStorage
+            const savedMatches = JSON.parse(localStorage.getItem('courtsideMatches') || '[]');
+            savedMatches.push(matchData);
+            localStorage.setItem('courtsideMatches', JSON.stringify(savedMatches));
+
+            // Show success
+            closeModal('endMatchModal');
+            document.getElementById('matchId').textContent = matchData.id;
+            showModal('saveModal');
+
+            console.log('Match saved:', matchData);
+        }
+
+        function startNewMatch() {
+            closeModal('saveModal');
+            resetMatch();
+        }
+
+        function goToAvatars() {
+            // Navigate to avatar page to update stats
+            window.location.href = '/gamification-demo.html#digital-avatar-section';
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // RESET
+        // ═══════════════════════════════════════════════════════════════
+        function showResetModal() {
+            showModal('resetModal');
+        }
+
+        function resetMatch() {
+            // Reset state
+            gameState = {
+                score: [0, 0],
+                serving: 1,
+                selectedPlayer: 1,
+                timer: 0,
+                timerRunning: false,
+                timerInterval: null,
+                actions: [],
+                stats: {
+                    1: { dink: 0, drive: 0, drop: 0, lob: 0, volley: 0, overhead: 0, serve: 0, winner: 0, error: 0 },
+                    2: { dink: 0, drive: 0, drop: 0, lob: 0, volley: 0, overhead: 0, serve: 0, winner: 0, error: 0 }
+                }
+            };
+
+            // Reset UI
+            document.getElementById('score1').textContent = '0';
+            document.getElementById('score2').textContent = '0';
+            resetTimer();
+            updateServeIndicator();
+            updateShotCounts();
+            updateStatsPanel();
+            document.getElementById('undoBtn').disabled = true;
+
+            // Reset action log
+            document.getElementById('actionList').innerHTML = `
+                <div class="action-item" style="color: var(--text-muted); text-align: center;">
+                    Tap shots to start tracking...
+                </div>
+            `;
+
+            closeModal('resetModal');
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // MODAL FUNCTIONS
+        // ═══════════════════════════════════════════════════════════════
+        function showModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        // Close modal on backdrop click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                }
+            });
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // INIT
+        // ═══════════════════════════════════════════════════════════════
+        // Update player tabs when names change
+        document.getElementById('player1Name').addEventListener('input', () => selectPlayer(gameState.selectedPlayer));
+        document.getElementById('player2Name').addEventListener('input', () => selectPlayer(gameState.selectedPlayer));
+
+        // Initialize
+        updateServeIndicator();
+        selectPlayer(1);
+    </script>
+</body>
+</html>

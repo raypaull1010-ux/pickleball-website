@@ -1,0 +1,86 @@
+/* =========================================
+   TYPOGRAPHY
+   =========================================
+   Base text styles and headings.
+   ========================================= */
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    line-height: var(--line-height-tight);
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: var(--spacing-lg);
+}
+
+h2 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    margin-bottom: var(--spacing-md);
+}
+
+h3 {
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    margin-bottom: var(--spacing-md);
+}
+
+h4 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+h5 {
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+h6 {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Body text */
+p {
+    margin-bottom: var(--spacing-md);
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+/* Text utilities */
+.text-sm { font-size: var(--font-size-sm); }
+.text-lg { font-size: var(--font-size-lg); }
+.text-xl { font-size: var(--font-size-xl); }
+.text-2xl { font-size: var(--font-size-2xl); }
+
+.text-muted { color: var(--color-text-muted); }
+.text-light { color: var(--color-text-light); }
+.text-primary { color: var(--color-primary); }
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-danger { color: var(--color-danger); }
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+/* Lead text */
+.lead {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-light);
+    line-height: var(--line-height-loose);
+}
+
+/* Small text */
+small,
+.small {
+    font-size: var(--font-size-sm);
+}

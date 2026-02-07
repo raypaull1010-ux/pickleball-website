@@ -1,7 +1,20 @@
 {
+  "name": "rays-pickleball",
+  "version": "1.0.0",
+  "description": "Ray's Pickleball Coaching Platform",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "netlify-dev": "netlify dev"
+  },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.73.0",
     "@supabase/supabase-js": "^2.95.1",
     "stripe": "^20.3.1"
+  },
+  "devDependencies": {
+    "vite": "^7.3.1"
   }
 }
