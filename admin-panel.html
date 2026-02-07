@@ -101,6 +101,7 @@
                             <button class="tab-btn" data-tab="instructors">Instructors</button>
                             <button class="tab-btn" data-tab="evaluations">Evaluations</button>
                             <button class="tab-btn" data-tab="history">History</button>
+                            <button class="tab-btn" data-tab="badges">Badges</button>
                         </div>
 
                         <!-- Video Submissions Tab -->
@@ -320,6 +321,139 @@
                             <p class="tab-description">Recently confirmed payments and activated memberships.</p>
                             <div id="historyList" class="orders-list">
                                 <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Badges Tab -->
+                        <div id="badgesTab" class="tab-content" style="display: none;">
+                            <h3>Badge Management</h3>
+                            <p class="tab-description">View, add, edit, and delete badges. All changes save directly to the database.</p>
+
+                            <!-- Badge Stats -->
+                            <div class="referral-stats-grid" style="grid-template-columns: repeat(4, 1fr);">
+                                <div class="ref-stat-box">
+                                    <span class="ref-stat-value" id="badgeTotalCount">0</span>
+                                    <span class="ref-stat-label">Total Badges</span>
+                                </div>
+                                <div class="ref-stat-box" style="background: #ecfdf5; border-color: #10b981;">
+                                    <span class="ref-stat-value" id="badgeCategoryCount" style="color: #059669;">0</span>
+                                    <span class="ref-stat-label">Categories</span>
+                                </div>
+                                <div class="ref-stat-box" style="background: #ede9fe; border-color: #8b5cf6;">
+                                    <span class="ref-stat-value" id="badgeRareCount" style="color: #7c3aed;">0</span>
+                                    <span class="ref-stat-label">Rare+</span>
+                                </div>
+                                <div class="ref-stat-box" style="background: #fef3c7; border-color: #f59e0b;">
+                                    <span class="ref-stat-value" id="badgeHiddenCount" style="color: #b45309;">0</span>
+                                    <span class="ref-stat-label">Hidden</span>
+                                </div>
+                            </div>
+
+                            <!-- Badge Filters -->
+                            <div class="badge-filter-bar">
+                                <input type="text" id="badgeSearchInput" placeholder="Search badges..." oninput="filterBadgesAdmin()">
+                                <select id="badgeCategoryFilter" onchange="filterBadgesAdmin()">
+                                    <option value="">All Categories</option>
+                                </select>
+                                <select id="badgeRarityFilter" onchange="filterBadgesAdmin()">
+                                    <option value="">All Rarities</option>
+                                    <option value="common">Common</option>
+                                    <option value="uncommon">Uncommon</option>
+                                    <option value="rare">Rare</option>
+                                    <option value="epic">Epic</option>
+                                    <option value="legendary">Legendary</option>
+                                </select>
+                                <button class="btn btn-primary" onclick="openBadgeModal()">+ Add Badge</button>
+                            </div>
+
+                            <!-- Badge Grid -->
+                            <div class="admin-badges-grid" id="adminBadgesGrid">
+                                <div class="loading">Loading badges...</div>
+                            </div>
+                        </div>
+
+                        <!-- Badge Add/Edit Modal -->
+                        <div id="badgeModal" class="eval-modal-overlay" style="display: none;">
+                            <div class="eval-modal-content">
+                                <button class="modal-close-btn" onclick="closeBadgeModal()">&times;</button>
+                                <h3 id="badgeModalTitle">Add Badge</h3>
+
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                    <div class="form-group">
+                                        <label style="display: block; margin-bottom: 6px; font-weight: 600;">Badge ID</label>
+                                        <input type="text" id="badgeFormId" placeholder="e.g. streak-streak-200" style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.9rem;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="display: block; margin-bottom: 6px; font-weight: 600;">Icon (Emoji)</label>
+                                        <input type="text" id="badgeFormIcon" placeholder="e.g. 🏆" style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.9rem;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="display: block; margin-bottom: 6px; font-weight: 600;">Name</label>
+                                        <input type="text" id="badgeFormName" placeholder="Badge name" style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.9rem;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="display: block; margin-bottom: 6px; font-weight: 600;">Description</label>
+                                        <input type="text" id="badgeFormDesc" placeholder="Short description" style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.9rem;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="display: block; margin-bottom: 6px; font-weight: 600;">Category</label>
+                                        <select id="badgeFormCategory" style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.9rem;">
+                                            <option value="streak">streak</option>
+                                            <option value="challenge">challenge</option>
+                                            <option value="contest">contest</option>
+                                            <option value="points">points</option>
+                                            <option value="social">social</option>
+                                            <option value="drills">drills</option>
+                                            <option value="time">time</option>
+                                            <option value="special">special</option>
+                                            <option value="leaderboard">leaderboard</option>
+                                            <option value="featured">featured</option>
+                                            <option value="helper">helper</option>
+                                            <option value="skill">skill</option>
+                                            <option value="combo">combo</option>
+                                            <option value="member">member</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="display: block; margin-bottom: 6px; font-weight: 600;">Requirement Type</label>
+                                        <input type="text" id="badgeFormReqType" placeholder="e.g. count, streak, milestone, special" style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.9rem;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="display: block; margin-bottom: 6px; font-weight: 600;">Requirement Value</label>
+                                        <input type="number" id="badgeFormReqValue" placeholder="1" step="any" style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.9rem;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="display: block; margin-bottom: 6px; font-weight: 600;">Requirement Action</label>
+                                        <input type="text" id="badgeFormReqAction" placeholder="e.g. streak, completed, wins" style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.9rem;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="display: block; margin-bottom: 6px; font-weight: 600;">Rarity</label>
+                                        <select id="badgeFormRarity" style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.9rem;">
+                                            <option value="common">common</option>
+                                            <option value="uncommon">uncommon</option>
+                                            <option value="rare">rare</option>
+                                            <option value="epic">epic</option>
+                                            <option value="legendary">legendary</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="display: block; margin-bottom: 6px; font-weight: 600;">XP Reward</label>
+                                        <input type="number" id="badgeFormXP" placeholder="0" style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.9rem;">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="margin-top: 12px;">
+                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                        <input type="checkbox" id="badgeFormHidden">
+                                        <span style="font-weight: 600;">Hidden Badge</span>
+                                        <span style="color: var(--text-light); font-size: 0.85rem;">(Secret badge not shown until earned)</span>
+                                    </label>
+                                </div>
+
+                                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                                    <button class="btn btn-secondary" onclick="closeBadgeModal()">Cancel</button>
+                                    <button class="btn-confirm" onclick="saveBadge()">Save Badge</button>
+                                </div>
                             </div>
                         </div>
 
@@ -1157,6 +1291,100 @@
             .order-actions {
                 flex-direction: column;
             }
+        }
+
+        /* Badge Admin Styles */
+        .badge-filter-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            align-items: center;
+        }
+        .badge-filter-bar input,
+        .badge-filter-bar select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        .badge-filter-bar input { flex: 1; min-width: 180px; }
+
+        .admin-badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .admin-badge-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .admin-badge-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .admin-badge-card.rarity-uncommon { border-color: #10b981; }
+        .admin-badge-card.rarity-rare { border-color: #3b82f6; }
+        .admin-badge-card.rarity-epic { border-color: #8b5cf6; }
+        .admin-badge-card.rarity-legendary { border-color: #f59e0b; }
+        .admin-badge-card.is-hidden { opacity: 0.7; }
+
+        .admin-badge-icon { font-size: 2rem; flex-shrink: 0; line-height: 1; }
+        .admin-badge-info { flex: 1; min-width: 0; }
+        .admin-badge-name { font-weight: 600; font-size: 0.95rem; display: block; }
+        .admin-badge-desc { font-size: 0.8rem; color: var(--text-light); display: block; margin-top: 2px; }
+
+        .admin-badge-meta {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .badge-tag {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        .badge-tag.cat-tag { background: #f3f4f6; color: #4b5563; }
+        .badge-tag.type-tag { background: #dbeafe; color: #1d4ed8; }
+        .badge-tag.rarity-common { background: #e5e7eb; color: #6b7280; }
+        .badge-tag.rarity-uncommon { background: #d1fae5; color: #059669; }
+        .badge-tag.rarity-rare { background: #dbeafe; color: #2563eb; }
+        .badge-tag.rarity-epic { background: #ede9fe; color: #7c3aed; }
+        .badge-tag.rarity-legendary { background: #fef3c7; color: #b45309; }
+        .badge-tag.hidden-tag { background: #fecaca; color: #dc2626; }
+
+        .admin-badge-actions {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+        .btn-icon {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+        .btn-icon:hover { background: #f3f4f6; }
+        .btn-icon.btn-danger:hover { background: #fef2f2; color: #dc2626; border-color: #fca5a5; }
+
+        .badge-count-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 8px;
         }
     </style>
 
@@ -2290,6 +2518,234 @@
                 select.innerHTML += `<option value="${i.email}">${i.name} - ${i.city}, ${i.state}</option>`;
             });
         }
+
+        // ============================================
+        // BADGE MANAGEMENT
+        // ============================================
+        let allBadges = [];
+        let editingBadgeId = null;
+
+        async function loadBadgesTab() {
+            const grid = document.getElementById('adminBadgesGrid');
+            grid.innerHTML = '<div class="loading">Loading badges...</div>';
+
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/api-gamification/badges?admin=true`, {
+                    headers: authToken ? { 'Authorization': `Bearer ${authToken}` } : {}
+                });
+
+                if (!response.ok) throw new Error('Failed to fetch badges');
+                const data = await response.json();
+
+                // Flatten grouped badges into array
+                allBadges = [];
+                for (const [category, badges] of Object.entries(data.badges || {})) {
+                    for (const badge of badges) {
+                        allBadges.push(badge);
+                    }
+                }
+
+                // Populate category filter dropdown
+                const categories = [...new Set(allBadges.map(b => b.category))].sort();
+                const catFilter = document.getElementById('badgeCategoryFilter');
+                catFilter.innerHTML = '<option value="">All Categories</option>';
+                categories.forEach(c => {
+                    catFilter.innerHTML += `<option value="${c}">${c} (${allBadges.filter(b => b.category === c).length})</option>`;
+                });
+
+                updateBadgeStats();
+                renderBadgesAdmin(allBadges);
+            } catch (err) {
+                console.error('Load badges error:', err);
+                grid.innerHTML = '<p style="color: #dc2626;">Failed to load badges. Make sure the database has been seeded.</p>';
+            }
+        }
+
+        function updateBadgeStats() {
+            document.getElementById('badgeTotalCount').textContent = allBadges.length;
+            document.getElementById('badgeCategoryCount').textContent = new Set(allBadges.map(b => b.category)).size;
+            document.getElementById('badgeRareCount').textContent = allBadges.filter(b => ['rare', 'epic', 'legendary'].includes(b.rarity)).length;
+            document.getElementById('badgeHiddenCount').textContent = allBadges.filter(b => b.is_hidden).length;
+        }
+
+        function filterBadgesAdmin() {
+            const search = document.getElementById('badgeSearchInput').value.toLowerCase();
+            const category = document.getElementById('badgeCategoryFilter').value;
+            const rarity = document.getElementById('badgeRarityFilter').value;
+
+            const filtered = allBadges.filter(b => {
+                if (search && !b.name.toLowerCase().includes(search) && !b.description.toLowerCase().includes(search) && !b.id.toLowerCase().includes(search)) return false;
+                if (category && b.category !== category) return false;
+                if (rarity && b.rarity !== rarity) return false;
+                return true;
+            });
+
+            renderBadgesAdmin(filtered);
+        }
+
+        function renderBadgesAdmin(badges) {
+            const grid = document.getElementById('adminBadgesGrid');
+
+            if (badges.length === 0) {
+                grid.innerHTML = '<p style="color: var(--text-light); padding: 20px; text-align: center;">No badges match your filters.</p>';
+                return;
+            }
+
+            grid.innerHTML = badges.map(b => `
+                <div class="admin-badge-card rarity-${b.rarity || 'common'} ${b.is_hidden ? 'is-hidden' : ''}" data-badge-id="${b.id}">
+                    <div class="admin-badge-icon">${b.icon}</div>
+                    <div class="admin-badge-info">
+                        <span class="admin-badge-name">${b.name}</span>
+                        <span class="admin-badge-desc">${b.description}</span>
+                        <div class="admin-badge-meta">
+                            <span class="badge-tag cat-tag">${b.category}</span>
+                            <span class="badge-tag type-tag">${b.requirement_action || b.requirement_type}</span>
+                            <span class="badge-tag rarity-${b.rarity || 'common'}">${b.rarity || 'common'}</span>
+                            <span class="badge-tag cat-tag">req: ${b.requirement_value}</span>
+                            ${b.xp_reward ? `<span class="badge-tag cat-tag">${b.xp_reward} XP</span>` : ''}
+                            ${b.is_hidden ? '<span class="badge-tag hidden-tag">hidden</span>' : ''}
+                        </div>
+                    </div>
+                    <div class="admin-badge-actions">
+                        <button onclick="openBadgeModal('${b.id}')" class="btn-icon" title="Edit">&#9998;</button>
+                        <button onclick="deleteBadge('${b.id}')" class="btn-icon btn-danger" title="Delete">&#128465;</button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update count label
+            const existing = document.getElementById('badgeCountLabel');
+            if (existing) existing.remove();
+            const label = document.createElement('p');
+            label.id = 'badgeCountLabel';
+            label.className = 'badge-count-label';
+            label.textContent = `Showing ${badges.length} of ${allBadges.length} badges`;
+            grid.parentNode.insertBefore(label, grid);
+        }
+
+        function openBadgeModal(badgeId) {
+            editingBadgeId = badgeId || null;
+            document.getElementById('badgeModalTitle').textContent = badgeId ? 'Edit Badge' : 'Add Badge';
+
+            if (badgeId) {
+                const badge = allBadges.find(b => b.id === badgeId);
+                if (!badge) return;
+                document.getElementById('badgeFormId').value = badge.id;
+                document.getElementById('badgeFormId').disabled = true;
+                document.getElementById('badgeFormIcon').value = badge.icon;
+                document.getElementById('badgeFormName').value = badge.name;
+                document.getElementById('badgeFormDesc').value = badge.description;
+                document.getElementById('badgeFormCategory').value = badge.category;
+                document.getElementById('badgeFormReqType').value = badge.requirement_type;
+                document.getElementById('badgeFormReqValue').value = badge.requirement_value;
+                document.getElementById('badgeFormReqAction').value = badge.requirement_action || '';
+                document.getElementById('badgeFormRarity').value = badge.rarity || 'common';
+                document.getElementById('badgeFormXP').value = badge.xp_reward || 0;
+                document.getElementById('badgeFormHidden').checked = badge.is_hidden || false;
+            } else {
+                document.getElementById('badgeFormId').value = '';
+                document.getElementById('badgeFormId').disabled = false;
+                document.getElementById('badgeFormIcon').value = '';
+                document.getElementById('badgeFormName').value = '';
+                document.getElementById('badgeFormDesc').value = '';
+                document.getElementById('badgeFormCategory').value = 'streak';
+                document.getElementById('badgeFormReqType').value = '';
+                document.getElementById('badgeFormReqValue').value = '1';
+                document.getElementById('badgeFormReqAction').value = '';
+                document.getElementById('badgeFormRarity').value = 'common';
+                document.getElementById('badgeFormXP').value = '0';
+                document.getElementById('badgeFormHidden').checked = false;
+            }
+
+            document.getElementById('badgeModal').style.display = 'flex';
+        }
+
+        function closeBadgeModal() {
+            document.getElementById('badgeModal').style.display = 'none';
+            editingBadgeId = null;
+        }
+
+        async function saveBadge() {
+            const badgeData = {
+                id: document.getElementById('badgeFormId').value.trim(),
+                icon: document.getElementById('badgeFormIcon').value.trim(),
+                name: document.getElementById('badgeFormName').value.trim(),
+                description: document.getElementById('badgeFormDesc').value.trim(),
+                category: document.getElementById('badgeFormCategory').value,
+                requirement_type: document.getElementById('badgeFormReqType').value.trim() || 'count',
+                requirement_value: parseFloat(document.getElementById('badgeFormReqValue').value) || 1,
+                requirement_action: document.getElementById('badgeFormReqAction').value.trim(),
+                rarity: document.getElementById('badgeFormRarity').value,
+                xp_reward: parseInt(document.getElementById('badgeFormXP').value) || 0,
+                is_hidden: document.getElementById('badgeFormHidden').checked
+            };
+
+            if (!badgeData.id || !badgeData.name || !badgeData.icon) {
+                showStatus('Badge ID, Name, and Icon are required', 'error');
+                return;
+            }
+
+            try {
+                const isEdit = !!editingBadgeId;
+                const url = isEdit
+                    ? `${CONFIG.API_BASE_URL}/api-gamification/badges/${encodeURIComponent(editingBadgeId)}`
+                    : `${CONFIG.API_BASE_URL}/api-gamification/badges`;
+
+                const response = await fetch(url, {
+                    method: isEdit ? 'PUT' : 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(badgeData)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || result.details || 'Save failed');
+                }
+
+                showStatus(`Badge "${badgeData.name}" ${isEdit ? 'updated' : 'created'} successfully!`, 'success');
+                closeBadgeModal();
+                await loadBadgesTab();
+            } catch (err) {
+                showStatus(`Error: ${err.message}`, 'error');
+            }
+        }
+
+        async function deleteBadge(badgeId) {
+            const badge = allBadges.find(b => b.id === badgeId);
+            if (!confirm(`Delete badge "${badge?.name || badgeId}"? This cannot be undone.`)) return;
+
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/api-gamification/badges/${encodeURIComponent(badgeId)}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Delete failed');
+                }
+
+                showStatus(`Badge deleted. ${result.usersAffected > 0 ? `(${result.usersAffected} users had this badge)` : ''}`, 'success');
+                await loadBadgesTab();
+            } catch (err) {
+                showStatus(`Error: ${err.message}`, 'error');
+            }
+        }
+
+        // Load badges tab when it becomes active
+        const originalTabHandler = document.querySelectorAll('.tab-btn');
+        originalTabHandler.forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.dataset.tab === 'badges' && allBadges.length === 0) {
+                    loadBadgesTab();
+                }
+            });
+        });
 
         // Log when Ray refers a student to an instructor
         function logRayReferral() {

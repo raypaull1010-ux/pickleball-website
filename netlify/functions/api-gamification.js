@@ -6,7 +6,7 @@
 // GET /api-gamification/badges - Get all badges
 // GET /api-gamification/activity - Get activity feed
 
-const { getServiceClient, verifyUser, jsonResponse, handleCors } = require('./lib/supabase');
+const { getServiceClient, verifyUser, isAdmin, jsonResponse, handleCors } = require('./lib/supabase');
 const { withSecurity } = require('./lib/security');
 
 // XP rewards for different actions
@@ -472,12 +472,19 @@ const handler = async (event, context) => {
     // GET /api-gamification/badges - Get all badges
     // ==========================================
     if (event.httpMethod === 'GET' && path === '/badges') {
-      const { data: badges, error } = await supabase
+      const showAll = event.queryStringParameters?.admin === 'true';
+      let query = supabase
         .from('badge_definitions')
         .select('*')
-        .eq('is_hidden', false)
         .order('category')
         .order('requirement_value');
+
+      // Only filter hidden badges for non-admin requests
+      if (!showAll) {
+        query = query.eq('is_hidden', false);
+      }
+
+      const { data: badges, error } = await query;
 
       if (error) {
         return jsonResponse(500, { error: 'Failed to fetch badges' });
@@ -492,7 +499,7 @@ const handler = async (event, context) => {
         grouped[badge.category].push(badge);
       }
 
-      return jsonResponse(200, { badges: grouped });
+      return jsonResponse(200, { badges: grouped, total: (badges || []).length });
     }
 
     // ==========================================
@@ -527,6 +534,130 @@ const handler = async (event, context) => {
       }));
 
       return jsonResponse(200, { activities: formattedActivities });
+    }
+
+    // ==========================================
+    // POST /api-gamification/badges - Create a new badge (admin only)
+    // ==========================================
+    if (event.httpMethod === 'POST' && path === '/badges') {
+      const user = await verifyUser(event.headers.authorization);
+      if (!user) {
+        return jsonResponse(401, { error: 'Authentication required' });
+      }
+      const userIsAdmin = await isAdmin(user.id);
+      if (!userIsAdmin) {
+        return jsonResponse(403, { error: 'Admin access required' });
+      }
+
+      const badge = JSON.parse(event.body);
+      if (!badge.id || !badge.name || !badge.icon || !badge.category) {
+        return jsonResponse(400, { error: 'Missing required fields: id, name, icon, category' });
+      }
+
+      const { data, error } = await supabase
+        .from('badge_definitions')
+        .insert({
+          id: badge.id,
+          name: badge.name,
+          description: badge.description || '',
+          icon: badge.icon,
+          category: badge.category,
+          xp_reward: badge.xp_reward || 0,
+          requirement_type: badge.requirement_type || 'count',
+          requirement_value: badge.requirement_value || 1,
+          requirement_action: badge.requirement_action || '',
+          is_hidden: badge.is_hidden || false,
+          rarity: badge.rarity || 'common'
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Create badge error:', error);
+        return jsonResponse(500, { error: 'Failed to create badge', details: error.message });
+      }
+
+      return jsonResponse(201, { badge: data });
+    }
+
+    // ==========================================
+    // PUT /api-gamification/badges/:id - Update a badge (admin only)
+    // ==========================================
+    if (event.httpMethod === 'PUT' && path.startsWith('/badges/')) {
+      const badgeId = decodeURIComponent(path.replace('/badges/', ''));
+      const user = await verifyUser(event.headers.authorization);
+      if (!user) {
+        return jsonResponse(401, { error: 'Authentication required' });
+      }
+      const userIsAdmin = await isAdmin(user.id);
+      if (!userIsAdmin) {
+        return jsonResponse(403, { error: 'Admin access required' });
+      }
+
+      const updates = JSON.parse(event.body);
+      // Only allow updating specific fields
+      const allowedFields = ['name', 'description', 'icon', 'category', 'xp_reward', 'requirement_type', 'requirement_value', 'requirement_action', 'is_hidden', 'rarity'];
+      const sanitized = {};
+      for (const key of allowedFields) {
+        if (updates[key] !== undefined) {
+          sanitized[key] = updates[key];
+        }
+      }
+
+      if (Object.keys(sanitized).length === 0) {
+        return jsonResponse(400, { error: 'No valid fields to update' });
+      }
+
+      const { data, error } = await supabase
+        .from('badge_definitions')
+        .update(sanitized)
+        .eq('id', badgeId)
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Update badge error:', error);
+        return jsonResponse(500, { error: 'Failed to update badge', details: error.message });
+      }
+
+      if (!data) {
+        return jsonResponse(404, { error: 'Badge not found' });
+      }
+
+      return jsonResponse(200, { badge: data });
+    }
+
+    // ==========================================
+    // DELETE /api-gamification/badges/:id - Delete a badge (admin only)
+    // ==========================================
+    if (event.httpMethod === 'DELETE' && path.startsWith('/badges/')) {
+      const badgeId = decodeURIComponent(path.replace('/badges/', ''));
+      const user = await verifyUser(event.headers.authorization);
+      if (!user) {
+        return jsonResponse(401, { error: 'Authentication required' });
+      }
+      const userIsAdmin = await isAdmin(user.id);
+      if (!userIsAdmin) {
+        return jsonResponse(403, { error: 'Admin access required' });
+      }
+
+      // Check if any users have earned this badge
+      const { count } = await supabase
+        .from('user_badges')
+        .select('*', { count: 'exact', head: true })
+        .eq('badge_id', badgeId);
+
+      const { error } = await supabase
+        .from('badge_definitions')
+        .delete()
+        .eq('id', badgeId);
+
+      if (error) {
+        console.error('Delete badge error:', error);
+        return jsonResponse(500, { error: 'Failed to delete badge', details: error.message });
+      }
+
+      return jsonResponse(200, { deleted: badgeId, usersAffected: count || 0 });
     }
 
     return jsonResponse(405, { error: 'Method not allowed' });
