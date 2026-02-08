@@ -40,12 +40,15 @@ const API = {
     return !!token;
   },
 
-  // Make API request
+  // Make API request with retry logic
   request: async function(endpoint, options = {}) {
     const {
       method = 'GET',
       body = null,
-      requireAuth = false
+      requireAuth = false,
+      retries = 3,
+      retryDelay = 1000,
+      timeout = 30000
     } = options;
 
     const headers = {
@@ -69,21 +72,86 @@ const API = {
       fetchOptions.body = JSON.stringify(body);
     }
 
-    const response = await fetch(`${this.baseUrl}${endpoint}`, fetchOptions);
+    let lastError;
 
-    // Parse response
-    let data;
-    try {
-      data = await response.json();
-    } catch (e) {
-      data = { error: 'Invalid response from server' };
+    for (let attempt = 0; attempt < retries; attempt++) {
+      try {
+        // Create abort controller for timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
+        fetchOptions.signal = controller.signal;
+
+        const response = await fetch(`${this.baseUrl}${endpoint}`, fetchOptions);
+        clearTimeout(timeoutId);
+
+        // Parse response
+        let data;
+        try {
+          data = await response.json();
+        } catch (e) {
+          data = { error: 'Invalid response from server' };
+        }
+
+        // Don't retry 4xx errors (client errors)
+        if (response.status >= 400 && response.status < 500) {
+          throw new Error(data.error || data.message || `Request failed with status ${response.status}`);
+        }
+
+        // Retry 5xx errors (server errors)
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status}`);
+        }
+
+        return data;
+      } catch (error) {
+        lastError = error;
+
+        // Don't retry if it's a client error or auth error
+        if (error.message.includes('Authentication') ||
+            error.message.includes('400') ||
+            error.message.includes('401') ||
+            error.message.includes('403') ||
+            error.message.includes('404')) {
+          throw error;
+        }
+
+        // Wait before retrying (exponential backoff)
+        if (attempt < retries - 1) {
+          await new Promise(r => setTimeout(r, retryDelay * Math.pow(2, attempt)));
+        }
+      }
     }
 
-    if (!response.ok) {
-      throw new Error(data.error || data.message || `Request failed with status ${response.status}`);
-    }
+    throw lastError;
+  },
 
-    return data;
+  // Get user-friendly error message
+  getErrorMessage: function(error) {
+    if (!navigator.onLine) {
+      return "You appear to be offline. Please check your internet connection and try again.";
+    }
+    if (error.name === 'AbortError' || error.message.includes('timeout')) {
+      return "The request took too long. Please try again.";
+    }
+    if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+      return "Unable to connect to the server. Please check your connection and try again.";
+    }
+    if (error.message.includes('500') || error.message.includes('Server error')) {
+      return "Something went wrong on our end. We're working on it. Please try again in a moment.";
+    }
+    if (error.message.includes('401') || error.message.includes('Authentication')) {
+      return "Your session has expired. Please log in again.";
+    }
+    if (error.message.includes('403')) {
+      return "You don't have permission to perform this action.";
+    }
+    if (error.message.includes('404')) {
+      return "The requested resource was not found.";
+    }
+    if (error.message.includes('429')) {
+      return "Too many requests. Please wait a moment and try again.";
+    }
+    return error.message || "An unexpected error occurred. Please try again.";
   },
 
   // ============================================

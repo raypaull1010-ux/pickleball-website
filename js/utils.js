@@ -176,10 +176,129 @@ const Utils = {
         const s = ['th', 'st', 'nd', 'rd'];
         const v = n % 100;
         return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    },
+
+    // ==========================================
+    // ACCESSIBILITY & NAVIGATION
+    // ==========================================
+
+    /**
+     * Initialize mobile-friendly dropdown menus
+     * Adds touch/click support for devices without hover
+     */
+    initMobileDropdowns() {
+        // Only apply to touch devices
+        if (!('ontouchstart' in window) && !navigator.maxTouchPoints) return;
+
+        document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+            const trigger = dropdown.querySelector('a');
+            if (!trigger) return;
+
+            trigger.addEventListener('click', (e) => {
+                const isOpen = dropdown.classList.contains('is-open');
+
+                // Close all other dropdowns
+                document.querySelectorAll('.nav-dropdown.is-open')
+                    .forEach(d => d.classList.remove('is-open'));
+
+                // Toggle this dropdown
+                if (!isOpen) {
+                    e.preventDefault();
+                    dropdown.classList.add('is-open');
+                    trigger.setAttribute('aria-expanded', 'true');
+                } else {
+                    trigger.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-dropdown')) {
+                document.querySelectorAll('.nav-dropdown.is-open').forEach(d => {
+                    d.classList.remove('is-open');
+                    const trigger = d.querySelector('a');
+                    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+                });
+            }
+        });
+    },
+
+    /**
+     * Initialize keyboard navigation for dropdowns
+     * Adds Arrow key, Enter, and Escape support
+     */
+    initDropdownKeyboard() {
+        document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+            const trigger = dropdown.querySelector('a');
+            const menu = dropdown.querySelector('.dropdown-menu');
+            if (!trigger || !menu) return;
+
+            const menuItems = menu.querySelectorAll('a');
+
+            // Handle trigger keyboard events
+            trigger.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    dropdown.classList.add('is-open');
+                    trigger.setAttribute('aria-expanded', 'true');
+                    if (menuItems[0]) menuItems[0].focus();
+                }
+            });
+
+            // Handle menu item keyboard events
+            menuItems.forEach((item, index) => {
+                item.addEventListener('keydown', (e) => {
+                    switch (e.key) {
+                        case 'ArrowDown':
+                            e.preventDefault();
+                            if (menuItems[index + 1]) menuItems[index + 1].focus();
+                            break;
+                        case 'ArrowUp':
+                            e.preventDefault();
+                            if (index === 0) {
+                                trigger.focus();
+                            } else if (menuItems[index - 1]) {
+                                menuItems[index - 1].focus();
+                            }
+                            break;
+                        case 'Escape':
+                            e.preventDefault();
+                            dropdown.classList.remove('is-open');
+                            trigger.setAttribute('aria-expanded', 'false');
+                            trigger.focus();
+                            break;
+                        case 'Tab':
+                            if (!e.shiftKey && index === menuItems.length - 1) {
+                                dropdown.classList.remove('is-open');
+                                trigger.setAttribute('aria-expanded', 'false');
+                            }
+                            break;
+                    }
+                });
+            });
+        });
+    },
+
+    /**
+     * Initialize all accessibility features
+     */
+    initAccessibility() {
+        this.initMobileDropdowns();
+        this.initDropdownKeyboard();
     }
 };
 
 // Make Utils available globally
 if (typeof window !== 'undefined') {
     window.Utils = Utils;
+}
+
+// Auto-initialize accessibility features when DOM is ready
+if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => Utils.initAccessibility());
+    } else {
+        Utils.initAccessibility();
+    }
 }

@@ -186,6 +186,27 @@ section,
     border: 0;
 }
 
+/* Skip to main content link - accessibility */
+.skip-link {
+    position: absolute;
+    top: -50px;
+    left: var(--spacing-md);
+    background: var(--color-primary);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    z-index: 10001;
+    text-decoration: none;
+    transition: top var(--transition-fast);
+}
+
+.skip-link:focus {
+    top: var(--spacing-md);
+    outline: 2px solid var(--color-primary-dark);
+    outline-offset: 2px;
+}
+
 /* Responsive visibility */
 @media (max-width: 768px) {
     .hide-mobile { display: none !important; }

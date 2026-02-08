@@ -4,6 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Ray's Pickleball</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Sign in to your Ray's Pickleball dashboard. Access video analyses, track progress, and manage your membership.">
+  <link rel="canonical" href="https://rayspickleball.com/login.html">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Login - Ray's Pickleball">
+  <meta property="og:description" content="Sign in to access your pickleball video analyses and track your progress.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rayspickleball.com/login.html">
+
+  <!-- Resource Hints -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://jrwgmyksopkuylknwwhp.supabase.co" crossorigin>
+
   <link rel="stylesheet" href="css/main.css">
   <style>
     .auth-container {
@@ -137,6 +153,9 @@
   </style>
 </head>
 <body>
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
   <!-- Navigation -->
   <header class="navbar">
     <div class="container navbar-content">
@@ -150,7 +169,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
     <div class="auth-container">
       <div class="auth-header">
         <h1>Welcome Back</h1>
@@ -163,12 +182,12 @@
       <form class="auth-form" id="login-form">
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" required placeholder="you@example.com">
+          <input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email">
         </div>
 
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" name="password" required placeholder="Enter your password">
+          <input type="password" id="password" name="password" required placeholder="Enter your password" autocomplete="current-password">
         </div>
 
         <div class="forgot-password">

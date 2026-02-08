@@ -169,6 +169,36 @@ header {
     transition: transform var(--transition-base);
 }
 
+/* Touch device dropdown support */
+@media (hover: none), (pointer: coarse) {
+    .dropdown-menu,
+    .navbar__dropdown-menu {
+        display: none;
+    }
+
+    .nav-dropdown.is-open .dropdown-menu,
+    .navbar__dropdown.is-open .navbar__dropdown-menu {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+        margin-top: var(--spacing-xs);
+    }
+
+    .nav-dropdown.is-open > a::after,
+    .navbar__dropdown.is-open .navbar__dropdown-trigger::after {
+        transform: rotate(180deg);
+    }
+}
+
+/* Focus styles for accessibility */
+.nav-dropdown > a:focus,
+.navbar__dropdown-trigger:focus,
+.dropdown-menu a:focus,
+.navbar__dropdown-link:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .navbar {

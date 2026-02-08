@@ -29,6 +29,7 @@
 @import './components/_footer.css';
 @import './components/_gamification-ui.css';
 @import './components/_social-ui.css';
+@import './components/_loading.css';
 
 /* ===========================================
    LEGACY STYLES (to be migrated)

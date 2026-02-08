@@ -4,6 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up - Ray's Pickleball</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Create your Ray's Pickleball account. Track video submissions, view analysis history, manage membership, and earn referral rewards.">
+  <link rel="canonical" href="https://rayspickleball.com/signup.html">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Sign Up - Ray's Pickleball">
+  <meta property="og:description" content="Join Ray's Pickleball to track your video analyses and improve your game.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rayspickleball.com/signup.html">
+
+  <!-- Resource Hints -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://jrwgmyksopkuylknwwhp.supabase.co" crossorigin>
+
   <link rel="stylesheet" href="css/main.css">
   <style>
     .auth-container {
@@ -174,6 +190,9 @@
   </style>
 </head>
 <body>
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
   <!-- Navigation -->
   <header class="navbar">
     <div class="container navbar-content">
@@ -187,7 +206,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
     <div class="auth-container">
       <div class="auth-header">
         <h1>Create Account</h1>
@@ -210,28 +229,28 @@
       <form class="auth-form" id="signup-form">
         <div class="form-group">
           <label for="name">Full Name</label>
-          <input type="text" id="name" name="name" required placeholder="John Smith">
+          <input type="text" id="name" name="name" required placeholder="John Smith" autocomplete="name">
         </div>
 
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" required placeholder="you@example.com">
+          <input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email">
         </div>
 
         <div class="form-group">
           <label for="phone">Phone (optional)</label>
-          <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+          <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" autocomplete="tel">
         </div>
 
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" name="password" required placeholder="Create a password" minlength="8">
-          <p class="password-requirements">At least 8 characters</p>
+          <input type="password" id="password" name="password" required placeholder="Create a password" minlength="8" autocomplete="new-password" aria-describedby="password-requirements">
+          <p class="password-requirements" id="password-requirements">At least 8 characters</p>
         </div>
 
         <div class="form-group">
           <label for="confirm-password">Confirm Password</label>
-          <input type="password" id="confirm-password" name="confirm-password" required placeholder="Confirm your password">
+          <input type="password" id="confirm-password" name="confirm-password" required placeholder="Confirm your password" autocomplete="new-password">
         </div>
 
         <button type="submit" class="btn btn-primary">Create Account</button>
