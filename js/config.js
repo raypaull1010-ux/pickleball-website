@@ -25,8 +25,11 @@ const CONFIG = {
   USE_SUPABASE_AUTH: true, // Supabase is now configured
   USE_STRIPE_PAYMENTS: true, // Stripe is now configured
 
-  // Legacy fallback (remove after migration)
-  LEGACY_ADMIN_PASSWORD: 'raycoach2025',
+  // Environment (auto-detected)
+  IS_PRODUCTION: typeof window !== 'undefined' && window.location.hostname === 'rayspickleball.com',
+
+  // Error Tracking (optional - set in Netlify env vars)
+  SENTRY_DSN: null, // Will be set from environment if available
 
   // Available Coaches
   // Each coach can receive payments directly via Stripe Connect

@@ -957,10 +957,436 @@ CREATE INDEX IF NOT EXISTS idx_player_stats_user_date ON public.player_stats_his
 CREATE INDEX IF NOT EXISTS idx_analysis_progress_user ON public.analysis_progress(user_id, analysis_date DESC);
 
 -- ============================================
--- 17. INITIAL DATA (OPTIONAL)
+-- 17. WEEKLY SHOT CHALLENGES SYSTEM
+-- ============================================
+
+-- Shot Challenge Definitions (templates for weekly challenges)
+CREATE TABLE IF NOT EXISTS public.shot_challenge_definitions (
+  id TEXT PRIMARY KEY, -- e.g., 'ernie', 'atp', 'third_shot_drop'
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  icon TEXT NOT NULL, -- Emoji for the shot
+  category TEXT NOT NULL, -- 'advanced', 'intermediate', 'beginner', 'bonus'
+  difficulty INTEGER NOT NULL CHECK (difficulty BETWEEN 1 AND 4), -- 1-4 stars
+  xp_reward INTEGER NOT NULL,
+  verification_type TEXT NOT NULL DEFAULT 'coach', -- 'ai', 'coach', 'community', 'auto'
+  video_requirements JSONB DEFAULT '{}', -- {"min_duration": 5, "max_duration": 30, "must_show": ["full_court", "ball_contact"]}
+  tips TEXT[], -- Tips for executing the shot
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Weekly Challenge Schedule (which shots are active each week)
+CREATE TABLE IF NOT EXISTS public.weekly_challenge_schedule (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  week_start DATE NOT NULL, -- Monday of the challenge week
+  week_end DATE NOT NULL, -- Sunday of the challenge week
+  challenge_ids TEXT[] NOT NULL, -- Array of shot_challenge_definition IDs
+  bonus_challenge_id TEXT REFERENCES public.shot_challenge_definitions(id), -- Bonus challenge for extra XP
+  completion_bonus_xp INTEGER DEFAULT 200, -- XP for completing all challenges
+  theme TEXT, -- Optional weekly theme like "Kitchen Domination"
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(week_start)
+);
+
+-- User Shot Challenge Submissions
+CREATE TABLE IF NOT EXISTS public.shot_challenge_submissions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  challenge_definition_id TEXT REFERENCES public.shot_challenge_definitions(id) ON DELETE CASCADE,
+  week_schedule_id UUID REFERENCES public.weekly_challenge_schedule(id) ON DELETE CASCADE,
+  video_url TEXT NOT NULL,
+  video_thumbnail_url TEXT,
+  video_duration_seconds INTEGER,
+
+  -- Verification status
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'ai_reviewing', 'coach_reviewing', 'approved', 'rejected', 'needs_resubmit')),
+  verification_method TEXT, -- 'ai', 'coach', 'community'
+  verified_by UUID REFERENCES public.users(id), -- Coach who verified (if applicable)
+  verification_notes TEXT,
+  ai_confidence_score DECIMAL(3,2), -- 0.00 to 1.00 if AI verified
+
+  -- Community voting (if used)
+  upvotes INTEGER DEFAULT 0,
+  downvotes INTEGER DEFAULT 0,
+
+  -- XP awarded
+  xp_awarded INTEGER DEFAULT 0,
+  xp_awarded_at TIMESTAMPTZ,
+
+  -- Timestamps
+  submitted_at TIMESTAMPTZ DEFAULT NOW(),
+  reviewed_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+
+  -- One submission per challenge per week
+  UNIQUE(user_id, challenge_definition_id, week_schedule_id)
+);
+
+-- User Weekly Progress (tracks overall weekly completion)
+CREATE TABLE IF NOT EXISTS public.user_weekly_challenge_progress (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  week_schedule_id UUID REFERENCES public.weekly_challenge_schedule(id) ON DELETE CASCADE,
+  challenges_completed INTEGER DEFAULT 0,
+  total_challenges INTEGER NOT NULL,
+  total_xp_earned INTEGER DEFAULT 0,
+  bonus_earned BOOLEAN DEFAULT FALSE, -- Did they complete all and get bonus?
+  bonus_xp_awarded INTEGER DEFAULT 0,
+  started_at TIMESTAMPTZ DEFAULT NOW(),
+  completed_at TIMESTAMPTZ, -- When they completed all challenges
+  UNIQUE(user_id, week_schedule_id)
+);
+
+-- Insert default shot challenge definitions
+INSERT INTO public.shot_challenge_definitions (id, name, description, icon, category, difficulty, xp_reward, verification_type, tips) VALUES
+  -- Beginner (1-2 stars)
+  ('first_dink', 'First Dink', 'Execute a soft dink that lands in the opponents kitchen', '🎯', 'beginner', 1, 15, 'ai', ARRAY['Keep paddle face open', 'Use a pushing motion', 'Follow through toward target']),
+  ('deep_serve', 'Deep Serve', 'Hit a serve that lands in the back third of the service box', '🚀', 'beginner', 1, 20, 'ai', ARRAY['Aim for the baseline', 'Use consistent toss height', 'Follow through fully']),
+  ('kitchen_reset', 'Kitchen Reset', 'Reset a hard shot with a soft drop into the kitchen', '🛑', 'beginner', 2, 25, 'ai', ARRAY['Absorb the pace', 'Soft hands', 'Aim for the middle of kitchen']),
+
+  -- Intermediate (2-3 stars)
+  ('third_shot_drop', 'Third Shot Drop', 'Execute a third shot drop that lands in the opponents kitchen', '🎯', 'intermediate', 2, 30, 'ai', ARRAY['Bend your knees', 'Use an upward swing', 'Aim for the middle']),
+  ('lob_rundown', 'Run Down the Lob', 'Chase down a lob and return it successfully', '🏃', 'intermediate', 2, 35, 'ai', ARRAY['Turn and run immediately', 'Track the ball over your shoulder', 'Use an overhead or drop']),
+  ('forehand_winner', 'Running Forehand Winner', 'Hit a forehand winner while on the move', '💥', 'intermediate', 3, 40, 'coach', ARRAY['Set your feet when possible', 'Stay balanced', 'Follow through to target']),
+  ('cross_court_dink', 'Cross-Court Dink', 'Execute 5 consecutive cross-court dinks', '↗️', 'intermediate', 2, 25, 'ai', ARRAY['Angle paddle face', 'Stay patient', 'Move opponent side to side']),
+
+  -- Advanced (3-4 stars)
+  ('ernie', 'The Ernie', 'Jump around the kitchen and volley the ball out of the air', '🦅', 'advanced', 3, 50, 'coach', ARRAY['Time your jump with opponents shot', 'Jump AROUND not into kitchen', 'Keep paddle ready']),
+  ('atp', 'Around The Post (ATP)', 'Hit the ball around the net post and into the court', '🔄', 'advanced', 4, 75, 'coach', ARRAY['Wide ball is required', 'Low trajectory', 'Aim for back court']),
+  ('bert', 'The Bert', 'Cross behind your partner and volley from their side', '🤝', 'advanced', 3, 50, 'coach', ARRAY['Communicate with partner', 'Quick footwork', 'Dont collide!']),
+  ('speed_up_counter', 'Speed-Up Counter', 'Successfully counter an opponents speed-up with a reset or winner', '⚡', 'advanced', 3, 45, 'coach', ARRAY['Stay compact', 'Anticipate the speed-up', 'Quick paddle positioning']),
+
+  -- Bonus Challenges (4 stars)
+  ('spin_serve_ace', 'Spin Serve Ace', 'Hit an ace with a heavy spin serve', '🌪️', 'bonus', 4, 100, 'coach', ARRAY['Generate spin with wrist snap', 'Aim for corners', 'Vary your spin direction']),
+  ('between_legs', 'Between the Legs', 'Return a shot between your legs', '🤸', 'bonus', 4, 100, 'coach', ARRAY['Only attempt on lobs behind you', 'Keep your eye on the ball', 'Style points matter!']),
+  ('behind_back', 'Behind the Back', 'Hit a shot behind your back successfully', '🎭', 'bonus', 4, 100, 'coach', ARRAY['Use on shots to your non-paddle side', 'Commit to the shot', 'High difficulty, high reward'])
+ON CONFLICT (id) DO UPDATE SET
+  name = EXCLUDED.name,
+  description = EXCLUDED.description,
+  xp_reward = EXCLUDED.xp_reward,
+  tips = EXCLUDED.tips;
+
+-- Function to create weekly challenges
+CREATE OR REPLACE FUNCTION create_weekly_challenges(
+  p_week_start DATE,
+  p_challenge_ids TEXT[],
+  p_bonus_id TEXT DEFAULT NULL,
+  p_theme TEXT DEFAULT NULL
+)
+RETURNS UUID AS $$
+DECLARE
+  v_week_end DATE;
+  v_schedule_id UUID;
+BEGIN
+  -- Calculate week end (Sunday)
+  v_week_end := p_week_start + INTERVAL '6 days';
+
+  INSERT INTO public.weekly_challenge_schedule (week_start, week_end, challenge_ids, bonus_challenge_id, theme)
+  VALUES (p_week_start, v_week_end, p_challenge_ids, p_bonus_id, p_theme)
+  RETURNING id INTO v_schedule_id;
+
+  RETURN v_schedule_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Function to get current week's challenges
+CREATE OR REPLACE FUNCTION get_current_weekly_challenges()
+RETURNS TABLE (
+  schedule_id UUID,
+  week_start DATE,
+  week_end DATE,
+  theme TEXT,
+  completion_bonus_xp INTEGER,
+  challenges JSONB
+) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT
+    ws.id as schedule_id,
+    ws.week_start,
+    ws.week_end,
+    ws.theme,
+    ws.completion_bonus_xp,
+    (
+      SELECT jsonb_agg(
+        jsonb_build_object(
+          'id', scd.id,
+          'name', scd.name,
+          'description', scd.description,
+          'icon', scd.icon,
+          'category', scd.category,
+          'difficulty', scd.difficulty,
+          'xp_reward', scd.xp_reward,
+          'verification_type', scd.verification_type,
+          'tips', scd.tips,
+          'is_bonus', scd.id = ws.bonus_challenge_id
+        )
+      )
+      FROM public.shot_challenge_definitions scd
+      WHERE scd.id = ANY(ws.challenge_ids)
+         OR scd.id = ws.bonus_challenge_id
+    ) as challenges
+  FROM public.weekly_challenge_schedule ws
+  WHERE CURRENT_DATE BETWEEN ws.week_start AND ws.week_end
+    AND ws.is_active = TRUE
+  LIMIT 1;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Function to submit a shot challenge video
+CREATE OR REPLACE FUNCTION submit_shot_challenge(
+  p_user_id UUID,
+  p_challenge_id TEXT,
+  p_video_url TEXT,
+  p_video_duration INTEGER DEFAULT NULL
+)
+RETURNS JSONB AS $$
+DECLARE
+  v_schedule_id UUID;
+  v_submission_id UUID;
+  v_verification_type TEXT;
+  v_xp_reward INTEGER;
+  v_result JSONB;
+BEGIN
+  -- Get current week's schedule
+  SELECT id INTO v_schedule_id
+  FROM public.weekly_challenge_schedule
+  WHERE CURRENT_DATE BETWEEN week_start AND week_end
+    AND is_active = TRUE
+    AND (p_challenge_id = ANY(challenge_ids) OR p_challenge_id = bonus_challenge_id)
+  LIMIT 1;
+
+  IF v_schedule_id IS NULL THEN
+    RETURN jsonb_build_object('success', false, 'error', 'Challenge not available this week');
+  END IF;
+
+  -- Get challenge details
+  SELECT verification_type, xp_reward INTO v_verification_type, v_xp_reward
+  FROM public.shot_challenge_definitions
+  WHERE id = p_challenge_id;
+
+  -- Insert or update submission
+  INSERT INTO public.shot_challenge_submissions (
+    user_id, challenge_definition_id, week_schedule_id, video_url, video_duration_seconds, status
+  ) VALUES (
+    p_user_id, p_challenge_id, v_schedule_id, p_video_url, p_video_duration,
+    CASE WHEN v_verification_type = 'ai' THEN 'ai_reviewing' ELSE 'pending' END
+  )
+  ON CONFLICT (user_id, challenge_definition_id, week_schedule_id)
+  DO UPDATE SET
+    video_url = p_video_url,
+    video_duration_seconds = p_video_duration,
+    status = CASE WHEN v_verification_type = 'ai' THEN 'ai_reviewing' ELSE 'pending' END,
+    submitted_at = NOW()
+  RETURNING id INTO v_submission_id;
+
+  -- Initialize weekly progress if not exists
+  INSERT INTO public.user_weekly_challenge_progress (user_id, week_schedule_id, total_challenges)
+  SELECT p_user_id, v_schedule_id, array_length(challenge_ids, 1) +
+    CASE WHEN bonus_challenge_id IS NOT NULL THEN 1 ELSE 0 END
+  FROM public.weekly_challenge_schedule WHERE id = v_schedule_id
+  ON CONFLICT (user_id, week_schedule_id) DO NOTHING;
+
+  RETURN jsonb_build_object(
+    'success', true,
+    'submission_id', v_submission_id,
+    'status', CASE WHEN v_verification_type = 'ai' THEN 'ai_reviewing' ELSE 'pending' END,
+    'verification_type', v_verification_type,
+    'potential_xp', v_xp_reward
+  );
+END;
+$$ LANGUAGE plpgsql;
+
+-- Function to verify a shot challenge (for coaches/admins)
+CREATE OR REPLACE FUNCTION verify_shot_challenge(
+  p_submission_id UUID,
+  p_verified_by UUID,
+  p_approved BOOLEAN,
+  p_notes TEXT DEFAULT NULL
+)
+RETURNS JSONB AS $$
+DECLARE
+  v_user_id UUID;
+  v_week_schedule_id UUID;
+  v_challenge_id TEXT;
+  v_xp_reward INTEGER;
+  v_new_status TEXT;
+  v_challenges_completed INTEGER;
+  v_total_challenges INTEGER;
+  v_completion_bonus INTEGER;
+BEGIN
+  -- Get submission details
+  SELECT user_id, week_schedule_id, challenge_definition_id
+  INTO v_user_id, v_week_schedule_id, v_challenge_id
+  FROM public.shot_challenge_submissions WHERE id = p_submission_id;
+
+  IF v_user_id IS NULL THEN
+    RETURN jsonb_build_object('success', false, 'error', 'Submission not found');
+  END IF;
+
+  -- Get XP reward
+  SELECT xp_reward INTO v_xp_reward FROM public.shot_challenge_definitions WHERE id = v_challenge_id;
+
+  v_new_status := CASE WHEN p_approved THEN 'approved' ELSE 'rejected' END;
+
+  -- Update submission
+  UPDATE public.shot_challenge_submissions
+  SET status = v_new_status,
+      verified_by = p_verified_by,
+      verification_method = 'coach',
+      verification_notes = p_notes,
+      reviewed_at = NOW(),
+      xp_awarded = CASE WHEN p_approved THEN v_xp_reward ELSE 0 END,
+      xp_awarded_at = CASE WHEN p_approved THEN NOW() ELSE NULL END
+  WHERE id = p_submission_id;
+
+  -- If approved, award XP and update progress
+  IF p_approved THEN
+    -- Award XP via xp_transactions
+    INSERT INTO public.xp_transactions (user_id, xp_amount, action_type, description, metadata)
+    VALUES (v_user_id, v_xp_reward, 'shot_challenge',
+            'Completed shot challenge: ' || v_challenge_id,
+            jsonb_build_object('challenge_id', v_challenge_id, 'submission_id', p_submission_id));
+
+    -- Update user's total XP
+    UPDATE public.user_gamification
+    SET total_xp = total_xp + v_xp_reward,
+        level = calculate_level(total_xp + v_xp_reward)
+    WHERE user_id = v_user_id;
+
+    -- Update weekly progress
+    UPDATE public.user_weekly_challenge_progress
+    SET challenges_completed = challenges_completed + 1,
+        total_xp_earned = total_xp_earned + v_xp_reward
+    WHERE user_id = v_user_id AND week_schedule_id = v_week_schedule_id;
+
+    -- Check if all challenges completed
+    SELECT challenges_completed, total_challenges
+    INTO v_challenges_completed, v_total_challenges
+    FROM public.user_weekly_challenge_progress
+    WHERE user_id = v_user_id AND week_schedule_id = v_week_schedule_id;
+
+    -- Award completion bonus if applicable
+    IF v_challenges_completed >= v_total_challenges THEN
+      SELECT completion_bonus_xp INTO v_completion_bonus
+      FROM public.weekly_challenge_schedule WHERE id = v_week_schedule_id;
+
+      UPDATE public.user_weekly_challenge_progress
+      SET bonus_earned = TRUE,
+          bonus_xp_awarded = v_completion_bonus,
+          completed_at = NOW()
+      WHERE user_id = v_user_id AND week_schedule_id = v_week_schedule_id;
+
+      -- Award bonus XP
+      INSERT INTO public.xp_transactions (user_id, xp_amount, action_type, description, metadata)
+      VALUES (v_user_id, v_completion_bonus, 'weekly_challenge_bonus',
+              'Completed all weekly challenges!',
+              jsonb_build_object('week_schedule_id', v_week_schedule_id));
+
+      UPDATE public.user_gamification
+      SET total_xp = total_xp + v_completion_bonus,
+          level = calculate_level(total_xp + v_completion_bonus)
+      WHERE user_id = v_user_id;
+    END IF;
+  END IF;
+
+  RETURN jsonb_build_object(
+    'success', true,
+    'approved', p_approved,
+    'xp_awarded', CASE WHEN p_approved THEN v_xp_reward ELSE 0 END
+  );
+END;
+$$ LANGUAGE plpgsql;
+
+-- Enable RLS on shot challenge tables
+ALTER TABLE public.shot_challenge_definitions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.weekly_challenge_schedule ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.shot_challenge_submissions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.user_weekly_challenge_progress ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies
+
+-- Challenge definitions: Everyone can read
+CREATE POLICY "Anyone can read challenge definitions" ON public.shot_challenge_definitions
+  FOR SELECT USING (true);
+
+-- Weekly schedule: Everyone can read active schedules
+CREATE POLICY "Anyone can read weekly schedules" ON public.weekly_challenge_schedule
+  FOR SELECT USING (is_active = TRUE);
+
+-- Submissions: Users can see own, coaches can see all for review
+CREATE POLICY "Users can see own submissions" ON public.shot_challenge_submissions
+  FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Coaches can see all submissions" ON public.shot_challenge_submissions
+  FOR SELECT USING (
+    EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role IN ('admin', 'instructor'))
+  );
+CREATE POLICY "Users can create submissions" ON public.shot_challenge_submissions
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can update own pending submissions" ON public.shot_challenge_submissions
+  FOR UPDATE USING (auth.uid() = user_id AND status IN ('pending', 'rejected', 'needs_resubmit'));
+CREATE POLICY "Coaches can update submissions for review" ON public.shot_challenge_submissions
+  FOR UPDATE USING (
+    EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role IN ('admin', 'instructor'))
+  );
+
+-- Weekly progress: Users can see own
+CREATE POLICY "Users can see own weekly progress" ON public.user_weekly_challenge_progress
+  FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Service can manage weekly progress" ON public.user_weekly_challenge_progress
+  FOR ALL USING (true);
+
+-- Indexes for performance
+CREATE INDEX IF NOT EXISTS idx_shot_submissions_user ON public.shot_challenge_submissions(user_id);
+CREATE INDEX IF NOT EXISTS idx_shot_submissions_status ON public.shot_challenge_submissions(status);
+CREATE INDEX IF NOT EXISTS idx_shot_submissions_week ON public.shot_challenge_submissions(week_schedule_id);
+CREATE INDEX IF NOT EXISTS idx_weekly_schedule_dates ON public.weekly_challenge_schedule(week_start, week_end);
+CREATE INDEX IF NOT EXISTS idx_weekly_progress_user ON public.user_weekly_challenge_progress(user_id);
+
+-- ============================================
+-- COMPOSITE INDEXES FOR COMMON QUERY PATTERNS
+-- ============================================
+
+-- Video submissions: user + date for "my recent submissions" queries
+CREATE INDEX IF NOT EXISTS idx_video_submissions_user_created
+  ON public.video_submissions(user_id, created_at DESC);
+
+-- Memberships: status + created for admin dashboard queries
+CREATE INDEX IF NOT EXISTS idx_memberships_status_created
+  ON public.memberships(status, created_at DESC);
+
+-- Memberships: expiration date for renewal reminder cron jobs
+CREATE INDEX IF NOT EXISTS idx_memberships_expires
+  ON public.memberships(expires_at)
+  WHERE status = 'active';
+
+-- XP transactions: user + date for "my XP history" queries
+CREATE INDEX IF NOT EXISTS idx_xp_transactions_user_created
+  ON public.xp_transactions(user_id, created_at DESC);
+
+-- Activity feed: user + date for "my activity" queries
+CREATE INDEX IF NOT EXISTS idx_activity_feed_user_created
+  ON public.activity_feed(user_id, created_at DESC);
+
+-- Referrals: referrer + status for "my referrals" queries
+CREATE INDEX IF NOT EXISTS idx_referrals_user_status
+  ON public.referrals(referrer_user_id, status);
+
+-- ============================================
+-- 18. INITIAL DATA (OPTIONAL)
 -- ============================================
 
 -- Set launch date for grace period calculation (adjust this date to your actual launch)
 -- UPDATE public.instructors
 -- SET grace_period_ends = '2025-05-01'::TIMESTAMPTZ + INTERVAL '90 days'
 -- WHERE grace_period_ends IS NULL;
+
+-- Create this week's challenges (run weekly via cron or manually)
+-- SELECT create_weekly_challenges(
+--   date_trunc('week', CURRENT_DATE)::DATE, -- Monday of current week
+--   ARRAY['ernie', 'atp', 'lob_rundown', 'forehand_winner', 'third_shot_drop'],
+--   'spin_serve_ace', -- Bonus challenge
+--   'Advanced Shot Week' -- Theme
+-- );

@@ -26,9 +26,22 @@
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://jrwgmyksopkuylknwwhp.supabase.co" crossorigin>
 
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
+    <!-- Noscript fallback -->
+    <noscript>
+        <div style="padding: 40px; text-align: center; font-family: system-ui, sans-serif; background: #fef3c7; border-bottom: 2px solid #f59e0b;">
+            <h2 style="margin: 0 0 10px; color: #92400e;">JavaScript Required</h2>
+            <p style="margin: 0; color: #78350f;">Some features require JavaScript. Please enable JavaScript for the best experience.</p>
+        </div>
+    </noscript>
     <!-- Skip to main content for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
@@ -450,5 +463,16 @@
             <p>&copy; 2025 Ray Paull Pickleball Analysis. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('SW registered'))
+                    .catch(err => console.log('SW registration failed:', err));
+            });
+        }
+    </script>
 </body>
 </html>
